@@ -1,0 +1,228 @@
+.info {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 34px;
+    color: #a77119;
+    font-weight: bold;
+    display: inline-flex;
+}
+
+.text-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    margin-bottom: 15px !important;
+}
+
+.inner {
+    font-size: 16px;
+    color: #959595;
+    font-weight: bold;
+}
+
+.colorwithnobroder {
+    background-color: #DBE7EC;
+    padding: 10px;
+    border: none;
+}
+
+.Incolorwithnobroder {
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.Incolorwithnobroderleftalign {
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.IncolorTextwithnobroder {
+    line-height: 30px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.IncolorTextwithnobroderleftalign {
+    line-height: 30px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.SubIncolorwithnobroder {
+    padding: 10px;
+    border: none;
+    background-color: #DBE7EC;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.SubInSecondcolorwithnobroder {
+    padding: 10px;
+    border: none;
+    background-color: #EDEDED;
+    vertical-align: middle;
+}
+
+.switch input {
+    display: none;
+}
+
+.switch {
+    display: inline-block; // width:60px;
+    // height:30px;
+    // margin:8px;
+    // transform:translateY(50%);
+    position: relative;
+}
+
+/* Style Wired */
+
+.slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 30px;
+    box-shadow: 0 0 0 2px #777, 0 0 4px #777;
+    cursor: pointer;
+    border: 0px solid transparent;
+    overflow: hidden;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: #777;
+    border-radius: 30px;
+    transform: translateX(-30px);
+    transition: .4s;
+}
+
+.texter {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    overflow: hidden;
+    transition: .4s;
+}
+
+.texter:before {
+    content: "Yes";
+    border: 4px solid transparent
+}
+
+.texter:after {
+    content: "No";
+    border: 4px solid transparent
+}
+
+input:checked+.slider:before {
+    transform: translateX(30px);
+    background: limeGreen;
+}
+
+input:checked+.slider {
+    box-shadow: 0 0 0 2px limeGreen, 0 0 2px limeGreen;
+}
+
+/* Style Flat */
+
+.switch.flat .slider {
+    box-shadow: none;
+}
+
+.switch.flat .slider:before {
+    background: #FFF;
+    content: 'NO'
+}
+
+.switch.flat input:checked+.slider:before {
+    background: white;
+    content: 'NO'
+}
+
+.switch.flat input:checked+.slider {
+    background: limeGreen;
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.headerName {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 43.2px;
+}
+
+.flexdivHeader {
+    display: flex;
+    border-bottom: solid 1pt #dce3e7;
+    padding-bottom: 5px;
+    align-items: center;
+}
+
+.multiselect-dropdown {
+    width: 100% !important;
+}
+
+:host ::ng-deep .multiselect-dropdown {
+    width: 100% !important;
+    left: 0% !important;
+}
+
+:host ::ng-deep .dropdown-btn {
+    padding: 9px 10px !important;
+}
+
+.card-pad {
+    padding: 10px 25px 10px 25px;
+}
+
+.view {
+    box-shadow: 0px 3px 1px -2px rgb(118 114 114 / 20%), 0px 2px 2px 0px rgb(181 161 161 / 14%), 0px 1px 5px 0px rgb(174 139 139 / 12%);
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 10px;
+}
+
+::ng-deep .md-drppicker {
+    top: 0;
+    left: 0 !important;
+    width: 180% !important;
+}
+
+.fourpxBorder {
+    border-left: 4px solid white;
+}
+
+.widtheightPerc {
+    width: 6%;
+}

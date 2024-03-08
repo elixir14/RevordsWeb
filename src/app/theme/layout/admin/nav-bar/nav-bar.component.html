@@ -1,0 +1,20 @@
+<header class="pc-header coded-header" style="box-shadow: 0 2px 10px -5px rgb(0 0 0 / 75%);">
+  <div class="">
+    <app-nav-logo [navCollapsed]="navCollapsed" (onNavCollapse)="navCollapse()"></app-nav-logo>
+  </div>
+  <li class="pc-h-item d-none d-md-inline-flex">
+    <a cNavLink routerLink="/dashboard" routerLinkActive="active">
+      <button mat-button data-toggle="modal" data-target="#exampleModal" class="greenbutton">
+        <div class="badge badge-primary" style="width: 25rem;
+        font-size: 14px;background-color: #80b8ff;">
+          <img style="width: 30px;" src="../../../../../assets/img/switch.png">
+          {{bussinessName}}
+        </div>
+      </button>
+    </a>
+  </li>
+  <div class="header-wrapper">
+    <app-nav-left (onNavCollapsedMob)="navCollapseMob()"></app-nav-left>
+    <app-nav-right></app-nav-right>
+  </div>
+</header>

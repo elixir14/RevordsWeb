@@ -1,0 +1,276 @@
+.bodyclass {
+  background-color: white;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+.flexdivHeader {
+  display: flex;
+  border-bottom: solid 1pt #dce3e7;
+  padding-bottom: 5px;
+  align-items: center;
+}
+
+.headerName {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 60.2px;
+}
+
+.multiselect-dropdown {
+  width: 100% !important;
+}
+
+:host ::ng-deep .multiselect-dropdown {
+  width: 100% !important;
+  left: 0% !important;
+}
+
+:host ::ng-deep .dropdown-btn {
+  padding: 9px 10px !important;
+}
+
+.flexRight {
+  flex: 1;
+  text-align: right;
+}
+
+.filter-green {
+  filter: brightness(0) invert(1);
+}
+
+.brownColor {
+  background-color: #A17C43;
+  border: none;
+}
+
+.info {
+  font-size: 20px;
+  font-weight: 700;
+  color: #404040;
+  line-height: 50px;
+}
+
+.summary {
+  font-size: 15px;
+  font-weight: 500;
+  color: darkgray;
+}
+
+#summaryLabel {
+  color: #13ce66;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 7px;
+  font-size: 14.2px;
+  background: #C3F4C6;
+  cursor: pointer;
+}
+
+.view {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin-bottom: 0px;
+}
+
+.details {
+  font-size: 44px;
+  font-weight: 400;
+  color: #A17C43;
+  line-height: 41px;
+  text-align: right;
+  margin-right: 5px;
+}
+
+.inner {
+  font-size: 16px;
+  color: #959595;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.divmore {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.more {
+  display: block;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid #d7d3d3;
+  box-shadow: none;
+  color: #404040;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: none;
+  text-align: center;
+}
+
+.spinner-border {
+  --bs-spinner-width: 1rem;
+  --bs-spinner-height: 1rem;
+}
+
+.promotion {
+  background: #f4f8fb;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.displayMSG {
+  float: right;
+  color: #7DA3BA;
+  font-weight: 700;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+  line-height: 28px;
+}
+
+.invalid-feedback {
+  display: block !important;
+}
+
+.promotionwhite {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.head {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.promotion {
+  background: #f4f8fb;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.dropbox {
+  height: 43px;
+  padding: 0 20px;
+  line-height: 43px;
+  border: 1px solid #d7d3d3;
+  cursor: pointer;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  width: 100%;
+  background: white;
+}
+
+.dropbox:hover {
+  background-color: #404040;
+  border-color: #404040;
+  color: white;
+  width: 100%;
+}
+
+.buttonColor {
+  background-color: #7DA3BA;
+  border-color: #7DA3BA;
+}
+
+.bluecolor {
+  background-color: #7DA3BA;
+}
+
+.left-side {
+  height: 100%;
+  overflow: hidden;
+  padding: 40px 2%;
+}
+
+.left-side .center-div {
+  height: 100%;
+  margin: 0 auto;
+  max-width: 550px;
+}
+
+.phonevector {
+  width: 100%;
+  fill: #000;
+}
+
+.campaign-template-preview {
+  position: relative;
+}
+
+.template-email-root {
+  margin: 10% auto 0;
+  max-width: 280px;
+  position: relative;
+}
+
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 90%;
+  height: 480px;
+  position: absolute;
+  top: 5%;
+  word-wrap: break-word;
+  left: 5%;
+  padding: 12px;
+}
+
+.preview.cashier .message-content {
+  position: absolute;
+  top: 120px;
+  left: 66px;
+  color: white;
+  font-size: 12px;
+  width: 212px;
+  line-height: 15px;
+}
+
+.tagsDiv {
+  border: 1px solid #DBE7EC;
+  border-radius: 15px;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.example-margin {
+  margin: 0 0px;
+}
+
+.itemSpan {
+  color: #bdb8b8;
+  margin-left: 5px;
+  font-weight: 700;
+}
+
+.flexcenter {
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-selected {
+  background-color: #7da3ba;
+}
+
+:host ::ng-deep .mat-step-header .mat-step-icon-state-edit {
+  background-color: #7da3ba;
+}
+
+.mr3 {
+  margin-right: 3px;
+}
+
+.ml3 {
+  margin-left: 3px;
+}
+
+.text-center {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,537 @@
+<div>
+  <div class="row">
+    <div class="col-md-12 d-flex">
+      <div class="col-md-5">
+        <h2 style="color: #263a57; font-size: 25px; font-weight: 500;">Your Business At Glance</h2>
+      </div>
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-2" style="text-align: end;">
+        <button class="btn btn-sm" *ngIf="isAdministrator == true" [routerLink]="['/admin-panel']"
+          style="display: inline-flex;align-items: center;justify-content: center;background-color: #7da3ba;color: white;font-size: 100%;">
+          <i class="fa fa-lock" aria-hidden="true" style="margin-right: 6px;font-size: 14px;"></i>Admin Panel
+        </button>
+      </div>
+      <div class="col-md-3">
+        <ng-multiselect-dropdown [placeholder]="'Choose business locations'" #select (onSelect)="onItemSelect($event)"
+          (onSelectAll)="onItemSelectAll($event)" [settings]="dropdownSettings" [data]="bussinessData"
+          (onDeSelect)="onItemDeSelect($event)" [(ngModel)]="selectedItems" (onDeSelectAll)="onItemDeSelectAll($event)">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="col-md-12 text-center">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;margin-right: -15%;">Live Review</h3>
+              </div>
+              <div style="position: absolute;right: 12%;">
+                <button class="btn btn-sm btn-success" (click)="!isLoadingMemberVisitCounts ? GetAllData() : justAlert"
+                  style="display: inline-flex;align-items: center;justify-content: center;">
+                  Refresh<i class="fa fa-refresh" aria-hidden="true" style="margin-left: 6px;font-size: 14px;"></i>
+                </button>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 3%;">
+            <div class="col-md-12 text-center">
+              <div class="col-md-1"></div>
+              <div class="col-md-10 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;
+                color: #ffffff;cursor: pointer;border-radius: 20px;">
+                <div class="col-md-7 text-center" style="padding-right: 0px;padding-left: 0px;background: #233138;color: #ffffff;height: 90%;
+                cursor: pointer;border-radius: 20px;" (click)="onNavChange1(1)"
+                  [ngClass]="{'activeTab1 col-md-7': activeTabId == 1, 'activeTab2 col-md-5': activeTabId == 2}">
+                  <b style="padding: 4%;">Active Customers</b>
+                </div>
+                <div class="col-md-5 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;color: #ffffff;height: 90%;
+                cursor: pointer;border-radius: 20px;" (click)="onNavChange1(2)"
+                  [ngClass]="{'activeTab1 col-md-7': activeTabId == 2, 'activeTab2 col-md-5': activeTabId == 1 }">
+                  <b style="padding: 4%;">Today's Visits</b>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+          </div>
+          <div class="row" class="text-center" style="height: 400px;" *ngIf="chartOptions1Value.length != 0">
+            <apx-chart *ngIf="!isLoadingDonutChart" [series]="chartOptions1.series" [chart]="chartOptions1.chart"
+              [dataLabels]="chartOptions1.dataLabels" [legend]="chartOptions1.legend" [labels]="chartOptions1.labels"
+              [fill]="chartOptions1.fill" [title]="chartOptions1.title" [plotOptions]="chartOptions1.plotOptions"
+              [toolip]="chartOptions1.tooltip" [responsive]="chartOptions1.responsive"></apx-chart>
+          </div>
+          <div class="row" class="text-center" style="height: 400px;"
+            *ngIf="!isLoadingDonutChart && chartOptions1Value.length == 0">
+            <img src="../../../../assets/img/noData.png" width="60%" height="60%">
+          </div>
+          <div class="row" *ngIf="isLoadingDonutChart" style="top: 20%;left: 0%;">
+            <ngx-skeleton-loader appearance="vertical-line" animation="progress-light" count="9" animation="progress"
+              appearance="''" [theme]="{'background-color': '#ebeced',height: '30px','border-radius': 0}">
+            </ngx-skeleton-loader>
+          </div>
+          <div class="row text-center" *ngIf="isLoadingDonutChart"
+            style="width: 100%;height: 100%;top: 0%;left: 0%;position: absolute;">
+            <div class="col-md-12">
+              <div class="spinner-border" role="status"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center" style="height: 39px;">
+              <div class="col-md-9" style="padding-left: 0px;display: flex;align-items: center;">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Traffic Insights</h3>
+              </div>
+              <div class="col-md-3"
+                style="display: inline-flex;align-items: center;justify-content: end;padding-right: 0px;">
+                <span>Hourly</span>
+                <label class="switch" for="checkbox" style="margin-left: 5px;margin-right: 5px;margin-bottom: 0;">
+                  <input type="checkbox" id="checkbox" (change)="btnAddPromo()" [(ngModel)]="charttypbool" />
+                  <span class="slider round"></span>
+                  <span class="texter" style="visibility: hidden !important;"></span>
+                </label>
+                <span>Daily</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="daywiseChart" style="background-color: #f2fffa;border-radius:8px;height: 428px;">
+            <apx-chart *ngIf="!isLoadingDayWiseChart" [series]="chartOptions2.series" [chart]="chartOptions2.chart"
+              [title]="chartOptions2.title" [legend]="chartOptions2.legend" [dataLabels]="chartOptions2.dataLabels"
+              [plotOptions]="chartOptions2.plotOptions" [grid]="chartOptions2.grid" [fill]="chartOptions2.fill"
+              [stroke]="chartOptions2.stroke" [tooltip]="chartOptions2.tooltip" [xaxis]="chartOptions2.xaxis"
+              [yaxis]="chartOptions2.yaxis"></apx-chart>
+            <ngx-skeleton-loader *ngIf="isLoadingDayWiseChart" appearance="vertical-line" animation="progress-light"
+              count="10" animation="progress" appearance="''"
+              [theme]="{'background-color': '#ebeced',height: '30px','border-radius': 0}">
+            </ngx-skeleton-loader>
+          </div>
+          <div *ngIf="isLoadingDayWiseChart" class="d-flex mx-2 my-2 justify-content-center align-items-center"
+            style="height: 100%; top: 0%;left: 50%;position: absolute;">
+            <div class="spinner-border" role="status"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="col-md-1"
+                style="display: inline-flex;align-items: center;justify-content: center;padding-left: 41px;padding-right: 0px;">
+                <i class="ti ti-users" style="color:#a17c43; font-size:30px;"></i>
+              </div>
+              <div class="col-md-5" style="color: black;padding-right: 0px;padding-left: 14px;">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Total Customers</h3>
+              </div>
+              <div class="col-md-6" style="padding-right: 0px;padding-left: 10px;font-size: 22px;text-align: left;">
+                <div *ngIf="!isLoadingTotalMembers">
+                  <b *ngIf="totalmembers > 1000">{{totalmembers | number: '3.0-5'}}</b>
+                  <b *ngIf="totalmembers <= 1000">{{totalmembers}}</b>
+                </div>
+                <div class="col-md-6" *ngIf="isLoadingTotalMembers" style="font-size: 14px;">
+                  <div class="spinner-border" role="status"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 21px;">
+            <div class="col-md-12 text-center">
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#B97140, 60%, #d5a480 )">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b>
+                    <b *ngIf="bronze > 1000">{{bronze | number: '3.0-5'}}</b>
+                    <b *ngIf="bronze <= 1000">{{bronze}}</b>
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#C0C0C0,60% , #ECECED );">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b>
+                    <b *ngIf="silver > 1000">{{silver | number: '3.0-5'}}</b>
+                    <b *ngIf="silver <= 1000">{{silver}}</b>
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#de972f, 60%, #eac95a );">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b>
+                    <b *ngIf="gold > 1000">{{gold | number: '3.0-5'}}</b>
+                    <b *ngIf="gold <= 1000">{{gold}}</b>
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#8605C2,60% , #dab9ef );">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b>
+                    <b *ngIf="platinum > 1000">{{platinum | number: '3.0-5'}}</b>
+                    <b *ngIf="platinum <= 1000">{{platinum}}</b>
+                  </b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="col-md-1"
+                style="display: inline-flex;align-items: center;justify-content: center;padding-left: 41px;padding-right: 0px;">
+                <i class="ti ti-credit-card" style="color:#a17c43; font-size:30px;"></i>
+              </div>
+              <div class="col-md-5" style="color: black;padding-right: 0px;padding-left: 14px;">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;"> Customer Visits </h3>
+              </div>
+              <div class="col-md-6" style="padding-right: 0px;padding-left: 0px;">
+                <div class="row">
+                  <div class="col-md-12 text-center" style="padding-left: 0px;padding-right: 0px;">
+                    <div class="col-md-5" *ngIf="!isLoadingTotals"
+                      style="padding-left: 0px;padding-right: 0px;font-size: 22px;">
+                      <b *ngIf="activeTab == 1 && thismonthvisit > 1000">{{thismonthvisit | number: '3.0-5'}}</b>
+                      <b *ngIf="activeTab == 1 && thismonthvisit <= 1000">{{thismonthvisit}}</b>
+                      <b *ngIf="activeTab == 2 && totalvisits > 1000">{{totalvisits | number: '3.0-5'}}</b>
+                      <b *ngIf="activeTab == 2 && totalvisits <= 1000">{{totalvisits}}</b>
+                    </div>
+                    <div class="col-md-5" *ngIf="isLoadingTotals">
+                      <div class="spinner-border" role="status"></div>
+                    </div>
+                    <div class="col-md-7 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;
+                      color: #ffffff;cursor: pointer;border-radius: 20px;">
+                      <div class="col-md-7 text-center" style="padding-right: 0px;padding-left: 0px;background: #233138;color: #ffffff;height: 80%;
+                        cursor: pointer;border-radius: 20px;" (click)="onNavChange(1)"
+                        [ngClass]="{'activeTab1': activeTab == 1, 'activeTab2': activeTab == 2}">
+                        <b style="padding: 4%;font-size: 85%;font-weight: 500;">This Month</b>
+                      </div>
+                      <div class="col-md-5 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;color: #ffffff;height: 80%;
+                        cursor: pointer;border-radius: 20px;" (click)="onNavChange(2)"
+                        [ngClass]="{'activeTab1': activeTab == 2, 'activeTab2': activeTab == 1 }">
+                        <b style="padding: 4%;font-size: 85%;font-weight: 500;">Total</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 21px;">
+            <div class="col-md-12 text-center">
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#B97140, 60%, #d5a480 )">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b *ngIf="activeTab == 1">
+                    <b *ngIf="bronzeMonthVisitCount > 1000">{{bronzeMonthVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="bronzeMonthVisitCount <= 1000">{{bronzeMonthVisitCount}}</b>
+                  </b>
+                  <b *ngIf="activeTab == 2">
+                    <b *ngIf="bronzeVisitCount > 1000">{{bronzeVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="bronzeVisitCount <= 1000">{{bronzeVisitCount}}</b>
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#C0C0C0,60% , #ECECED );">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b *ngIf="activeTab == 1">
+                    <b *ngIf="silverMonthVisitCount > 1000">{{silverMonthVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="silverMonthVisitCount <= 1000">{{silverMonthVisitCount}}</b>
+                  </b>
+                  <b *ngIf="activeTab == 2">
+                    <b *ngIf="silverVisitCount > 1000">{{silverVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="silverVisitCount <= 1000">{{silverVisitCount}}</b>
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#de972f, 60%, #eac95a );">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b *ngIf="activeTab == 1">
+                    <b *ngIf="goldMonthVisitCount > 1000">{{goldMonthVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="goldMonthVisitCount <= 1000">{{goldMonthVisitCount}}</b>
+                  </b>
+                  <b *ngIf="activeTab == 2">
+                    <b *ngIf="goldVisitCount > 1000">{{goldVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="goldVisitCount <= 1000">{{goldVisitCount}}</b>
+                  </b>
+                </div>
+              </div>
+              <div class="col-md-3"
+                style="display: grid;align-items: center;justify-content: center;text-align: center;">
+                <div class="avtar avtar-lg avtar-new" style="background-image:linear-gradient(#8605C2,60% , #dab9ef );">
+                  <i class="fa fa-trophy" style="color:white;"></i>
+                </div>
+                <div style="font-size: 16px;">
+                  <b *ngIf="activeTab == 1">
+                    <b *ngIf="platinumMonthVisitCount > 1000">{{platinumMonthVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="platinumMonthVisitCount <= 1000">{{platinumMonthVisitCount}}</b>
+                  </b>
+                  <b *ngIf="activeTab == 2">
+                    <b *ngIf="platinumVisitCount > 1000">{{platinumVisitCount | number: '3.0-5'}}</b>
+                    <b *ngIf="platinumVisitCount <= 1000">{{platinumVisitCount}}</b>
+                  </b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="height: 194px;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="col-md-1"
+                style="display: inline-flex;align-items: center;justify-content: center;padding-left: 41px;padding-right: 0px;">
+                <!-- <i class="fa fa-sign-in" style="color:#a17c43; font-size:30px;"></i> -->
+                <img src="../../../../assets/img/add-user1.png" height="40px"/>
+              </div>
+              <div class="col-md-8" style="color: black;padding-right: 0px;padding-left: 14px;">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Monthly New SignUp Goals</h3>
+              </div>
+              <div class="col-md-3" style="padding-right: 0px;padding-left: 10px;">
+                <circle-progress [percent]="percentage" [radius]="30" [outerStrokeWidth]="6" [innerStrokeWidth]="4"
+                  [outerStrokeColor]="'#63c76a'" [innerStrokeColor]="'#DADCDC'" [animation]="true"
+                  [animationDuration]="300" [unitsColor]="'green'" [titleColor]="'green'" [subtitleColor]="'black'"
+                  [titleFontSize]="'13'" [subtitleFontSize]="'8'"></circle-progress>
+              </div>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-md-12" style="color: black;text-align: start;padding-left: 35px">
+              {{ThismonthText}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-center" style="padding-left: 35px;">
+              <div class="col-md-8" style="padding-right: 0px;padding-left: 0px;text-align: start;">
+                <span class="bold ng-binding" style="color:#63c76a; ">{{Tillnowsignups}}</span>
+                <span class="goal-status regular-weight ng-binding" style="color:#727679;">
+                  {{Pendingsignups}}
+                </span>
+              </div>
+              <div class="col-md-4" style="padding-right: 0px;padding-left: 0px;text-align: end;">
+                <button mat-button data-toggle="modal" data-target="#GoalModal" (click)="OpenGoalModal()"
+                  class="btn  btn-sm" style="background-color: #7da3ba;color: white;">
+                  <div>
+                    Change Goal
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="col-md-7" style="padding-left: 0px;display: flex;align-items: center;">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Visitor Insights</h3>
+              </div>
+              <div class="col-md-5"
+                style="display: inline-flex;align-items: center;justify-content: end;padding-right: 0px;">
+                <input type="button" class="btn ngx-daterangepicker-action" ngxDaterangepickerMd [autoApply]="true"
+                  style="background-color: #f5fbfe;border: 0px solid #dbe7ec;" [showCustomRangeLabel]="false"
+                  [alwaysShowCalendars]="false" [ranges]="ranges" [showRangeLabelOnInput]="true"
+                  (rangeClicked)="rangeClicked($event)" [linkedCalendars]="true" [showClearButton]="true"
+                  [keepCalendarOpeningWithRange]="true" [(value)]="label" (datesUpdated)="datesUpdated($event)"
+                  [locale]="{ 
+                  applyLabel: 'Apply',format: 'MMM DD, YYYY',fromLabel: 'From',toLabel: 'To',
+                  daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                  monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                  firstDay: 1}" />
+                <button class="btn btn-outline-primary ngx-daterangepicker-action" type="button" (click)="open()"
+                  style="background-color: #f5fbfe; border: 0px solid #dbe7ec;margin-left: -1%;padding-left: 0;padding-right: 0;">
+                  <span class="ngx-daterangepicker-action" style="margin-right: 15px; color:#3380A4;">
+                    {{selected.startDate |
+                    date: 'MMM dd, yyyy'}}
+                    - {{selected.endDate | date: 'MMM dd, yyyy'}}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="growthChart" style="background-color: #f2fffa;margin-top: 13px;border-radius:8px;height: 478px;">
+            <apx-chart *ngIf="!isLoadingInsightChart" [series]="chartOptions.series" [chart]="chartOptions.chart"
+              [title]="chartOptions.title" [legend]="chartOptions.legend" [dataLabels]="chartOptions.dataLabels"
+              [plotOptions]="chartOptions.plotOptions" [grid]="chartOptions.grid" [legend]="chartOptions.legend"
+              [fill]="chartOptions.fill" [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip"
+              [xaxis]="chartOptions.xaxis"></apx-chart>
+            <ngx-skeleton-loader *ngIf="isLoadingInsightChart" appearance="vertical-line" animation="progress-light"
+              count="10" animation="progress" appearance="''"
+              [theme]="{'background-color': '#ebeced',height: '29px','border-radius': 0}">
+            </ngx-skeleton-loader>
+          </div>
+
+          <div *ngIf="isLoadingInsightChart" class="d-flex mx-2 my-2 justify-content-center align-items-center" style="height: 100%; top: 0%;
+          left: 50%;position: absolute;">
+            <div class="spinner-border" role="status"></div>
+          </div>
+
+          <!-- <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="col-md-8"></div>
+              <div class="col-md-2">
+                <div class="row" style="background-color: #eef2f3;border-radius: 8px;">
+                  <div class="col-md-12 text-center">
+                    <div class="col-md-8">
+                      <div class="row text-center" style="font-size: 20px;font-weight: 700;">8,352</div>
+                      <div class="row text-center" style="font-size: 12px;font-weight: 500;">This Period</div>
+                    </div>
+                    <div class="col-md-4" style="padding-left: 0px; padding-right: 0px;color: green;">
+                      <i class="fa fa-caret-up"></i>
+                      20%
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 text-center">
+                <div class="col-md-12" style="background-color: #eef2f3;border-radius: 8px;">
+                  <div style="font-size: 20px;font-weight: 700;">7,352</div>
+                  <div style="font-size: 12px;font-weight: 500;">Last Period</div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="GoalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="--bs-modal-width: 900px;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="background-color: #dbe7ec;">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Monthly Signup Goal </h4>
+          <i data-dismiss="modal" id="closeBtn" #closebutton class="fa fa-times"
+            style="font-size: 16px; cursor: pointer;" ng-click="close()"></i>
+        </div>
+        <div class="modal-body">
+          <div class="title-signh">
+            {{oldGoalValue}} Signups
+          </div>
+          <div style="margin-top: 3%; text-align: center;
+          font-weight: 500;" class="col-lg-12">
+            <span>
+              To run a successful program, we recommend an industry standard of at least 200 signups per month.
+            </span>
+          </div>
+          <div class="parent col-lg-12">
+            <div *ngFor="let goal of goalData; let i = index">
+              <div class="model-box">
+                <div>
+                  <circle-progress [percent]="goal.percentage" [radius]="40" [outerStrokeWidth]="8"
+                    [innerStrokeWidth]="6" [outerStrokeColor]="'#63c76a'" [innerStrokeColor]="'#DADCDC'"
+                    [animation]="true" [animationDuration]="300" [unitsColor]="'green'" [titleColor]="'green'"
+                    [subtitleColor]="'black'"></circle-progress>
+                </div>
+                <div class="slidecontainer" style="align-self: center;">
+                  <div style="font-weight: 500;font-size: 14px;">
+                    {{goal.BName}}
+                  </div>
+                  <div>
+                    <p style="font-size: 12px; color:#727679;">{{goal.Actual}} signups out of {{goal.Goal}} goal till
+                      date
+                    </p>
+                  </div>
+                  <mat-slider min="0" max="300" step="5" showTickMarks discrete [displayWith]="formatLabel"
+                    style="width: 100%; margin: 0;margin-top: -20px;">
+                    <input style="width: 100%; left: 0;" (input)="onInputChange($event)" [(ngModel)]="goal.Goal"
+                      matSliderThumb>
+                  </mat-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="margin: 4% 2%; text-align: right;">
+            <button class="btn btn-success" type="submit" [disabled]="isLoading" (click)="SaveGoal()">
+              <i class="fa" [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-check': !isLoading}"></i>
+              Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #wizard>
+    <table class="table table-hover table-striped bdr">
+      <thead style="width: calc(100% - 1em);display: table;width: 100%;table-layout: fixed;">
+        <tr style="text-align: center;">
+          <th colspan="4">
+            {{businessLocationName}}
+          </th>
+        </tr>
+        <tr>
+          <th style="text-align: center;">No</th>
+          <th scope="col">Name</th>
+          <th scope="col" style="text-align: center;">Badge</th>
+          <th scope="col" style="text-align: center;">HighRoller</th>
+        </tr>
+      </thead>
+      <tbody style="display: block;height: 250px;overflow-y: scroll;">
+        <tr *ngFor="let item of detailactiveMemberData;let i = index;"
+          style="display: table;width: 100%;table-layout: fixed;">
+          <th scope="row" style="text-align: center;">{{i + 1}}</th>
+          <td>{{item.memberName}}</td>
+          <td style="text-align: center;">{{item.badgeName}}</td>
+          <td style="text-align: center;">{{item.isHighRoller}}
+            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(248, 80, 80)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(248, 80, 80)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(248, 80, 80)" class="fa fa-dollar"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+
+</div>

@@ -1,0 +1,348 @@
+<div class="bodyclass" style="background-color: white;padding: 20px;border-radius: 13px;">
+  <div class="col-lg-12 flexdivHeader">
+    <div class="col-md-9">
+      <h1 class="headerName">
+        <i class="fa fa-tags"></i>
+        Tag Definitions
+      </h1>
+      <div style="color: #827e7e;font-style: normal;font-weight: 400;font-size: 15px;
+              line-height: 24.3px;margin-top: -11px;">
+        <div style="margin-left: 34px; position: relative;display: grid;">
+          <span>For setting a tag conditions for customers.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3" *ngIf="!iseditmode">
+      <button class="btn btn-success" (click)="AddNew()">
+        Add New Tag</button>
+    </div>
+    <div class="col-lg-3" *ngIf="iseditmode">
+      <button class="btn btn-danger" (click)="Cancle()">
+        Cancel</button>
+    </div>
+  </div>
+  <div class="row" *ngIf="!iseditmode">
+     <!-- new code -->
+
+    <div class="col-md-12 dataCard">
+      <div class="col-md-4 card mb-3 p-0 m-2" *ngFor="let product of dataSource; let i = index">
+        <div style="background: linear-gradient(179.5deg, #C0FFBF 3.3%, #0FADDE 96%); height: 180px; border-top-left-radius: 20px;
+        border-top-right-radius: 20px;">
+          <div class="card-body text-success">
+            <h3 class="card-title text-center">
+              <b style="color:black">{{product.tagName}}</b>
+            </h3>
+          </div>
+        </div>
+        <div class="text-center" style="margin-top: -25px;">
+          <div class="col-md-2 avtar avtar-lg avtar-new">
+            <span class="trophy" [ngStyle]="{'background':product.color}">
+              <i class="fa fa-tags" style="color:white; font-size:20px; "></i>
+            </span>
+          </div>
+        </div>
+        <div class="card-footer pt-3" style="text-align: center">
+          <div class="memberships-icon-holder" mdbRipple rippleColor="light">
+            {{product.count}}
+          </div>
+          <p class="col-md-12" *ngFor="let productCountryInfo of product.child; let i = index" style="font-size: 12px; color:black">
+            <span *ngIf="i == 0">Member with a </span>
+            <span *ngIf="i > 0">And </span>
+            <span>
+              {{productCountryInfo.criteriaName}}
+            </span>
+            <span>
+              {{productCountryInfo.conditionName}}
+            </span>
+            <span>
+              {{productCountryInfo.tagValue}}
+            </span>
+            <span *ngIf="productCountryInfo.criteriaName == 'Last Visit Date'"> Days</span>
+            <span *ngIf="productCountryInfo.criteriaName == 'Visit Count'"> Counts</span>
+            <span *ngIf="productCountryInfo.criteriaName == 'Earned Points'"> Points</span>
+            <span *ngIf="productCountryInfo.criteriaName == 'Amount Spent'"> Amount</span>
+          </p>
+
+          <div style="display: contents;" *ngIf="product.tagName !== 'Prospect'">
+            <div>
+              <i (click)="Edit(product)" class="fa fa-pencil editbutton" style="color:white; font-size: 18px; cursor: pointer;"></i>
+              &nbsp;
+              <i class="fa fa-trash editbutton" (click)="clickMethod(product)" style="margin-top: 6px;color:white; font-size: 18px; cursor: pointer;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="isLoading" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="iseditmode">
+    <form [formGroup]="jobForm" (ngSubmit)="Submit()">
+      <mat-tab-group class="inner-content-tabs">
+        <mat-tab label="Defination">
+          <div class="element-holder box">
+            <!-- <div class="element-header">
+              <div class="elem-title">
+                General Setting </div>
+            </div> -->
+            <div class="col-lg-12" style="display: flex">
+              <div class="col-lg-8 box">
+                <div class="form-inline">
+                  <div class="labeldiv">Tag Name is special tag for a customer.
+                  </div>
+                  <div>
+                    <input type="text" formControlName="rewardName" class="form-control" *ngIf="iseditmode" [ngClass]="{ 'is-invalid': submitted && f['rewardName'].errors }"
+                    />
+                    <div *ngIf="submitted && f['rewardName'].errors" class="invalid-feedback">
+                      <div *ngIf="f['rewardName'].errors['required']">Tagname is required</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-inline">
+                  <div class="labeldiv" style="width: 78%;">We can define conditions for tagging based on customer behaviour.
+                  </div>
+                  <!-- <span class="fa-stack fa-lg">
+                    <i (click)="addDetailsFormGroup()" class="fa fa-plus-circle" style="margin-right: 12px;color:green;cursor: pointer;"></i>
+                  </span> -->
+
+                  <div class="addbutton" (click)="addDetailsFormGroup()">ADD Condition
+                    <i class="fa fa-plus" style="margin-left: 12px;cursor: pointer;"></i>
+                  </div>
+                </div>
+                <div formArrayName="tagdefinations">
+                  <div *ngFor="let skillForm of jobForm.get('tagdefinations').controls;let i = index">
+                    <table class="table mb-0" [formGroupName]="i">
+                      <tbody>
+                        <tr>
+                          <td style="width: 5%;">
+                            <span class="fa-stack fa-lg">
+                              <i (click)="DelDetailsFormGroup(skillForm);" class="fa fa-minus-circle" style="color:red;cursor: pointer;"></i>
+                            </span>
+
+                          </td>
+                          <td *ngIf="i == 0" style="width: 12%;vertical-align: middle;">Members with </td>
+                          <td *ngIf="i > 0" style="width: 12%;vertical-align: middle;">And </td>
+                          <td style="width: 15%;">
+                            <span *ngIf="!iseditmode">{{skillForm.criteriaName}}</span>
+                            <div class="form-group" *ngIf="iseditmode">
+                              <select class="form-control" formControlName="criteriaID" [ngClass]="{ 'is-invalid': submitted && skillForm.get('criteriaID').errors }">
+                                <option *ngFor="let web of criteriaList" [(selected)]="skillForm.criteriaID == web.id" [ngValue]="web.id">{{web.name}}</option>
+                              </select>
+                              <div *ngIf="submitted && skillForm.get('criteriaID').errors" class="invalid-feedback">
+                                <div *ngIf="skillForm.get('criteriaID').errors?.required">Criteria is required</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td style="width: 15%;">
+                            <span *ngIf="!iseditmode">
+                              {{skillForm.conditionName}}</span>
+                            <div class="form-group" *ngIf="iseditmode">
+                              <select class="form-control" formControlName="conditionID" [ngClass]="{ 'is-invalid': submitted && skillForm.get('conditionID').errors }">
+                                <option *ngFor="let web of conditionList" [(selected)]="skillForm.conditionID == web.id" [ngValue]="web.id">{{web.name}}</option>
+                              </select>
+                              <div *ngIf="submitted && skillForm.get('conditionID').errors" class="invalid-feedback">
+                                <div *ngIf="skillForm.get('conditionID').errors?.required">Required</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td style="width: 10%;">
+                            <input type="text" formControlName="tagValue" class="form-control" *ngIf="iseditmode" [ngClass]="{ 'is-invalid': submitted && skillForm.get('tagValue').errors }"
+                            />
+                            <div *ngIf="submitted && skillForm.get('tagValue').errors" class="invalid-feedback">
+                              <div *ngIf="skillForm.get('tagValue').errors?.required">Required</div>
+                            </div>
+                            <span *ngIf="!iseditmode"> {{skillForm.tagValue}}
+                            </span>
+                          </td>
+                          <td style="width: 5%;">
+                            <span *ngIf="skillForm.criteriaName == 'Last Visit Date'"> Days</span>
+                            <span *ngIf="skillForm.criteriaName == 'Visit Count'"> Counts</span>
+                            <span *ngIf="skillForm.criteriaName == 'Earned Points'"> Points</span>
+                            <span *ngIf="skillForm.criteriaName == 'Amount Spent'"> Amount</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="form-inline" style="margin-top :5px;">
+                  <button class="btn btn-success" type="submit" [disabled]="isLoading">
+                    <i class="fa" [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-check': !isLoading}"></i>
+                    Save</button>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="col-lg-12" style="display: flex">
+                  <div class="memberships-card box-tag">
+                    <div class="membership-back">
+                      <div>
+                        <div class="memberships-icon-holder" mdbRipple rippleColor="light">
+                          <i class="fa fa-hashtag" style="font-size: 100px;color: #4646a1;"></i>
+                          <a href="#!">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                          </a>
+                        </div>
+                        <div class="col-md-12">
+                          <h5 class="preview-membership-name">{{rewardName}} </h5>
+                          <p class="col-md-12" *ngFor="let productCountryInfo of dataSourceChild; let i = index">
+                            <span *ngIf="i == 0">Member with a </span>
+                            <span *ngIf="i > 0">And </span>
+                            <span>
+                              {{productCountryInfo.criteriaName}}
+                            </span>
+                            <span>
+                              {{productCountryInfo.conditionName}}
+                            </span>
+                            <span>
+                              {{productCountryInfo.tagValue}}
+                            </span>
+                            <span *ngIf="productCountryInfo.criteriaName == 'Last Visit Date'"> Days</span>
+                            <span *ngIf="productCountryInfo.criteriaName == 'Visit Count'"> Counts</span>
+                            <span *ngIf="productCountryInfo.criteriaName == 'Earned Points'"> Points</span>
+                            <span *ngIf="productCountryInfo.criteriaName == 'Amount Spent'"> Amount</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{memberCount}} Members" *ngIf="TagId >0">
+          <div>
+            <i (click)="GetMember()" class="fa fa-refresh" style="margin-right: 12px;color:green; font-size: 24px; cursor: pointer;"></i>
+            <mat-table class="mat-elevation-z8" mat-table [dataSource]="dataSourceMembers">
+              <ng-container matColumnDef="name">
+                <th style="width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by name">
+                  Name
+                </th>
+                <td mat-cell *matCellDef="let element" class="tabletd" style="width: 15%;">
+                  <div style="display: flex;">
+                    <div>
+                      <img src="../../../assets/img/empty-profile.png" />
+                    </div>
+                    <div style="color: #203139;font-weight: 700;cursor: pointer; font-size:14px;padding-left: 5px;"> {{element.name}}
+                      <div style="padding-top: 2px; display:flex;
+                        background-color: #faf3f3;
+                        border-radius: 4px;">
+                        <img src="../../../assets/img/Mobile.png" style="margin: 0px 4px;" />
+                        <img src="../../../assets/img/Envelope.png" />
+                        <img src="../../../assets/img/ChatDots.png" style="margin: 0px 4px;" />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="phone">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by phone">
+                  Phone
+                </th>
+                <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%;"> {{element.phone}}
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="status">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by status">
+                  Status
+                </th>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element">
+                  <div class="chip">
+                    <div class="chip-head" [ngStyle]="{'background-image': element.status=='Bronze' ?
+                      'linear-gradient(#B97140, 60%, #d5a480 )' :
+                                 (element.status=='Gold'? 'linear-gradient(#de972f, 60%, #eac95a )':(element.status=='Silver'?
+                                 'linear-gradient(#C0C0C0,60% , #ECECED )':'linear-gradient(#8605C2,60% , #dab9ef )')
+                                 )}">
+                      <i class="fa fa-trophy" style="font-size: 18px; color:white;"></i>
+                    </div>
+                    <div class="chip-content">{{element.status}}</div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="source">
+                <th style="width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by source">
+                  Source
+                </th>
+                <td style="width: 15%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.source}} </td>
+              </ng-container>
+              <ng-container matColumnDef="currentpoints">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by currentpoints">
+                  Current Points
+                </th>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.currentpoints}}pt
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="lifetimepoints">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by lifetimepoints">
+                  Lifetime Points
+                </th>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.lifetimepoints}}pt
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="lastvisit">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by lastvisit">
+                  Last Visit
+                </th>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.lastvisit | date:'MMM d,yyyy hh:mm'}} </td>
+              </ng-container>
+              <ng-container matColumnDef="membersince">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by membersince">
+                  Member Since
+                </th>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.membersince | date: 'M/d/y' }} </td>
+              </ng-container>
+              <ng-container matColumnDef="istagged">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                  sortActionDescription="Sort by istagged">
+                  Tagged?
+                </th>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element">
+                  <div style="display:flex;">
+                    <div *ngIf="element.tagname" class="badge badge-primary" style="background-color: #7da3ba;">
+                      #{{element.tagname}}</div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row class="tableHeaderCellDiv" *matHeaderRowDef="displayedColumnsMembers"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsMembers; "></tr>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[5]" #paginator style-paginator showFirstLastButtons></mat-paginator>
+            <!-- <div class="col-lg-12 divmore">
+              <button type="button" mat-raised-button color="basic" class="more" [disabled]='disableBtnPrevious' (click)="showPrevious()">Previous</button>
+              <span style="padding: 10px;vertical-align: middle;font-weight: 700;">Page {{pageNumber}} of
+                <span> {{totalPages}} </span>
+              </span>
+              <button type="button" mat-raised-button class="more" color="basic" [disabled]='disableBtnNext' (click)="showNext()">Next</button>
+            </div> -->
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+    <div *ngIf="isLoadingMember" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>

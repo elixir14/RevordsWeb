@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="wrapper" style="background: white;border-radius: 15px;">
+  <div>
+    <div class="col-lg-12 p-0" style="display: flex">
+      <div class="col-lg-10">
+
+        <div class="d-flex mt-4">
+          <a href="#" class="navbar-brand mt-2">
+            <img src="../../../../assets/img/icons/Rewards.svg" height="28" alt="CoolBrand">
+          </a>
+          <h1>Rewards</h1>
+        </div>
+      </div>
+      <!-- <div class="col-lg-4"></div> -->
+      <div class="col-lg-2 mt-4">
+        <button class="btn btn-success btn float-end" (click)="Edit()" style="width: 100%;">
+          <i class="fa" [ngClass]="{ 'fa-spin fa-spinner': isLoading, 'fa-edit': !isLoading }"
+            style="margin-right: 12px"></i>{{ buttonname }}</button>
+      </div>
+      <div class="form-group mx-sm-3 mb-2">
+
+      </div>
+    </div>
+
+    <div class="row d-flex ml-2 p-0">
+      <div class="col-md-4 mt-2">
+        <div style="display: inline-flex; color: #404040;font-style: normal;font-weight: 300;font-size: 18px;">
+          <div style="position: relative;display: grid;">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 mt-2">
+        <div class="labeldiv mt-2" style="display:inline-flex; font-size: 15px;">
+          Customers will Earn
+          <input class="inputClass ml-2 mr-2" type="text" *ngIf="iseditmode" [(ngModel)]="claimPoints"
+            style="width: 10%; padding: 0px;text-align: center; border: 1px solid #d4dce3;" />
+          <span *ngIf="!iseditmode" style="margin :0px 7px 5px 7px;"> {{claimPoints }} </span>pt after every
+          <input class="inputClass ml-2 mr-2" type="text" *ngIf="iseditmode" [(ngModel)]="reclaimHours"
+            style="width: 10%; padding: 0px;text-align: center; border: 1px solid #d4dce3;" />
+          <span *ngIf="!iseditmode" style="margin :0px 7px 5px 7px;"> {{reclaimHours }}</span> hours
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-2">
+    <div class="col-lg-12">
+      <table class="mat-elevation-z8 table-hover" mat-table [dataSource]="filteredDataSource">
+        <ng-container matColumnDef="rewardName">
+          <th mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+            sortActionDescription="Sort by rewardName">
+            Reward
+          </th>
+          <td mat-cell class="tabletd" *matCellDef="let element">
+            <i class="fa fa-star-o" *ngIf="!iseditmode"></i>
+            <input type="text" class="inputClass" [(ngModel)]="element.rewardName"
+              *ngIf="iseditmode && element.type !=3" maxlength="50" />
+            <span *ngIf="!iseditmode"> {{ element.rewardName }}</span>
+            <span class="fa-stack fa-lg ml-2" *ngIf="element.type !=3" style="color:red;cursor: pointer;width: 26px;">
+              <i (click)="DelDetailsFormGroup(element.id);" class="fa fa-minus-circle" *ngIf="iseditmode"></i>
+            </span>
+            <span class="fa-stack fa-lg" *ngIf="element.type !=3">
+              <i (click)="addDetailsFormGroup()" class="fa fa-plus-circle" style="color:green;cursor: pointer;"
+                *ngIf="iseditmode"></i>
+            </span>
+            <div *ngIf="iseditmode && element.type !=3" style="width:12%;">
+              <p class="displayMSG">
+                {{50-element.rewardName.length}} characters
+              </p>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="points">
+          <th mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+            sortActionDescription="Sort by points">
+            Points
+          </th>
+          <td mat-cell class="tabletd" *matCellDef="let element">
+            <input type="text" class="form-control" [(ngModel)]="element.points" *ngIf="iseditmode  && element.type !=3"
+              style="width: 15%;border: 1px solid #d4dce3;" />
+            <span *ngIf="!iseditmode"> {{ element.points }}</span>
+          </td>
+        </ng-container>
+        <tr mat-header-row class="tableHeaderCellDiv" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <div *ngIf="isLoading" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+  integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<div class="wrapper" style="background: white;border-radius: 15px;">
+  <div class="row">
+    <div class="col-lg-12" style="display: flex">
+      <div class="col-lg-10">
+
+        <div class="d-flex mt-2">
+          <a href="#" class="navbar-brand mt-2">
+            <img src="../../../../assets/img/icons/Auto Campaign.svg" height="28" alt="CoolBrand">
+          </a>
+          <h1 class="headerName">Auto Campaigns</h1>
+        </div>
+      </div>
+      <div class="col-lg-2 mt-3">
+        <button class="btn btn-success" (click)="Edit()">
+          <i class="fa" [ngClass]="{ 'fa-spin fa-spinner': isLoading, 'fa-edit': !isLoading }"
+            style="margin-right: 12px"></i>{{ buttonname }}</button>
+      </div>
+    </div>
+    <div *ngIf="iseditmode == false">
+      <table class="table table-hover mt-2">
+        <thead>
+          <tr>
+            <th class="mt-2 ml-4 center-txt" colspan="4" width="10%;">
+              <span class="ml-3">Enable</span>
+            </th>
+            <th scope="col" width="15%" style="text-align: center;">Campaign Type</th>
+            <th scope="col" width="35%;" style="text-align: center;">Purpose & Time Period</th>
+            <th scope="col" width="30%;" style="text-align: center;">Reward</th>
+            <th scope="col" width="10%;" style="text-align: center;">Expiration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ml-4" *ngFor='let a of autopilotData'>
+            <td class="mt-2 ml-4 center-txt" colspan="4">
+              <label class="switch mt-2 ml-3">
+                <input type="checkbox" [checked]="a.active" disabled="disabled">
+                <span class="slider round"></span>
+                <span class="texter"></span>
+              </label>
+            </td>
+            <td class="center-txt">
+              <label class="mt-2">{{a.campaignType}}</label> &nbsp;
+            </td>
+            <td class="mt-2 center-txt">
+              <label class="mt-2" *ngIf="a.campaignTypeID == 1">
+                This reward is used to attract Revords users who have never visited your business
+              </label>
+              <label class="mt-2 " *ngIf="a.campaignTypeID == 2">
+                Sends {{a.purposeParameter}} hours after earning
+              </label>
+              <label class="mt-2" *ngIf="a.campaignTypeID == 3">
+                Displayed on Customer Touchscreen. No message sent.
+              </label>
+              <label class="mt-2" *ngIf="a.campaignTypeID == 4">
+                After every {{a.purposeParameter}} points
+              </label>
+              <label class="mt-2" *ngIf="a.campaignTypeID == 5 || a.campaignTypeID == 6 || a.campaignTypeID == 7">
+                No visits in past {{a.purposeParameter}} days
+              </label>
+              <label class="mt-2" *ngIf="a.campaignTypeID == 8">
+                {{a.purposeParameter}} days before birthday
+              </label>
+            </td>
+            <td class="center-txt">
+              <label class="mt-2">{{a.reward}}</label>
+            </td>
+            <td class="center-txt">
+              <label class="mt-2">{{a.expiration}}</label> days
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-2" *ngIf="iseditmode == true">
+      <form [formGroup]="autopilotFormGroup">
+        <div formArrayName="autopilotFormArray">
+          <table class="table table-borderless table-hover">
+            <thead>
+              <tr>
+                <th class="mt-2 ml-4 center-txt" scope="col" colspan="4" width="10%">
+                  <span class="ml-3">Enable</span>
+                </th>
+                <th scope="col" width="15%" style="text-align: center;">Campaign Type</th>
+                <th scope="col" width="30%" style="text-align: center;">Purpose & Time Period</th>
+                <th scope="col" width="25%" style="text-align: center;">Reward</th>
+                <th scope="col" width="10%" style="text-align: center;">Expiration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let auto of autopilotFormGroup.get('autopilotFormArray')['controls'];let i = index">
+                <td [formGroupName]="i" class="mt-2 ml-4 center-txt" colspan="4">
+                  <label class="switch mt-2 ml-3">
+                    <input type="checkbox" id="toggle-button-checkbox{{i}}" [checked]="autopilotData[i].active"
+                      formControlName="isActive">
+                    <span class="slider round"></span>
+                    <span class="texter"></span>
+                  </label>
+                </td>
+                <td [formGroupName]="i" class="center-txt">
+                  <label class="mt-2">{{autopilotData[i].campaignType}}</label>
+                </td>
+                <td [formGroupName]="i" class="center-txt">
+                  <label class="mt-2"
+                    *ngIf="autopilotData[i].campaignTypeID == 1 || autopilotData[i].campaignTypeID == 3">{{autopilotData[i].purpose}}</label>
+                  <span *ngIf="autopilotData[i].campaignTypeID == 2" style="display: inline-flex;align-items: center;justify-content: center;">
+                    <label class="mt-2">Sends &nbsp;</label>
+                    <input type="number" min="0" class="form-control" formControlName="purposeParameter"
+                      style="width: 15%; padding: 0px;text-align: center;">
+                    <label class="mt-2">&nbsp; hours after earning</label>
+                  </span>
+                  <span *ngIf="autopilotData[i].campaignTypeID == 4" style="display: inline-flex;align-items: center;justify-content: center;">
+                    <label>After every &nbsp;</label>
+                    <input type="number" min="0" class="form-control" formControlName="purposeParameter"
+                      style="width: 15%; padding: 0px; text-align: center;">
+                    <label class="mt-2">&nbsp; points</label>
+                  </span>
+                  <span
+                    *ngIf="autopilotData[i].campaignTypeID == 5 || autopilotData[i].campaignTypeID == 6 || autopilotData[i].campaignTypeID == 7"
+                    style="display: inline-flex;align-items: center;justify-content: center;">
+                    <label class="mt-2">No visits in past &nbsp;</label>
+                    <input type="number" class="form-control" min="0" formControlName="purposeParameter"
+                      style="width: 15%;padding: 0px; text-align: center;">
+                    <label class="mt-2">&nbsp; days</label>
+                  </span>
+                  <span *ngIf="autopilotData[i].campaignTypeID == 8" style="display: inline-flex;align-items: center;justify-content: center;">
+                    <input type="number" class="form-control" min="0" formControlName="purposeParameter"
+                      style="width: 15%; padding: 0px; text-align: center;">
+                    <label class="mt-2">&nbsp; days before birthday</label>
+                  </span>
+                </td>
+                <td [formGroupName]="i" class="center-txt">
+                  <input type="text" class="form-control mt-2" formControlName="reward" maxlength="50"
+                    (keyup)="ontextchanged(50,i)">
+                  <div>
+                    <p class="displayMSG">
+                      {{subjectCharacterCount[i]}} characters
+                    </p>
+                  </div>
+                </td>
+                <td [formGroupName]="i" class="center-txt">
+                  <span style="display: inline-flex;align-items: center;justify-content: center;">
+                    <input type="number" min="0" class="form-control mt-2"
+                      style="width: 35%;padding: 0px;text-align: center;" formControlName="expiration"> &nbsp; days
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="isLoading" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>

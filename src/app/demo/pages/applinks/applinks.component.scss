@@ -1,0 +1,28 @@
+.resource-card-container {
+    display: flex;
+    min-width: 900px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+  }
+  
+  
+  .resource-card {
+    position: relative;
+    width: 28%;
+    border: 1px solid #e53b51;
+    padding: 10px;
+    margin: 10px;
+    height: 230px;
+    box-sizing: border-box;
+  }
+  
+  @media all and (max-width: 400px) {
+    .resource-card-container {
+      width:100%;
+      min-width:100%;
+      flex-direction: column;
+    }
+    .resource-card {
+      width:100%
+    }
+  }

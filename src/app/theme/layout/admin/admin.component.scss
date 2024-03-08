@@ -1,0 +1,147 @@
+.menu-header {
+  background-color: white;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.menu-items {
+  justify-items: center;
+  font-size: 14px;
+  color: #574e4e;
+  font-weight: 450;
+}
+
+.subMenu-icon {
+  color: #fff;
+  width: 20px;
+}
+
+.subMenu-text {
+  font-size: 15px;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.subMenu-text:hover {
+  font-size: 15px;
+  font-weight: 500;
+  font-style: normal;
+  color: white;
+  background-color: black;
+}
+
+.checktoast {
+  left: 65%;
+}
+
+mat-list-item:hover {
+  color: white;
+  background-color: #13ce66 !important;
+  cursor: pointer;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show {
+  color: rgba(10, 8, 8, 0.9);
+}
+
+mat-list-item {
+  display: inline-block;
+  background: #edeaea;
+  padding: 10px;
+  border-radius: 22px; // font-weight: bold;
+  font-size: 18px;
+}
+
+.modal-body {
+  font-family: "proxima-soft", sans-serif;
+}
+
+.modal-header h5 {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.headerGroup {
+  padding: 5px;
+  color: darkgreen;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+#closeBtn {
+  left: 30px;
+  top: -28px;
+  position: relative;
+}
+
+i.icon-fs-x-button {
+  width: 33px;
+  height: 33px;
+  background: url('../../../../../src/assets/img/x-button.png') no-repeat;
+  vertical-align: text-top;
+  display: inline-block;
+}
+
+.modal {
+  animation: fadein 1s;
+  background: #DBE7EC !important;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 8px;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  padding: 7px 12px;
+  text-decoration: none;
+  font-size: 14px;
+  border-bottom: 3px solid transparent;
+  color: #7DA3BA;
+}
+
+.topnav a:hover {
+  border-bottom: 3px solid #7DA3BA;
+  border-radius: 5px;
+}
+
+.topnav a.active {
+  border-bottom: 3px solid #7DA3BA;
+  border-radius: 5px;
+}
+
+.imgSVGBlack {
+  filter: invert(61%) sepia(35%) saturate(273%) hue-rotate(159deg) brightness(94%) contrast(100%);
+  color: #7DA3BA;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: black
+}
+.dropdown-menu:active {
+  background-color: black
+}
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:active {
+  border-bottom: 3px solid #7DA3BA;
+  border-radius: 5px;
+}

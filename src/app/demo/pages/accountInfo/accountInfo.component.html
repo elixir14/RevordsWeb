@@ -1,0 +1,101 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="wrapper" style="background: white;border-radius: 15px;">
+  <div [formGroup]="userAccount">
+    <div class="col-lg-12 p-0" style="display: flex">
+      <div class="col-lg-10">
+        <div class="d-flex mt-4">
+          <!-- <a href="#" class="navbar-brand mt-2"> -->
+          <img src="../../../../assets/img/icons/userIcon.png" height="28" alt="CoolBrand">
+          <!-- </a> -->
+          <h2>Your Account</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-flex ml-2 p-0">
+      <div class="col-lg-10">
+        <h3 class="mt-4">Contact Details</h3>
+        <div class="d-flex align-items-center mt-4 col-lg-12">
+          <h5 class="col-lg-1 mb-0">First Name</h5>
+          <input class="form-control text-box col-lg-4" type="text" name="fname" autocomplete="off"
+            formControlName="fname" placeholder="First Name ">
+          <div class="col-lg-1"></div>
+          <h5 class="col-lg-1 mb-0">Last Name</h5>
+          <input class="form-control text-box col-lg-4" type="text" name="lname" autocomplete="off"
+            formControlName="lname" placeholder="Last Name ">
+        </div>
+
+        <div class="d-flex align-items-center mt-4 col-lg-12">
+          <h5 class="col-lg-1 mb-0">Email / User Name</h5>
+          <input class="form-control text-box col-lg-4" type="text" name="email" autocomplete="off"
+            formControlName="email" placeholder="Email Address ">
+          <div class="col-lg-1"></div>
+          <h5 class="col-lg-1 mb-0">Phone</h5>
+          <input class="form-control text-box col-lg-4" type="text" value="{{userPhone}}" name="phone"
+            autocomplete="off" disabled>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-flex ml-2 p-0">
+      <div class="col-lg-10">
+        <h3 class="mt-5">Change Password</h3>
+
+        <div class="d-flex align-items-center mt-3 col-lg-12">
+          <h5 class="col-lg-2 mb-0">Current Password</h5>
+          <div class="d-flex align-items-center col-lg-4">
+            <input class="form-control text-box col-lg-12" [type]="showPwd ? 'text' : 'password'" name="pwd" readonly
+              [ngClass]='currentPasswordClass' onclick="this.removeAttribute('readonly');" autocomplete="off"
+              formControlName="pwd">
+            <!-- <i class="fa another-custom-class" [class.fa-eye]="!showPwd" [class.fa-eye-slash]="showPwd"
+              (click)="onclickPwdtoggle('pwd')" style="position: absolute; left: 85%;"></i> -->
+          </div>
+          <div *ngIf="!isCurrentPwdMatch" class="col-lg-5" style="font-size: 12px; color: #960000;">
+            Current Password didn't match
+          </div>
+        </div>
+        <div class="d-flex align-items-center mt-3 col-lg-12">
+          <h5 class="col-lg-2 mb-0">New Password</h5>
+          <div class="d-flex align-items-center col-lg-4">
+            <input class="form-control text-box col-lg-12" [type]="showCNPwd ? 'text' : 'password'" name="npwd" readonly
+              onclick="this.removeAttribute('readonly');" (keyup)='checkpattern(npwd.value)' autocomplete="off"
+              id="npwd" formControlName="npwd" #npwd>
+            <!-- <i class="fa another-custom-class" [class.fa-eye]="!showNPwd" [class.fa-eye-slash]="showNPwd"
+              (click)="onclickPwdtoggle('npwd')" style="position: absolute; left: 85%;"></i> -->
+          </div>
+          <div *ngIf="!isvalid" class="col-lg-5" style="font-size: 12px; color: #8b8b8b;">
+            Password must contain at least one number, one uppercase and a lowercase letter
+            and at least 8 characters<br>Password cannot contain whitespace
+          </div>
+          <div *ngIf="!isNewPwdEmpty" class="col-lg-5" style="font-size: 12px; color: #960000;">
+            Password must contain at least one number, one uppercase and a lowercase letter
+            and at least 8 characters<br>Password cannot contain whitespace
+          </div>
+        </div>
+        <div class="d-flex align-items-center mt-3 col-lg-12">
+          <h5 class="col-lg-2 mb-0">Confirm New Password</h5>
+          <div class="d-flex align-items-center col-lg-4">
+            <input class="form-control text-box col-lg-12" [type]="showCNPwd ? 'text' : 'password'" name="cnpwd"
+              id="cnpwd" [ngClass]='confirmPasswordClass' readonly onclick="this.removeAttribute('readonly');"
+              autocomplete="off" formControlName="cnpwd" #cnpwd (keyup)='checkPasswords(npwd.value, cnpwd.value)'>
+            <!-- <i class="fa another-custom-class" [class.fa-eye]="!showCNPwd" [class.fa-eye-slash]="showCNPwd"
+              (click)="onclickPwdtoggle('cnpwd')" style="position: absolute; left: 85%;"></i> -->
+          </div>
+          <div class="col-lg-5" *ngIf='!passwordsMatching && isConfirmPasswordDirty' style="font-size: 12px; color: #8b8b8b;">
+            Passwords did not match
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-flex ml-2 p-0">
+      <div class="col-lg-12 mt-4 mb-3">
+        <button class="btn btn-dark flexcenter" (click)="save()">
+          <i class="fa" [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-check': !isLoading}"></i>
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

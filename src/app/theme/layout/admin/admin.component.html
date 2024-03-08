@@ -1,0 +1,162 @@
+<nav class="navbar navbar-expand-lg navbar-ligh menu-header">
+  <div class="col-md-2">
+    <a class="navbar-brand" href="/default">
+      <img src="assets/img/SplashLogo.png" style="width: 115%;" alt="" class="logo logo-lg" />
+    </a>
+  </div>
+  <div class="col-md-7">
+    <div class="collapse navbar-collapse navbar-light topnav headerClass" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link menu-items" [routerLinkActive]="['active']" routerLink="/dashboard">
+            <img class="imgSVGBlack" src="../../../../assets/img/Top menu SVG icons/Overview white.svg" width="25" height="25"> Overview
+
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link menu-items" [routerLinkActive]="['active']" routerLink="/member">
+            <img class="imgSVGBlack" src="../../../../assets/img/Top menu SVG icons/Customers White.svg" width="25" height="25"> Customers
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link menu-items" [routerLinkActive]="['active']" routerLink="/activity">
+            <img class="imgSVGBlack" src="../../../../assets/img/Top menu SVG icons/Activity White.svg" width="25" height="25"> Activity
+          </a>
+        </li>
+
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle menu-items" [routerLinkActive]="['active']" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <img class="imgSVGBlack" src="../../../../assets/img/Top menu SVG icons/Campaign White.svg" width="25" height="25"> Campaign
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="margin-top:5px;">
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/promotion">
+              <span class="fa fa-plane subMenu-icon" style="color: #7DA3BA;"></span>
+              Promotion
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/autopilotsettings">
+              <span class="fa fa-bolt subMenu-icon" style="color: #7DA3BA;"></span>
+              Auto Campaigns
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/announcement">
+              <span class="fa fa-volume-up subMenu-icon" style="color: #7DA3BA;"></span>
+              Announcement
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/rewardsettings">
+              <span class="fa fa-star subMenu-icon" style="color: #7DA3BA;"></span>
+              Rewards
+            </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle menu-items" [routerLinkActive]="['active']" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <img src="../../../../assets/img/Top menu SVG icons/Analytics White.svg" class="imgSVGBlack" width="25" height="25"> Analytics
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1" style="margin-top:5px;">
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/campaignreach">
+              <span class="fa fa-signal subMenu-icon" style="color: #7DA3BA;"></span>
+              Campaign Analysis
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/autopilot">
+              <span class="fa fa-bolt subMenu-icon" style="color: #7DA3BA;"></span>
+              Auto Campaigns
+            </a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle menu-items" [routerLinkActive]="['active']" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <img src="../../../../assets/img/Top menu SVG icons/Settings White.svg" class="imgSVGBlack" width="25" height="25"> Settings
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1" style="margin-top:5px;">
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/profile">
+              <span class="fa fa-user subMenu-icon" style="color: #7DA3BA;"></span>
+              Profile
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/badgeDefinition">
+              <span class="fa fa-id-badge subMenu-icon" style="color: #7DA3BA;"></span>
+              Badge Definition
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/tagDefinition">
+              <span class="fa fa-tags subMenu-icon" style="color: #7DA3BA;"></span>
+              Tag Definition
+            </a>
+            <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/sample-page">
+              <span class="fa fa-commenting subMenu-icon" style="color: #7DA3BA;"></span>
+              Text to join
+            </a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <img [src]="logoPath" style="width: 90%;height: 70px;" [alt]="this.selectedBusinessGroup.businessGroupName">
+  </div>
+  <div class="col-md-1" style="margin-left: -2%;">
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link  dropdown-toggle menu-items" [routerLinkActive]="['active']" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <span class="fa fa-id-card subMenu-icon" style="color: #7DA3BA;"></span>
+          Account
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="margin-top:5px;left: -150%;">
+          <a class="dropdown-item subMenu-text" style="cursor: pointer;" [routerLinkActive]="['active']" data-toggle="modal" data-target="#exampleModal">
+            <span class="fa fa-users subMenu-icon" style="color: #7DA3BA;"></span>
+            Switch Group
+          </a>
+          <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/accountinfo">
+            <span class="fa fa-book subMenu-icon" style="color: #7DA3BA;"></span>
+            Account Summary
+          </a>
+          <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/billing">
+            <span class="fa fa-book subMenu-icon" style="color: #7DA3BA;"></span>
+            Billing Summary
+          </a>
+          <a class="dropdown-item subMenu-text" style="cursor: pointer;" [routerLinkActive]="['active']" (click)="logout();">
+            <span class="fa fa-sign-out subMenu-icon" style="color: #7DA3BA;"></span>
+            Sign Out
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="pc-container">
+  <div class="coded-wrapper">
+    <div class="coded-content">
+      <div class="coded-inner-content">
+        <app-breadcrumb></app-breadcrumb>
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sign in as:</h5>
+                    <i data-dismiss="modal" id="closeBtn" #closebutton class="icon-fs-x-button link absolute" ng-click="close()"></i>
+                  </div>
+                  <div class="modal-body">
+                    <mat-list>
+                      <mat-list-item *ngFor='let b of bussinessData' [value]="b.id" (click)="onBussinessSelected(b)">
+                        {{b.businessGroupName}}
+                      </mat-list-item>
+                    </mat-list>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <app-toasts aria-live="polite" aria-atomic="true" class="checktoast"></app-toasts>
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

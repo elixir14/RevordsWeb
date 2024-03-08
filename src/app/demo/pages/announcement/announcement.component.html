@@ -1,0 +1,1368 @@
+<div class="bodyclass">
+    <div>
+        <div class="col-md-12 p-0 flexdivHeader">
+            <div class="col-md-7">
+                <h1 *ngIf="!iseditmode" class="headerName">
+                    <i class="fa fa-bullhorn" aria-hidden="true" style="font-size: 25px;"></i>
+                    Announcement
+                </h1>
+                <h1 *ngIf="iseditmode" class="headerName">
+                    <img style="margin-top: -5px;height: 25px;" src="../../../../assets/promotion/Create Promotion.svg">
+                    Add Announcement
+                </h1>
+                <div *ngIf="!iseditmode" style="color: #404040;font-style: normal;font-weight: 400;font-size: 15px;
+                    line-height: 24.3px;margin-top: -15px;">
+                    <div style="margin-left: 34px; position: relative;display: grid;">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <form *ngIf="!iseditmode" [formGroup]="dashBoardFormControl">
+                    <ng-multiselect-dropdown placeholder="Choose business locations" (onSelect)="common()"
+                        (onSelectAll)="onItemSelectAll($event)" formControlName="businessID"
+                        [settings]="dropdownSettings" (onDeSelect)="common()" (onDeSelectAll)="onDeSelectAll($event)"
+                        [data]="business">
+                    </ng-multiselect-dropdown>
+                </form>
+            </div>
+            <div class="col-md-2 p-0 flexRight">
+                <button class="btn btn-success text-center" (click)="AddNew()" *ngIf="!iseditmode">
+                    <img alt="phonevector" class="filter-green"
+                        [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-edit' : !isLoading && !iseditmode, 'fa-times' : !isLoading && iseditmode}"
+                        src="../../../../assets/promotion/Create Promotion.svg">
+                    Add Announcement</button>
+                <button class="btn btn-success text-center brownColor" (click)="Cancle()" *ngIf="iseditmode">
+                    Cancel <img alt="phonevector" class="filter-green"
+                        [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-edit' : !isLoading && !iseditmode, 'fa-times' : !isLoading && iseditmode}"
+                        src="../../../../assets/img/icons/Cancel.svg"></button>
+            </div>
+        </div>
+        <div *ngIf="!iseditmode">
+            <div class="row">
+                <div class="col-md-12" style="margin-top:5px;" *ngFor='let p of displayData'>
+                    <div class="card view">
+                        <div class="row">
+                            <div class="col-md-12" style="display: inline-flex;">
+                                <div class="col-md-4">
+                                    <div class="row" class="info">{{p.subject}}</div>
+                                    <div class="row" class="summary">
+                                        <span>Sent : </span>
+                                        {{p.lastsentDate | utcToLocalTime : 'short'}}
+                                        <span id='summaryLabel' class="ml-2" (click)="EditReplicate(p.id)">Replicate
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 d-flex">
+                                    <div class="col-md-4">
+                                        <div class="row d-flex p-3">
+                                            <div class="col-md-6 col-auto p-0">
+                                                <div class="p-0 details">
+                                                    {{p.deliveredCount}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 p-0">
+                                                <div class="mt-2 mr-2">
+                                                    <span class="overview-amount ng-binding inner ">
+                                                        Delivered
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row d-flex p-3">
+                                            <div class="col-md-6 col-auto p-0">
+                                                <div class="p-0 details">
+                                                    {{p.openCount}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 p-0">
+                                                <div class="mt-2 mr-2">
+                                                    <span class="overview-amount ng-binding inner ">
+                                                        Unique opens
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="row d-flex p-3">
+                                            <div class="col-md-6 col-auto p-0">
+                                                <div class="p-0 details">
+                                                    {{p.openPercentages}}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 p-0">
+                                                <div class="mt-2 mr-2">
+                                                    <span class="overview-amount ng-binding inner ">
+                                                        Open Rate%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 divmore">
+                <button class="more" (click)="showMore() ">Show More</button>
+            </div>
+            <div *ngIf="isLoadingAnnData" class="d-flex justify-content-center ">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="iseditmode">
+            <div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <mat-stepper #stepper>
+                            <mat-step [stepControl]="jobForm" errorMessage="Announcement details are required.">
+                                <div class="row">
+                                    <div class="col-md-12" style="display: flex;">
+                                        <div class="col-md-8">
+                                            <form [formGroup]="jobForm">
+                                                <ng-template matStepLabel>Step 1</ng-template>
+                                                <div class="promotion">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <input type="hidden" formControlName="id"
+                                                                *ngIf="iseditmode" />
+                                                            <input type="text" formControlName="subject"
+                                                                placeholder="Enter Subject here"
+                                                                (keyup)="ontextchanged(50,'subject')"
+                                                                class="form-control"
+                                                                [ngClass]="{ 'is-invalid': submitted && f['subject'].errors }" />
+                                                            <div>
+                                                                <p class="displayMSG">
+                                                                    {{subjectCharacterCount}} characters left
+                                                                </p>
+                                                            </div>
+                                                            <div *ngIf="submitted && f['subject'].errors"
+                                                                class="invalid-feedback">
+                                                                <div ngIf="f['subject'].errors['required']">
+                                                                    Subject is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row promotionwhite mt-2">
+                                                    <div class="col-md-12">
+                                                        <h4 class="head">What would you like to tell your customers?
+                                                        </h4>
+                                                        <angular-editor #editor
+                                                            style="background-color: #ffffff; border-radius: 15px;"
+                                                            formControlName="description" [config]="config"
+                                                            [ngClass]="{ 'is-invalid': submitted && f['description'].errors }">
+                                                        </angular-editor>
+                                                        <div *ngIf="submitted && f['description'].errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f['description'].errors['required']">
+                                                                Description is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row promotion mt-2">
+                                                    <div class="form-group mb-2">
+                                                        <div class="mb-2">
+                                                            <b class="head">
+                                                                Pick image for good announcment (.png or jpg)
+                                                            </b>
+                                                        </div>
+                                                        <div class="col-lg-12" style="display: flex;padding: 0px;">
+                                                            <div class="col-lg-8 p-0">
+                                                                <label for="files" class="dropbox">
+                                                                    Upload Image (Upto 1 MB)
+                                                                </label>
+                                                                <input type="hidden" formControlName="ImageInput" />
+                                                                <input #fileUpload id="files" style="visibility:hidden;"
+                                                                    class="form-control" text="Upload Image (Upto 1 MB)"
+                                                                    type="file" (change)="onChange($event)"
+                                                                    [ngClass]="{ 'is-invalid': submitted && f['ImageInput'].errors }" />
+                                                                <div *ngIf="submitted && f['ImageInput'].errors"
+                                                                    class="invalid-feedback">
+                                                                    <div *ngIf="f['ImageInput'].errors['required']">
+                                                                        Image is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 form-group" style="display: flex;">
+                                                                <div style="margin-top: 9px;margin-right: 10px;">
+                                                                    <span class="bold" style="font-weight: bold;"
+                                                                        *ngIf="isfileUploaded == false">
+                                                                        {{fileName}}
+                                                                    </span>
+                                                                </div>
+                                                                <div *ngIf="loadingLoading">
+                                                                    <div class="spinner-border" role="status">
+                                                                        <span class="sr-only">Loading...</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <button class="btn btn-success buttonColor"
+                                                                        *ngIf="!uploadProgress">
+                                                                        Upload
+                                                                        <mat-icon class="filter-green"
+                                                                            (click)="onUpload()"
+                                                                            style="margin-bottom: -6px;margin-left: 6px;">
+                                                                            cloud_upload
+                                                                        </mat-icon>
+                                                                    </button>
+                                                                    <mat-icon class="cancel-upload"
+                                                                        (click)="cancelUpload()" *ngIf="uploadProgress"
+                                                                        style="color: red;">
+                                                                        delete_forever
+                                                                    </mat-icon>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="progress">
+                                                            <div class="progress-bar bluecolor" role="progressbar"
+                                                                [style.width]="uploadProgress"
+                                                                aria-valuenow="uploadProgress" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                                {{uploadProgress}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row promotionwhite mt-2">
+                                                    <div class="mb-2">
+                                                        <b class="head">Valid Uptil (For store side only)</b>
+                                                    </div>
+                                                    <div class="col-lg-12" style="display: flex;padding: 0px;">
+                                                        <div class="col-md-6">
+                                                            <input type="date" class="form-control"
+                                                                formControlName="validDate">
+                                                        </div>
+                                                        <div class="col-md-6">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row promotionwhite mt-2">
+                                                    <div class="mb-2">
+                                                        <b class="head">Pick your timing for send announcement</b>
+                                                    </div>
+                                                    <div class="col-md-6 p-0">
+                                                        <mat-radio-group layout="row"
+                                                            formControlName='isSendImmediately'
+                                                            aria-label="Select an option">
+                                                            <mat-radio-button value="true"
+                                                                (change)="handleChange(true)">
+                                                                Send Now
+                                                            </mat-radio-button>
+                                                            <mat-radio-button value="false"
+                                                                (change)="handleChange(false)">
+                                                                Schedule it for later
+                                                            </mat-radio-button>
+                                                        </mat-radio-group>
+                                                    </div>
+                                                    <div *ngIf='f["isSendImmediately"].value == "true"'
+                                                        class="col-md-8">
+                                                        <span>SMS and emails will be sent between 9 AM and 10 PM.</span>
+                                                    </div>
+                                                    <div *ngIf='f["isSendImmediately"].value == "false"'
+                                                        class="col-md-8">
+                                                        <span>Will be sent 2 days before the offer start date.</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row promotionwhite mt-2" id="senditlater"
+                                                    *ngIf='senditlater==true'>
+                                                    <div class="col-md-4">
+                                                        <input type="date" class="form-control" formControlName="date">
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        at
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <select class="form-select" formControlName="time"
+                                                            (change)='scheduleTimeChanged()'>
+                                                            <option selected value="0">Select</option>
+                                                            <option *ngFor='let t of time' [value]="t.value">{{t.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        CDT
+                                                    </div>
+                                                    <div class="col-ms-2"></div>
+                                                </div>
+                                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                                    aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content" style="width: 725px;">
+                                                            <div class="modal-header">
+                                                                <div type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true" #closebutton>&times;</div>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="es-wrapper-color">
+                                                                    <table class="es-wrapper" width="100%"
+                                                                        cellspacing="0" cellpadding="0">
+                                                                        <tr>
+                                                                            <td valign="top">
+                                                                                <table cellpadding="0" cellspacing="0"
+                                                                                    class="es-header" align="center">
+                                                                                    <tr>
+                                                                                        <td align="center">
+                                                                                            <table
+                                                                                                class="es-header-body"
+                                                                                                align="center"
+                                                                                                cellpadding="0"
+                                                                                                cellspacing="0"
+                                                                                                width="600"
+                                                                                                style="background-color: transparent; border-top: 1px solid #4c8aa7;  border-left: 1px solid #4c8aa7; border-right: 1px solid #4c8aa7;">
+                                                                                                <tr>
+                                                                                                    <td class="es-p20"
+                                                                                                        align="left"
+                                                                                                        style="border-radius: 10px 10px 0px 0px;">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%">
+                                                                                                            <tr>
+                                                                                                                <td width="560"
+                                                                                                                    class="es-m-p0r"
+                                                                                                                    valign="top"
+                                                                                                                    align="center">
+                                                                                                                    <table
+                                                                                                                        cellpadding="0"
+                                                                                                                        cellspacing="0"
+                                                                                                                        width="100%"
+                                                                                                                        style="border-radius: 1px;border-collapse: separate"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                style="font-size: 0px">
+                                                                                                                                <a target="_blank"
+                                                                                                                                    href="https://viewstripo.email">
+                                                                                                                                    <img align="center"
+                                                                                                                                        border="0"
+                                                                                                                                        src="../../../../assets/images/fortune.png"
+                                                                                                                                        alt="Image"
+                                                                                                                                        title="Image"
+                                                                                                                                        style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 32%;max-width: 179.2px;"
+                                                                                                                                        width="179.2" />
+                                                                                                                                </a>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                <table class="es-content"
+                                                                                    cellspacing="0" cellpadding="0"
+                                                                                    align="center">
+                                                                                    <tr>
+                                                                                        <td align="center">
+                                                                                            <table
+                                                                                                class="es-content-body"
+                                                                                                style="border-left:1px solid #4c8aa7;border-right:1px solid #4c8aa7;background-color: #ffffff"
+                                                                                                width="600"
+                                                                                                cellspacing="0"
+                                                                                                cellpadding="0"
+                                                                                                bgcolor="#ffffff"
+                                                                                                align="center">
+                                                                                                <tr>
+                                                                                                    <td class="es-p30t es-p20r es-p20l"
+                                                                                                        align="left"
+                                                                                                        bgcolor="#ffffff"
+                                                                                                        style="background-color: #ffffff">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%">
+                                                                                                            <tr>
+                                                                                                                <td class="es-m-p0r"
+                                                                                                                    width="558"
+                                                                                                                    valign="top"
+                                                                                                                    align="center">
+                                                                                                                    <table
+                                                                                                                        width="100%"
+                                                                                                                        cellspacing="0"
+                                                                                                                        cellpadding="0"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-m-txt-c es-p5t es-p5b">
+                                                                                                                                <p
+                                                                                                                                    style="font-size: 20px;color: #666666;line-height: 40px">
+                                                                                                                                    {{this.jobForm.controls['subject'].value}}
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-p5t es-p5b es-m-txt-c"
+                                                                                                                                style="font-size:0">
+                                                                                                                                <div
+                                                                                                                                    style="width: 504px; opacity: 1;border: 1px solid rgba(246,155,20,1);">
+                                                                                                                                </div>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+
+                                                                                                                        <tr
+                                                                                                                            *ngIf='filePath != null'>
+                                                                                                                            <td width="558"
+                                                                                                                                align="left">
+                                                                                                                                <table
+                                                                                                                                    cellpadding="0"
+                                                                                                                                    cellspacing="0"
+                                                                                                                                    width="100%"
+                                                                                                                                    role="presentation"
+                                                                                                                                    style=" margin-top: 10px; margin-bottom: 10px;">
+                                                                                                                                    <tr>
+                                                                                                                                        <td align="center"
+                                                                                                                                            class="es-p15r"
+                                                                                                                                            style="font-size: 0px">
+                                                                                                                                            <a target="_blank"
+                                                                                                                                                href="https://viewstripo.email">
+                                                                                                                                                <img align="center"
+                                                                                                                                                    border="0"
+                                                                                                                                                    src="{{filePath}}"
+                                                                                                                                                    alt="Embedded Image"
+                                                                                                                                                    title="Image"
+                                                                                                                                                    style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 75%;" />
+                                                                                                                                            </a>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-p10t es-p20b es-p40r es-p40l">
+                                                                                                                                <p style="padding: 5px;"
+                                                                                                                                    [innerHTML]="this.jobForm.controls['description'].value">
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-p5t es-p5b es-m-txt-c"
+                                                                                                                                style="font-size:0">
+                                                                                                                                <div
+                                                                                                                                    style="width: 504px; opacity: 1;border: 1px solid rgba(246,155,20,1);">
+                                                                                                                                </div>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-m-txt-c es-p5t es-p5b">
+                                                                                                                                <p
+                                                                                                                                    style="font-size: 20px;color: #666666;line-height: 40px">
+                                                                                                                                    <strong>Valid
+                                                                                                                                        UpTo
+                                                                                                                                        :
+                                                                                                                                    </strong>
+                                                                                                                                    {{this.jobForm.controls['validDate'].value
+                                                                                                                                    |
+                                                                                                                                    date:
+                                                                                                                                    'dd
+                                                                                                                                    MMM,
+                                                                                                                                    YYYY'}}
+
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td class="es-p10t es-p40b es-p40r es-p40l"
+                                                                                                        align="center">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            align="center"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%"
+                                                                                                            style="margin-bottom: 15px;">
+                                                                                                            <tr>
+                                                                                                            <tr>
+                                                                                                                <td width="518"
+                                                                                                                    align="center"
+                                                                                                                    valign="top">
+                                                                                                                    <table
+                                                                                                                        cellpadding="0"
+                                                                                                                        align="center"
+                                                                                                                        cellspacing="0"
+                                                                                                                        width="100%"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <img align="center"
+                                                                                                                                border="0"
+                                                                                                                                src="http://ho.hitechprojects.co.in:8100/assets/img/companylogo.png"
+                                                                                                                                alt="Embedded Image"
+                                                                                                                                title="Image"
+                                                                                                                                style="margin-left:33%;outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; display: inline-block !important; border: none; height: auto; float: none; width: 30%; " />
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                <table cellpadding="0" cellspacing="0"
+                                                                                    class="es-content" align="center">
+                                                                                    <tr>
+                                                                                        <td class="es-info-area"
+                                                                                            align="center">
+                                                                                            <table
+                                                                                                class="es-content-body"
+                                                                                                align="center"
+                                                                                                cellpadding="0"
+                                                                                                cellspacing="0"
+                                                                                                width="600"
+                                                                                                style="background-color: #DAE8EE; border-bottom: 1px solid #4c8aa7; border-left: 1px solid #4c8aa7; border-right: 1px solid #4c8aa7;">
+                                                                                                <tr>
+                                                                                                    <td class="es-p20"
+                                                                                                        align="left">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%">
+                                                                                                            <tr>
+                                                                                                                <td width="560"
+                                                                                                                    align="center"
+                                                                                                                    valign="top">
+                                                                                                                    <table
+                                                                                                                        cellpadding="0"
+                                                                                                                        cellspacing="0"
+                                                                                                                        width="100%"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-infoblock"
+                                                                                                                                style="padding:0px 20px 0px 20px">
+                                                                                                                                <p
+                                                                                                                                    style=" color: #999999; line-height: 120%; font-size: 12px;">
+                                                                                                                                    We
+                                                                                                                                    have
+                                                                                                                                    sent
+                                                                                                                                    you
+                                                                                                                                    this
+                                                                                                                                    email
+                                                                                                                                    because
+                                                                                                                                    you
+                                                                                                                                    provided
+                                                                                                                                    us
+                                                                                                                                    with
+                                                                                                                                    your
+                                                                                                                                    email
+                                                                                                                                    address
+                                                                                                                                    as
+                                                                                                                                    part
+                                                                                                                                    of
+                                                                                                                                    the
+                                                                                                                                    signup
+                                                                                                                                    process
+                                                                                                                                    on
+                                                                                                                                    <a target="_blank"
+                                                                                                                                        style="color: #00a8e2;"
+                                                                                                                                        href="https://viewstripo.email">revords.com</a>
+                                                                                                                                    <br>
+                                                                                                                                    <br>Revords&nbsp;LLC
+                                                                                                                                    <br>
+                                                                                                                                    657
+                                                                                                                                    Kathy
+                                                                                                                                    Ln
+                                                                                                                                    Schaumburg
+                                                                                                                                    IL
+                                                                                                                                    60173
+                                                                                                                                </p>
+                                                                                                                                <p
+                                                                                                                                    style="color: #999999; line-height: 120%; font-size: 12px; ">
+                                                                                                                                    Don’t
+                                                                                                                                    want
+                                                                                                                                    to
+                                                                                                                                    receive
+                                                                                                                                    emails
+                                                                                                                                    from
+                                                                                                                                    0?
+                                                                                                                                    |
+                                                                                                                                    <a href=""
+                                                                                                                                        target="_blank"
+                                                                                                                                        style="text-decoration: none; color: #00a8e2; line-height: 120%; font-size: 12px;">Unsubscribe</a>
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button matStepperNext class="btn btn-dark flexcenter">
+                                                        Next <img alt="phonevector" class="filter-green ml3"
+                                                            src="../../../../assets/img/icons/Next.svg">
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-4"
+                                            style="border:1px solid #DADCDC;border-radius: 15px; height: 826px;">
+                                            <div class="row">
+                                                <div class="left-side">
+                                                    <div class="center-div">
+                                                        <mat-tab-group mat-stretch-tabs>
+                                                            <img src="assets/promotion/SMS.svg" class="md-accent">
+                                                            <mat-tab *ngIf='packageDetails.isEmail == true'>
+                                                                <ng-template mat-tab-label>
+                                                                    <img alt="phonevector" class="phonevector"
+                                                                        src="../../../../assets/promotion/Email.svg">
+                                                                    <span class="ml-1">Email</span>
+                                                                </ng-template>
+                                                                <div class="campaign-template-preview">
+                                                                    <div class="template-email-root">
+                                                                        <img alt="phonevector" class="phonevector"
+                                                                            src="../../../../assets/images/phonevector.svg">
+                                                                        <div class="wrapper">
+                                                                            <div
+                                                                                style="display: flex;justify-content: center;align-items: center;height: 445px;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-success"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#myModal">
+                                                                                    Preview
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-tab>
+                                                            <mat-tab>
+                                                                <ng-template mat-tab-label>
+                                                                    <img alt="phonevector" class="phonevector"
+                                                                        src="../../../../assets/promotion/POS.svg">
+                                                                    <span class="ml-1">POS</span>
+                                                                </ng-template>
+                                                                <div class="cashier preview"
+                                                                    style="text-align: center;">
+                                                                    <img src="../../../../assets/images/preview-pos.png"
+                                                                        style="width: 360px;" />
+                                                                    <div class="message-content">
+                                                                        <div>
+                                                                            <div>
+                                                                                {{this.jobForm.controls['subject'].value}}
+                                                                            </div>
+                                                                            <div>
+                                                                                Exp.
+                                                                                {{this.jobForm.controls['validDate'].value|
+                                                                                date: 'dd MMM, YYYY'}}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-tab>
+                                                            <mat-tab *ngIf='packageDetails.isNotification == true'>
+                                                                <ng-template mat-tab-label>
+                                                                    <img alt="phonevector" class="phonevector"
+                                                                        src="../../../../assets/promotion/Mobile-App.svg">
+                                                                    <span class="ml-1">Mobile-App</span>
+                                                                </ng-template>
+                                                                <div class="campaign-template-preview">
+                                                                    <div class="template-email-root">
+                                                                        <img alt="phonevector" class="phonevector"
+                                                                            src="../../../../assets/images/phonevector.svg">
+                                                                        <div class="wrapper">
+                                                                            <div
+                                                                                style="background: #486673;color: white;padding: 10px;border-radius: 10px;">
+                                                                                <p
+                                                                                    style="padding-bottom: 0px !important;margin-bottom: 0px !important;">
+                                                                                    {{businessGroupName}} sent you a
+                                                                                    announcement valid till
+                                                                                    {{this.jobForm.controls['validDate'].value|
+                                                                                    date: 'dd MMM, YYYY'}}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </mat-tab>
+                                                        </mat-tab-group>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-step>
+                            <mat-step [stepControl]="secondFormGroup"
+                                errorMessage="Business and Customers are required.">
+                                <ng-template matStepLabel>Step 2</ng-template>
+                                <div class="row d-flex">
+                                    <div class="row d-flex">
+                                        <div class="col-md-4 tagsDiv">
+                                            <div class="ml-2">
+                                                <img src="../../../../assets/promotion/Member of.svg">
+                                                <span class="ml-2">
+                                                    <b>Members Of</b>
+                                                </span>
+                                            </div>
+                                            <div class="mt-2" class="invalid-feedback"
+                                                *ngIf="submitted && secondFormGroup.controls['membersOf'].errors">
+                                                <div *ngIf="secondFormGroup.controls['membersOf'].errors['required']">
+                                                    Members of is required
+                                                </div>
+                                            </div>
+                                            <mat-checkbox class="example-margin mt-2" [checked]="isAllChecked"
+                                                (click)="selectAllBusiness()" color="#7DA3BA">Select All</mat-checkbox>
+                                            <div *ngFor="let b of bussinessDataForStep3">
+                                                <mat-checkbox color="#7DA3BA" *ngIf="b.id != -1" class="example-margin"
+                                                    [value]="b.id" [checked]="b.checked"
+                                                    (click)="onBusinessSelected(b.id)">
+                                                    {{b.businessName}} <span class="itemSpan">
+                                                        (Up to {{b.memberCount}} Customers)
+                                                    </span>
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 tagsDiv">
+                                            <div class="ml-2">
+                                                <img src="../../../../assets/promotion/Total Badges.svg">
+                                                <span class="ml-2">
+                                                    <b>Total badges</b>
+                                                </span>
+                                            </div>
+                                            <div class="mt-2" class="invalid-feedback"
+                                                *ngIf="submitted && secondFormGroup.controls['sendToCustomers'].errors">
+                                                <div
+                                                    *ngIf="secondFormGroup.controls['sendToCustomers'].errors['required']">
+                                                    Customers are required (Badges or Tags)
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <mat-checkbox class="example-margin mt-2" [checked]="isAllBadgeChecked"
+                                                    (click)="selectAllBadges()" color="#7DA3BA">
+                                                    Select All
+                                                </mat-checkbox>
+                                                <div *ngFor="let b of badgeDataForStep3">
+                                                    <mat-checkbox color="#7DA3BA" class="example-margin" [value]="b.id"
+                                                        [checked]="b.checked" (click)="onBadgeSelected(b.id)">
+                                                        {{b.badgeName}}<span class="itemSpan">(Up to {{b.counts}}
+                                                            Customers)</span>
+                                                    </mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 tagsDiv">
+                                            <div class="ml-2">
+                                                <img src="../../../../assets/promotion/Total Tags.svg">
+                                                <span class="ml-2">
+                                                    <b>Total Tags</b>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <mat-checkbox class="example-margin mt-2" [checked]="isAllTagChecked"
+                                                    (click)="selectAllTags()" color="#7DA3BA">Select All</mat-checkbox>
+                                                <div *ngFor="let b of tagDataForStep3">
+                                                    <mat-checkbox color="#7DA3BA" class="example-margin" [value]="b.id"
+                                                        [checked]="b.checked" (click)="onTagSelected(b.id)">
+                                                        {{b.tagName}} <span class="itemSpan">(Up to {{b.counts}}
+                                                            Customers)</span>
+                                                    </mat-checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top:5px;">
+                                </div>
+
+                                <div class="row d-flex">
+                                    <div class="col-md-5 tagsDiv">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                Total <b> {{totalDelivered}}</b> customers will get app
+                                                notification , email or text sms
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:5px;">
+                                            <div class="col-md-12">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Mobile App</th>
+                                                            <th scope="col">Email</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{notificationCount}}</td>
+                                                            <td>{{emailCount}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-top:5px;">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button matStepperPrevious class="btn btn-dark flexcenter"><img
+                                                alt="phonevector" class="filter-green mr3"
+                                                src="../../../../assets/img/icons/Back.svg">Back</button>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button matStepperNext class="btn btn-dark flexcenter">Next
+                                            <img alt="phonevector" class="filter-green ml3"
+                                                src="../../../../assets/img/icons/Next.svg">
+                                        </button>
+                                    </div>
+                                    <div class="col-md-10"></div>
+                                </div>
+                            </mat-step>
+
+
+                            <mat-step>
+                                <ng-template matStepLabel>Step 3</ng-template>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <mat-accordion class="example-headers-align" multi>
+                                                    <mat-expansion-panel [expanded]="true">
+                                                        <mat-expansion-panel-header>
+                                                            <mat-panel-title class="head">
+                                                                Announcement Details
+                                                            </mat-panel-title>
+                                                        </mat-expansion-panel-header>
+                                                        <table class="table table-borderless margin7">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th style="width:30%;">
+                                                                        <label>Subject : </label>
+                                                                    </th>
+                                                                    <td style="width: 70%;" colspan="3">
+                                                                        {{this.jobForm.controls['subject'].value}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th style="width:30%;">
+                                                                        <label>Description : </label>
+                                                                    </th>
+                                                                    <td style="width: 70%;" colspan="3"
+                                                                        [innerHTML]="this.jobForm.controls['description'].value">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th style="width:30%;">
+                                                                        <label>Valid Uptill : </label>
+                                                                    </th>
+                                                                    <td style="width: 70%;" colspan="3">
+                                                                        {{this.jobForm.controls['validDate'].value |
+                                                                        date: 'dd MMM, YYYY'}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th style="width:30%;">
+                                                                        <label>Business Name : </label>
+                                                                    </th>
+                                                                    <td style="width: 70%;" colspan="3">
+                                                                        {{selectedBusinessName}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th style="width:30%;">
+                                                                        <label>Send to : </label>
+                                                                    </th>
+                                                                    <td style="width: 70%;" colspan="3">
+                                                                        {{sendToCustomers}}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </mat-expansion-panel>
+                                                </mat-accordion>
+                                                <div class="modal fade" id="myModalSummary" tabindex="-1" role="dialog"
+                                                    aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content" style="width: 725px;">
+                                                            <div class="modal-header">
+                                                                <div type="button" class="close" data-dismiss="modal"
+                                                                    aria-hidden="true" #closebutton>&times;</div>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="es-wrapper-color">
+                                                                    <table class="es-wrapper" width="100%"
+                                                                        cellspacing="0" cellpadding="0">
+                                                                        <tr>
+                                                                            <td valign="top">
+                                                                                <table cellpadding="0" cellspacing="0"
+                                                                                    class="es-header" align="center">
+                                                                                    <tr>
+                                                                                        <td align="center">
+                                                                                            <table
+                                                                                                class="es-header-body"
+                                                                                                align="center"
+                                                                                                cellpadding="0"
+                                                                                                cellspacing="0"
+                                                                                                width="600"
+                                                                                                style="background-color: transparent; border-top: 1px solid #4c8aa7;  border-left: 1px solid #4c8aa7; border-right: 1px solid #4c8aa7;">
+                                                                                                <tr>
+                                                                                                    <td class="es-p20"
+                                                                                                        align="left"
+                                                                                                        style="border-radius: 10px 10px 0px 0px;">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%">
+                                                                                                            <tr>
+                                                                                                                <td width="560"
+                                                                                                                    class="es-m-p0r"
+                                                                                                                    valign="top"
+                                                                                                                    align="center">
+                                                                                                                    <table
+                                                                                                                        cellpadding="0"
+                                                                                                                        cellspacing="0"
+                                                                                                                        width="100%"
+                                                                                                                        style="border-radius: 1px;border-collapse: separate"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                style="font-size: 0px">
+                                                                                                                                <a target="_blank"
+                                                                                                                                    href="https://viewstripo.email">
+                                                                                                                                    <img align="center"
+                                                                                                                                        border="0"
+                                                                                                                                        src="../../../../assets/images/fortune.png"
+                                                                                                                                        alt="Image"
+                                                                                                                                        title="Image"
+                                                                                                                                        style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 32%;max-width: 179.2px;"
+                                                                                                                                        width="179.2" />
+                                                                                                                                </a>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                <table class="es-content"
+                                                                                    cellspacing="0" cellpadding="0"
+                                                                                    align="center">
+                                                                                    <tr>
+                                                                                        <td align="center">
+                                                                                            <table
+                                                                                                class="es-content-body"
+                                                                                                style="border-left:1px solid #4c8aa7;border-right:1px solid #4c8aa7;background-color: #ffffff"
+                                                                                                width="600"
+                                                                                                cellspacing="0"
+                                                                                                cellpadding="0"
+                                                                                                bgcolor="#ffffff"
+                                                                                                align="center">
+                                                                                                <tr>
+                                                                                                    <td class="es-p30t es-p20r es-p20l"
+                                                                                                        align="left"
+                                                                                                        bgcolor="#ffffff"
+                                                                                                        style="background-color: #ffffff">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%">
+                                                                                                            <tr>
+                                                                                                                <td class="es-m-p0r"
+                                                                                                                    width="558"
+                                                                                                                    valign="top"
+                                                                                                                    align="center">
+                                                                                                                    <table
+                                                                                                                        width="100%"
+                                                                                                                        cellspacing="0"
+                                                                                                                        cellpadding="0"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-m-txt-c es-p5t es-p5b">
+                                                                                                                                <p
+                                                                                                                                    style="font-size: 20px;color: #666666;line-height: 40px">
+                                                                                                                                    {{this.jobForm.controls['subject'].value}}
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-p5t es-p5b es-m-txt-c"
+                                                                                                                                style="font-size:0">
+                                                                                                                                <div
+                                                                                                                                    style="width: 504px; opacity: 1;border: 1px solid rgba(246,155,20,1);">
+                                                                                                                                </div>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+
+                                                                                                                        <tr
+                                                                                                                            *ngIf='filePath != null'>
+                                                                                                                            <td width="558"
+                                                                                                                                align="left">
+                                                                                                                                <table
+                                                                                                                                    cellpadding="0"
+                                                                                                                                    cellspacing="0"
+                                                                                                                                    width="100%"
+                                                                                                                                    role="presentation"
+                                                                                                                                    style=" margin-top: 10px; margin-bottom: 10px;">
+                                                                                                                                    <tr>
+                                                                                                                                        <td align="center"
+                                                                                                                                            class="es-p15r"
+                                                                                                                                            style="font-size: 0px">
+                                                                                                                                            <a target="_blank"
+                                                                                                                                                href="https://viewstripo.email">
+                                                                                                                                                <img align="center"
+                                                                                                                                                    border="0"
+                                                                                                                                                    src="{{filePath}}"
+                                                                                                                                                    alt="Embedded Image"
+                                                                                                                                                    title="Image"
+                                                                                                                                                    style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 75%;" />
+                                                                                                                                            </a>
+                                                                                                                                        </td>
+                                                                                                                                    </tr>
+                                                                                                                                </table>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-p10t es-p20b es-p40r es-p40l">
+                                                                                                                                <p style="padding: 5px;"
+                                                                                                                                    [innerHTML]="this.jobForm.controls['description'].value">
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-p5t es-p5b es-m-txt-c"
+                                                                                                                                style="font-size:0">
+                                                                                                                                <div
+                                                                                                                                    style="width: 504px; opacity: 1;border: 1px solid rgba(246,155,20,1);">
+                                                                                                                                </div>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-m-txt-c es-p5t es-p5b">
+                                                                                                                                <p
+                                                                                                                                    style="font-size: 20px;color: #666666;line-height: 40px">
+                                                                                                                                    <strong>Valid
+                                                                                                                                        UpTo
+                                                                                                                                        :
+                                                                                                                                    </strong>
+                                                                                                                                    {{this.jobForm.controls['validDate'].value
+                                                                                                                                    |
+                                                                                                                                    date:
+                                                                                                                                    'dd
+                                                                                                                                    MMM,
+                                                                                                                                    YYYY'}}
+
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr>
+                                                                                                    <td class="es-p10t es-p40b es-p40r es-p40l"
+                                                                                                        align="center">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            align="center"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%"
+                                                                                                            style="margin-bottom: 15px;">
+                                                                                                            <tr>
+                                                                                                            <tr>
+                                                                                                                <td width="518"
+                                                                                                                    align="center"
+                                                                                                                    valign="top">
+                                                                                                                    <table
+                                                                                                                        cellpadding="0"
+                                                                                                                        align="center"
+                                                                                                                        cellspacing="0"
+                                                                                                                        width="100%"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <img align="center"
+                                                                                                                                border="0"
+                                                                                                                                src="http://ho.hitechprojects.co.in:8100/assets/img/companylogo.png"
+                                                                                                                                alt="Embedded Image"
+                                                                                                                                title="Image"
+                                                                                                                                style="margin-left:33%;outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; display: inline-block !important; border: none; height: auto; float: none; width: 30%; " />
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                                <table cellpadding="0" cellspacing="0"
+                                                                                    class="es-content" align="center">
+                                                                                    <tr>
+                                                                                        <td class="es-info-area"
+                                                                                            align="center">
+                                                                                            <table
+                                                                                                class="es-content-body"
+                                                                                                align="center"
+                                                                                                cellpadding="0"
+                                                                                                cellspacing="0"
+                                                                                                width="600"
+                                                                                                style="background-color: #DAE8EE; border-bottom: 1px solid #4c8aa7; border-left: 1px solid #4c8aa7; border-right: 1px solid #4c8aa7;">
+                                                                                                <tr>
+                                                                                                    <td class="es-p20"
+                                                                                                        align="left">
+                                                                                                        <table
+                                                                                                            cellpadding="0"
+                                                                                                            cellspacing="0"
+                                                                                                            width="100%">
+                                                                                                            <tr>
+                                                                                                                <td width="560"
+                                                                                                                    align="center"
+                                                                                                                    valign="top">
+                                                                                                                    <table
+                                                                                                                        cellpadding="0"
+                                                                                                                        cellspacing="0"
+                                                                                                                        width="100%"
+                                                                                                                        role="presentation">
+                                                                                                                        <tr>
+                                                                                                                            <td align="center"
+                                                                                                                                class="es-infoblock"
+                                                                                                                                style="padding:0px 20px 0px 20px">
+                                                                                                                                <p
+                                                                                                                                    style=" color: #999999; line-height: 120%; font-size: 12px; ">
+                                                                                                                                    We
+                                                                                                                                    have
+                                                                                                                                    sent
+                                                                                                                                    you
+                                                                                                                                    this
+                                                                                                                                    email
+                                                                                                                                    because
+                                                                                                                                    you
+                                                                                                                                    provided
+                                                                                                                                    us
+                                                                                                                                    with
+                                                                                                                                    your
+                                                                                                                                    email
+                                                                                                                                    address
+                                                                                                                                    as
+                                                                                                                                    part
+                                                                                                                                    of
+                                                                                                                                    the
+                                                                                                                                    signup
+                                                                                                                                    process
+                                                                                                                                    on
+                                                                                                                                    <a target="_blank"
+                                                                                                                                        style="color: #00a8e2;"
+                                                                                                                                        href="https://viewstripo.email">revords.com</a>
+                                                                                                                                    <br>
+                                                                                                                                    <br>Revords&nbsp;LLC
+                                                                                                                                    <br>
+                                                                                                                                    657
+                                                                                                                                    Kathy
+                                                                                                                                    Ln
+                                                                                                                                    Schaumburg
+                                                                                                                                    IL
+                                                                                                                                    60173
+                                                                                                                                </p>
+                                                                                                                                <p
+                                                                                                                                    style="color: #999999; line-height: 120%; font-size: 12px;">
+                                                                                                                                    Don’t
+                                                                                                                                    want
+                                                                                                                                    to
+                                                                                                                                    receive
+                                                                                                                                    emails
+                                                                                                                                    from
+                                                                                                                                    0?
+                                                                                                                                    |
+                                                                                                                                    <a href=""
+                                                                                                                                        target="_blank"
+                                                                                                                                        style="text-decoration: none; color: #00a8e2; line-height: 120%; font-size: 12px; ">Unsubscribe</a>
+                                                                                                                                </p>
+                                                                                                                            </td>
+                                                                                                                        </tr>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:5px;">
+                                            <div class="col-md-2">
+                                                <button matStepperPrevious class="btn btn-dark flexcenter">
+                                                    <img alt="phonevector" class="filter-green mr3"
+                                                        src="../../../../assets/img/icons/Back.svg">Back</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-success flexcenter" [disabled]="isLoading"
+                                                    (click)="Submit()">
+                                                    Send
+                                                    <img alt="phonevector" class="filter-green ml3"
+                                                        src="../../../../assets/img/icons/Sand Campaign.svg">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6"></div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-4"
+                                        style="border:1px solid #DADCDC;border-radius: 15px; height: 826px;">
+                                        <div class="row">
+                                            <div class="left-side">
+                                                <div class="center-div">
+                                                    <mat-tab-group mat-stretch-tabs>
+                                                        <img src="assets/promotion/SMS.svg" class="md-accent">
+                                                        <mat-tab *ngIf='packageDetails.isEmail == true'>
+                                                            <ng-template mat-tab-label>
+                                                                <img alt="phonevector" class="phonevector"
+                                                                    src="../../../../assets/promotion/Email.svg">
+                                                                <span class="ml-1">Email</span>
+                                                            </ng-template>
+                                                            <div class="campaign-template-preview">
+                                                                <div class="template-email-root">
+                                                                    <img alt="phonevector" class="phonevector"
+                                                                        src="../../../../assets/images/phonevector.svg">
+                                                                    <div class="wrapper">
+                                                                        <div
+                                                                            style="display: flex;justify-content: center;align-items: center;height: 445px;">
+                                                                            <button type="button"
+                                                                                class="btn btn-success"
+                                                                                data-toggle="modal"
+                                                                                data-target="#myModalSummary">
+                                                                                Preview
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </mat-tab>
+                                                        <mat-tab>
+                                                            <ng-template mat-tab-label>
+                                                                <img alt="phonevector" class="phonevector"
+                                                                    src="../../../../assets/promotion/POS.svg">
+                                                                <span class="ml-1">POS</span>
+                                                            </ng-template>
+                                                            <div class="cashier preview" style="text-align: center;">
+                                                                <img src="../../../../assets/images/preview-pos.png"
+                                                                    style="width: 360px;" />
+                                                                <div class="message-content">
+                                                                    <div>
+                                                                        <div>
+                                                                            {{this.jobForm.controls['subject'].value}}
+                                                                        </div>
+                                                                        <div>
+                                                                            Exp.
+                                                                            {{this.jobForm.controls['validDate'].value|
+                                                                            date: 'dd MMM, YYYY'}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </mat-tab>
+                                                        <mat-tab *ngIf='packageDetails.isNotification == true'>
+                                                            <ng-template mat-tab-label>
+                                                                <img alt="phonevector" class="phonevector"
+                                                                    src="../../../../assets/promotion/Mobile-App.svg">
+                                                                <span class="ml-1">Mobile-App</span>
+                                                            </ng-template>
+                                                            <div class="campaign-template-preview">
+                                                                <div class="template-email-root">
+                                                                    <img alt="phonevector" class="phonevector"
+                                                                        src="../../../../assets/images/phonevector.svg">
+                                                                    <div class="wrapper">
+                                                                        <div
+                                                                            style="background: #486673;color: white;padding: 10px;border-radius: 10px;">
+                                                                            <p
+                                                                                style="padding-bottom: 0px !important;margin-bottom: 0px !important;">
+                                                                                {{businessGroupName}} sent you a
+                                                                                announcement valid till
+                                                                                {{this.jobForm.controls['validDate'].value|
+                                                                                date: 'dd MMM, YYYY'}}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </mat-tab>
+                                                    </mat-tab-group>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-step>
+                        </mat-stepper>
+                        <div *ngIf="isLoadingSaveData"
+                            class="d-flex mx-2 my-2 justify-content-center align-items-center" style="height: 100%; top: 0%;
+                            left: 50%;position: absolute;">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="wrapper" style="background: white;border-radius: 15px; padding: 5px;">
+    <div class="row ml-2 d-flex " style="border-bottom: 1px solid #DADCDC;">
+        <div class="col-md-6 mt-3 d-flex">
+            <a href="#" class="navbar-brand mt-2">
+                <img src="../../../../assets/img/add-user.png" height="28" alt="CoolBrand">
+            </a>
+            <h1>Business Group</h1>
+        </div>
+        <div class="col-md-6 text-right mt-3 pr-4" style="margin-bottom: 10px;" *ngIf="iseditmode">
+            <button class="btn btn-success mt-2" type="submit" style="margin-right: 15px;" (click)="Save()">
+                Save Changes
+            </button>
+            <button class="btn btn-danger cancel mt-2" (click)="Cancle()">
+                Cancel
+            </button>
+        </div>
+        <div class="col-md-6 text-right mt-3 pr-4" *ngIf="!iseditmode">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-5">
+                    <button class="btn btn-dark mt-2" [routerLink]="['/admin-panel']" style="display: inline-flex;
+                        align-items: center;justify-content: center;">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true" style="margin-right: 6px;"></i> Back to
+                        Admin Panel
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-danger cancel mt-2" (click)="AddNew()">
+                        Add New
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!iseditmode">
+        <div class="col-md-12">
+            <mat-table class="mat-elevation-z8" mat-table [dataSource]="dataSource"
+                (matSortChange)="announceSortChange($event)" multiTemplateDataRows matSort>
+                <ng-container matColumnDef="businessGroupName">
+                    <th style="text-align: left; width:70%;" mat-header-cell
+                        class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
+                        sortActionDescription="Sort by businessGroupName">
+                        BusinessGroup Name
+                    </th>
+                    <td style="text-align: left; width:70%;" mat-cell *matCellDef="let element" class="tabletd">
+                        <div style="text-align: left;">
+                            <div style="color: #203139;font-weight: 700;cursor: pointer; font-size:14px;padding-left: 5px;">
+                                {{element.businessGroupName}}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="packageTypeName">
+                    <th style="text-align: left; width:20%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                        *matHeaderCellDef mat-sort-header sortActionDescription="Sort by packageTypeName">
+                        PackageType
+                    </th>
+                    <td style="text-align: left; width:20%;" mat-cell *matCellDef="let element" class="tabletd">
+                        <div style="text-align: left;">
+                            <div
+                                style="color: #203139;font-weight: 700;cursor: pointer; font-size:14px;padding-left: 5px;">
+                                {{element.packageTypeName}}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Action">
+                    <th style="text-align: left;width:10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                        *matHeaderCellDef>
+                        Edit
+                    </th>
+                    <td style="text-align: left;width:10%;" mat-cell *matCellDef="let element" class="tabletd">
+                        <div style="text-align: left;">
+                            <button (click)="Edit(element.id)" class="mr-2 editClass">Edit&nbsp;&nbsp;
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row class="tableHeaderCellDiv" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[50]" #paginator style-paginator showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+    <div *ngIf="iseditmode" style="margin: 20px;">
+        <form [formGroup]="ProfileFormGroup">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="exampleInputEmail1">
+                        <b>Business Group Name</b>
+                    </label>
+                    <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip" style="vertical-align: middle;">
+                    </i>
+                    <input class="form-control" formControlName="BusinessgroupName"
+                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['BusinessgroupName'].errors }">
+                    <div *ngIf="submitted && ProfileFormGroup.controls['BusinessgroupName'].errors"
+                        class="invalid-feedback">
+                        <div *ngIf="ProfileFormGroup.controls['BusinessgroupName'].errors['required']">
+                            BusinessgroupName is required
+                        </div>
+                    </div>
+                    <div class="col" style="margin-top: 5%;">
+                        <div class="form-group">
+                            <input type="file" class="custom-file" id="customFileLang" text="Upload Image (Upto 1 MB)"
+                                (change)="onChange($event)">
+                            <label class="custom-file-label" for="customFileLang">
+                                Upload Image (Upto 1 MB)
+                            </label>
+                            <b *ngIf="file != undefined ">{{file.name}}</b>
+                            <div style="width: 80%;background-color: #7DA3BA;" class="progress-bar" role="progressbar"
+                                [style.width]="uploadProgress" aria-valuenow="uploadProgress" aria-valuemin="0"
+                                aria-valuemax="100" *ngIf="logoPath != null && logoPath !=undefined">
+                                {{uploadProgress}}
+                            </div>
+                            <mat-icon class="cancel-upload" (click)="onUpload()"
+                                *ngIf="file != undefined && uploadProgress == undefined " style="overflow: inherit;">
+                                cloud_upload
+                            </mat-icon>
+                            <mat-icon class="cancel-upload" (click)="cancelUpload()"
+                                *ngIf="uploadProgress !=  undefined || (logoPath != null && logoPath !=undefined && logoPath != '')"
+                                style="color: red; overflow: inherit;">
+                                delete_forever
+                            </mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="exampleInputEmail1">
+                        <b>Package Type</b>
+                    </label>
+                    <ng-multiselect-dropdown [placeholder]="'Choose Package Type'" id="Package"
+                        [settings]="dropdownSettingsSingle" [data]="packageTypeData" formControlName="PackageID"
+                        [(ngModel)]="selectedpackageType">
+                    </ng-multiselect-dropdown>
+                    <div style="width:100%;" *ngIf="isSubmitted && ProfileFormGroup.controls['PackageID'].errors"
+                        class="invalid-feedback">
+                        <div *ngIf="ProfileFormGroup.controls['PackageID'].errors['required']">
+                            Package Type is required
+                        </div>
+                    </div>
+                    <div class="col" style="margin-top: 5%;">
+                        <div class="form-group">
+                            <div class="business-images-header">
+                                <img *ngIf="BusinessImageUrl1 != ''" src={{BusinessImageUrl1}} alt=""
+                                    id="business-img1">
+                                <div *ngIf="BusinessImageUrl1 == ''">
+                                    <img src='' alt="" id="business-img1"
+                                        style="border: 1px solid gray; height: 120px; width: 200px;">
+                                </div>
+                            </div>
+                            <div class="business-images-header">
+                                Use .jpg or .png Min 120px wide
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,185 @@
+:host {
+  .legend {
+    small {
+      font-size: x-small;
+    }
+  }
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.parent {
+  -webkit-column-count: 2;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 2;
+  /* Firefox */
+  column-count: 2;
+}
+
+.item:nth-child(5n) {
+  border: 1px solid blue;
+}
+
+.card {
+  box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%);
+  margin-bottom: 1rem;
+}
+
+@property --p {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@keyframes p {
+  from {
+    --p: 0
+  }
+}
+
+body {
+  background: #ddd;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 8px;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.bdr {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.content-loaded-image {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  background-color: rgb(174, 174, 174);
+  margin: 5px;
+  border-radius: 50%;
+}
+
+.spinner-border {
+  --bs-spinner-width: 1rem;
+  --bs-spinner-height: 1rem;
+}
+
+.groupSelected {
+  padding: 5%;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2f7c00;
+}
+
+.title-signh {
+  text-align: center;
+  background-color: white;
+  width: 14%;
+  border-radius: 6px;
+  padding: 10px;
+  font-weight: 500;
+  margin: 0px 370px;
+}
+
+.model-box {
+  display: flex;
+  background-color: white;
+  border-radius: 16px;
+  margin: 10px;
+}
+
+// .switch {
+//   display: inline-block;
+//   height: 10px;
+//   position: relative;
+//   width: 50px;
+// }
+
+// .switch input {
+//   display: none;
+// }
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #fff;
+  bottom: 5px;
+  content: "";
+  height: 15px;
+  left: 4px;
+  position: absolute;
+  transition: 0.4s;
+  width: 15px;
+}
+
+input:checked+.slider {
+  background-color: #7da3ba;
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.text-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .md-drppicker {
+  top: 0;
+  left: -75% !important;
+  width: 180% !important;
+}
+
+.activeTab1 {
+  background: #233138 !important;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
+}
+
+.activeTab2 {
+  background: #7da3ba !important;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
+}
+
+.modal.show .modal-dialog {
+  transform: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}

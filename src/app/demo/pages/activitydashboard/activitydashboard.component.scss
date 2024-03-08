@@ -1,0 +1,249 @@
+table {
+  width: 100%;
+}
+
+.tableHeaderCellDiv {
+  resize: horizontal;
+  overflow: hidden;
+  border: lightgray;
+  vertical-align: middle;
+}
+
+.ranges {
+  font-size: 8px;
+}
+
+.tabletd {
+  border: lightgray;
+}
+
+.background {
+  background: white;
+  border-radius: 8px;
+}
+
+.overview-column {
+  margin-top: 26px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.margin {
+  margin-bottom: 40px;
+}
+
+.align {
+  line-height: 55px;
+}
+
+.overview-column .overview-header {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.overview-column .overview-amount {
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 28px;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.overview-column.yellow {
+  color: #CD7F32;
+}
+
+.overview-column.grey {
+  color: #c5d0de;
+}
+
+.golden {
+  color: #A17C43;
+}
+
+.green {
+  color: #13ce66;
+}
+
+.note {
+  line-height: 14px;
+  font-size: 12px;
+  max-width: 150px;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #526273;
+  white-space: pre-wrap;
+}
+
+.col-lg-8 {
+  display: flex;
+}
+
+h4 {
+  margin-left: 9%;
+}
+
+.example-form {
+  margin-top: 1%;
+  min-width: 250px;
+  max-width: 200px;
+}
+
+.example-full-width {
+  width: 80%;
+}
+
+.search-block {
+  width: 0%;
+  right: 0;
+  @extend header !optional;
+  background: #fff;
+
+  &.active {
+    width: 100%;
+  }
+
+  .search-control {
+    flex: 1;
+    font-size: 1rem;
+    border: 0;
+    outline: none;
+    padding-left: 10px;
+  }
+}
+
+.fromDate {
+  width: 150px;
+}
+
+.toDate {
+  width: 150px;
+  margin-left: 2%;
+}
+
+.example-h2 {
+  margin: 10px 0;
+  color: rgba(0, 0, 0, .54);
+}
+
+.divmore {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  background-color: white;
+}
+
+.more {
+  display: block;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid #d7d3d3;
+  box-shadow: none;
+  color: #404040;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: none;
+  text-align: center;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+#showData {
+  margin-left: 2%;
+  background: #9dd1ab;
+  color: #fff;
+}
+
+.dropdown {
+  width: 28%;
+  height: 3.2rem;
+  margin-left: -78px;
+  outline: none;
+  text-align: left;
+  font-size: medium;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdown:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 102, 204, 0.3);
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  border: none;
+  position: relative;
+  margin-bottom: 15px !important;
+}
+
+.text-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.multiselect-dropdown {
+  width: 100% !important;
+}
+
+:host ::ng-deep .multiselect-dropdown {
+  width: 100% !important;
+  left: 0% !important;
+}
+
+.pickerStyle {
+  background-color: #f5fbfe;
+  border: 0px solid #dbe7ec;
+  margin-left: -10%;
+  padding-left: 0;
+  padding-right: 0;
+  font-size: 13px;
+  padding-left: 10px;
+  padding-right: 20px;
+}
+
+.card-pad {
+  padding: 13px 25px 13px 25px;
+}
+
+:host ::ng-deep .dropdown-btn {
+  padding: 9px 10px !important;
+}
+
+::ng-deep .md-drppicker {
+  top: 0;
+  left: 0 !important;
+  width: 180% !important;
+}
+
+.mat-mdc-table {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.mat-mdc-table .mdc-data-table__header-row {
+  background: #efefef;
+}
+
+::ng-deep .mat-sort-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

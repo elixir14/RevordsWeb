@@ -1,0 +1,179 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<div style="background-color: white;padding: 20px;border-radius: 13px;">
+    <div class="row" style="margin-bottom:9px;">
+        <div class="col-md-12 flexdivHeader">
+            <div class="col-md-5">
+                <div style="display: flex;align-items: center;">
+                    <img style="margin-top: -5px;height: 25px;" src="../../../../assets/img/icons/Promotion.svg">
+                    <h1 class="headerName">Auto Campaigns</h1>
+                </div>
+                <div style="color: #404040;font-style: normal;font-weight: 400;font-size: 15px;
+                line-height: 24.3px;margin-top: -15px;">
+                    <div style="margin-left: 26px; position: relative;display: grid;">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" style="text-align: end;">
+                <div>
+                    <input type="button" class="btn ngx-daterangepicker-action" ngxDaterangepickerMd [autoApply]="true"
+                        style="background-color: #f5fbfe;border: 0px solid #dbe7ec;visibility: hidden;width: 1px;"
+                        [showCustomRangeLabel]="true" [alwaysShowCalendars]="true" [ranges]="ranges"
+                        [showRangeLabelOnInput]="true" (rangeClicked)="rangeClicked($event)" [linkedCalendars]="true"
+                        [showClearButton]="true" [keepCalendarOpeningWithRange]="true"
+                        (datesUpdated)="datesUpdated($event)" [locale]="{ applyLabel: 'Apply',format: 'MMM DD, YYYY',fromLabel: 'From',toLabel: 'To',
+            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            firstDay: 1}" />
+                    <button class="btn btn-outline-primary ngx-daterangepicker-action pickerStyle" type="button"
+                        (click)="open()">
+                        <span class="ngx-daterangepicker-action" style="margin-right: 9px; color:#3380A4;">
+                            {{selectedRange}}</span>
+                        <span class="ngx-daterangepicker-action" style="margin-right: 9px; color:#3380A4;">
+                            {{selected.startDate |
+                            date: 'MMM dd, yyyy'}}
+                            - {{selected.endDate | date: 'MMM dd, yyyy'}}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3" [formGroup]="dashBoardFormControl">
+                <ng-multiselect-dropdown [placeholder]="'Choose business locations'"
+                    (onSelect)="onBusinessLocationChanged()" (onSelectAll)="onBusinessLocationChanged()"
+                    [settings]="dropdownSettings" [data]="bussinessData" (onDeSelect)="onBusinessLocationChanged()"
+                    formControlName="businessID" (onDeSelectAll)="onBusinessLocationChanged()">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body card-pad">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="col-md-1 text-center">
+                                <img src="../../../assets/images/Activity/point1.png" style="width: 45px;">
+                            </div>
+                            <div class="col-md-7 text-center">
+                                Total Delivered
+                            </div>
+                            <div class="col-md-4 text-center"
+                                style="font-size: 25px;font-weight: 500; cursor: pointer;text-align: center;">
+                                <span *ngIf="totalDelivered > 1000">{{totalDelivered | number: '3.0-5'}}</span>
+                                <span *ngIf="totalDelivered <= 1000">{{totalDelivered}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body card-pad">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="col-md-1 text-center">
+                                <img src="../../../assets/images/Activity/Redeem1.png" style="width: 45px;">
+                            </div>
+                            <div class="col-md-7 text-center">
+                                Customer visits
+                            </div>
+                            <div class="col-md-4 text-center"
+                                style="font-size: 25px;font-weight: 500; cursor: pointer;text-align: center;">
+                                <span *ngIf="totalVisit > 1000">{{totalVisit | number: '3.0-5'}}</span>
+                                <span *ngIf="totalVisit <= 1000">{{totalVisit}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body card-pad">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="col-md-1 text-center">
+                                <img src="../../../assets/images/Activity/imgap.png" style="width: 45px;">
+                            </div>
+                            <div class="col-md-7 text-center">
+                                Avg visit rate
+                            </div>
+                            <div class="col-md-4 text-center"
+                                style="font-size: 25px;font-weight: 500; cursor: pointer;text-align: center;">
+                                {{totalVisitRate | number:'1.0-2'}}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped table-sm view " *ngFor="let d of distinctData">
+            <thead>
+                <tr>
+                    <td colspan="12" class="colorwithnobroder">
+                        <b> {{d.reward}} ({{d.campaignType}})
+                        </b>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="Incolorwithnobroderleftalign" style="width: 15%;">Business Name</td>
+                    <td colspan="3" class="Incolorwithnobroder" style="width: 18%;">Delivered ({{d.totalDelivered}})</td>
+                    <td colspan="3" class="Incolorwithnobroder" style="width: 18%;">Customer Engagements ({{d.totalEngagements}})
+                    </td>
+                    <td colspan="3" class="Incolorwithnobroder" style="width: 18%;">Engagement Rates</td>
+                </tr>
+                <tr>
+                    <td class="SubInSecondcolorwithnobroder widtheightPerc"></td>
+                    <td class="SubIncolorwithnobroder fourpxBorder widtheightPerc">App</td>
+                    <td class="SubIncolorwithnobroder widtheightPerc">Email</td>
+                    <td class="SubIncolorwithnobroder widtheightPerc">SMS</td>
+                    <td class="SubInSecondcolorwithnobroder fourpxBorder widtheightPerc">Claims</td>
+                    <td class="SubInSecondcolorwithnobroder widtheightPerc">Redemptions</td>
+                    <td class="SubInSecondcolorwithnobroder widtheightPerc">Opt-outs</td>
+                    <td class="SubInSecondcolorwithnobroder fourpxBorder widtheightPerc">Claims %</td>
+                    <td class="SubInSecondcolorwithnobroder widtheightPerc">Redemptions %</td>
+                    <td class="SubInSecondcolorwithnobroder widtheightPerc">Opt-outs %</td>
+                </tr>
+                <tr *ngFor="let g of displayData | myfilter : d.id">
+                    <td
+                        class="IncolorTextwithnobroderleftalign" style="width: 15%;">{{g.businessLocationName}}
+                    </td>
+                    <td 
+                        class="IncolorTextwithnobroder fourpxBorder">
+                        {{g.delivered[0].notificationCount}}
+                    </td>
+                    <td  class="IncolorTextwithnobroder">
+                        {{g.delivered[0].emailCount}}
+                    </td>
+                    <td  class="IncolorTextwithnobroder">
+                        {{g.delivered[0].smsMmsCount}}
+                    </td>
+                    <td 
+                        class="IncolorTextwithnobroder fourpxBorder">
+                        {{g.visits[0].claims}}</td>
+                    <td  class="IncolorTextwithnobroder">
+                        {{g.visits[0].redemptions}}</td>
+                    <td  class="IncolorTextwithnobroder">
+                        {{g.visits[0].optOuts}}</td>
+                    <td 
+                        class="IncolorTextwithnobroder fourpxBorder">
+                        {{g.visitRate[0].claims}} %</td>
+                    <td  class="IncolorTextwithnobroder">
+                        {{g.visitRate[0].redemptions}} %</td>
+                    <td  class="IncolorTextwithnobroder">
+                        {{g.visitRate[0].optOuts}} %</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="isLoading" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>

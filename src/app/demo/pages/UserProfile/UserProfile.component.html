@@ -1,0 +1,240 @@
+<div class="wrapper" style="background: white;border-radius: 15px; padding: 5px;">
+    <div class="row ml-2 d-flex " style="border-bottom: 1px solid #DADCDC;">
+        <div class="col-md-6 mt-3 d-flex">
+            <a href="#" class="navbar-brand mt-2">
+                <img src="../../../../assets/img/add-user.png" height="28" alt="CoolBrand">
+            </a>
+            <h1>User Profile</h1>
+        </div>
+        <div class="col-md-6 text-right mt-3 pr-4" style="margin-bottom: 10px;" *ngIf="iseditmode">
+            <button class="btn btn-success mt-2" type="submit" style="margin-right: 15px;" (click)="Save()">
+                Save Changes
+            </button>
+            <button class="btn btn-danger cancel mt-2" (click)="Cancle()">
+                Cancel
+            </button>
+        </div>
+        <div class="col-md-6 text-right mt-3 pr-4" *ngIf="!iseditmode">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-5">
+                    <button class="btn btn-dark mt-2" [routerLink]="['/admin-panel']" style="display: inline-flex;
+                        align-items: center;justify-content: center;">
+                        <i class="fa fa-arrow-circle-left" aria-hidden="true" style="margin-right: 6px;"></i> Back to Admin Panel
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-danger cancel mt-2" (click)="AddNew()">
+                        Add New
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!iseditmode">
+        <div class="col-md-12">
+            <mat-table class="mat-elevation-z8" mat-table [dataSource]="dataSource" (matSortChange)="announceSortChange($event)" multiTemplateDataRows
+                matSort>
+                <ng-container matColumnDef="userName">
+                    <th style="text-align: center;width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef
+                        mat-sort-header sortActionDescription="Sort by name">
+                        UserName
+                    </th>
+                    <td style="width: 15%; text-align: center;" mat-cell *matCellDef="let element" class="tabletd">
+                        <div style="text-align: center;">
+                            <div style="color: #203139;font-weight: 700;cursor: pointer; font-size:14px;padding-left: 5px;">
+                                {{element.userName}}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="mobile">
+                    <th style="text-align: center;width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef
+                        mat-sort-header sortActionDescription="Sort by phone">
+                        Phone
+                    </th>
+                    <td style="width: 10%; text-align: center;" mat-cell class="tabletd" *matCellDef="let element">
+                        {{element.mobile | phone}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th style="width: 10%;text-align: center;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef
+                        mat-sort-header sortActionDescription="Sort by email">
+                        email
+                    </th>
+                    <td style="width: 10%; text-align: center;" mat-cell class="tabletd" *matCellDef="let element">
+                        {{element.email}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="firstName">
+                    <th style="text-align: center;width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef
+                        mat-sort-header sortActionDescription="Sort by firstName">
+                        firstName
+                    </th>
+                    <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%; text-align: center;"> {{element.firstName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lastName">
+                    <th style="text-align: center;width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef
+                        mat-sort-header sortActionDescription="Sort by lastName">
+                        lastName
+                    </th>
+                    <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%; text-align: center;">
+                        {{element.lastName}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="userTypeId">
+                    <th style="text-align: center;width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef
+                        mat-sort-header sortActionDescription="Sort by lastName">
+                        UserType
+                    </th>
+                    <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%; text-align: center;">
+                        {{ element.userTypeId === 1 ? "Admin" : "Store" }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="Action">
+                    <th style="text-align: left;width:10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef>
+                        Edit
+                    </th>
+                    <td style="text-align: left;width:10%;" mat-cell *matCellDef="let element" class="tabletd">
+                        <div style="text-align: left;">
+                            <button (click)="Edit(element.userId)" class="mr-2 editClass">Edit&nbsp;&nbsp;
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row class="tableHeaderCellDiv" *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
+            </mat-table>
+            <mat-paginator [pageSizeOptions]="[50]" #paginator style-paginator showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+    <div *ngIf="iseditmode" style="margin: 20px;">
+        <form [formGroup]="ProfileFormGroup">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">
+                            <b>Email ID</b>
+                        </label>
+                        <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip" style="vertical-align: middle;"></i>
+                        <input class="form-control" formControlName="email" (keyup)="ontextchanged(email)" [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['email'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['email'].errors" class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['email'].errors['required']">email is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="exampleInputEmail1">
+                                <b>First Name</b>
+                            </label>
+                            <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip" style="vertical-align: middle;"></i>
+                            <input class="form-control" formControlName="firstName" [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['firstName'].errors }">
+                            <div *ngIf="submitted && ProfileFormGroup.controls['firstName'].errors" class="invalid-feedback">
+                                <div *ngIf="ProfileFormGroup.controls['firstName'].errors['required']">First Name is required</div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="exampleInputEmail1">
+                                <b>Last Name</b>
+                            </label>
+                            <input type="text" class="form-control" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['lastName'].errors }">
+                            <div *ngIf="submitted && ProfileFormGroup.controls['lastName'].errors" class="invalid-feedback">
+                                <div *ngIf="ProfileFormGroup.controls['lastName'].errors['required']">lastName is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">
+                            <b>User Name</b>
+                        </label>
+                        <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip" style="vertical-align: middle;"></i>
+                        <input class="form-control" formControlName="userName" [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['userName'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['userName'].errors" class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['userName'].errors['required']">userName is required</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <div class="col">
+                            <label for="exampleInputEmail1">
+                                <b>Mobile</b>
+                            </label>
+                            <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip" style="vertical-align: middle;"></i>
+                            <input class="form-control" formControlName="mobile" (keypress)="numberOnly($event)" placeholder="Enter number"
+                             [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['mobile'].errors }">
+                            <div *ngIf="submitted && ProfileFormGroup.controls['mobile'].errors" class="invalid-feedback">
+                                <div *ngIf="ProfileFormGroup.controls['mobile'].errors['required']">Phone Number is required</div>
+                                <div *ngIf="submitted && (ProfileFormGroup.controls['mobile'].errors['minlength'] || ProfileFormGroup.controls['mobile'].errors['maxlength'])">
+                                    Phone Number must be 10 digit
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" style="margin-top:27px;">
+                            <label for="exampleInputEmail1">
+                                <b>UserType</b>
+                            </label>
+                            <mat-radio-group layout="row" formControlName='userTypeID'>
+                                <mat-radio-button value="1" (change)="handleChange(1)" [checked]="ProfileFormGroup.get('userTypeID').value ===1">
+                                    Admin
+                                </mat-radio-button>
+                                <mat-radio-button value="2" (change)="handleChange(2)" [checked]="ProfileFormGroup.get('userTypeID').value === 2">
+                                    Store
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <ng-multiselect-dropdown [placeholder]="'Choose business group'" [settings]="dropdownSettingsSingleBusinessGroup" [data]="bussinessGroupData"
+                        formControlName="businessgroupID" [(ngModel)]="selectedbusinessgroup" (onSelect)="onChangeBusinessGroup()">
+                    </ng-multiselect-dropdown>
+                    <div style="width:100%;" *ngIf="isSubmitted && ProfileFormGroup.controls['businessgroupID'].errors" class="invalid-feedback">
+                        <div *ngIf="ProfileFormGroup.controls['businessgroupID'].errors['required']">
+                            Business Group is required
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <div class="col">
+                            <ng-multiselect-dropdown [placeholder]="'Choose business Location'" id="location" [settings]="dropdownSettingsSingleBusiness"
+                                [data]="bussinessData" formControlName="businessLocationID" [(ngModel)]="selectedbusinesslocation"
+                                (onSelect)="onChangeBusinessLocation()">
+                            </ng-multiselect-dropdown>
+                            <div style="width:100%;" *ngIf="isSubmitted && ProfileFormGroup.controls['businessLocationID'].errors" class="invalid-feedback">
+                                <div *ngIf="ProfileFormGroup.controls['businessLocationID'].errors['required']">
+                                    Business Location is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <ng-multiselect-dropdown [placeholder]="'Choose Source'" [settings]="dropdownSettingsSingleSource" [data]="SourceData" formControlName="SourceID">
+                            </ng-multiselect-dropdown>
+                            <div style="width:100%;" *ngIf="isSubmitted && ProfileFormGroup.controls['SourceID'].errors" class="invalid-feedback">
+                                <div *ngIf="ProfileFormGroup.controls['SourceID'].errors['required']">
+                                    Source is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
