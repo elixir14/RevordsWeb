@@ -197,7 +197,7 @@ export class ProfilesettingComponent {
     }
     this.uploadProgressBusinessLogo = "0%";
     this.isfileUploadedBusinessLogo = false;
-    this.fileNameBusinessLogo = 'Upload Image (Upto 1 MB)';
+    this.fileNameBusinessLogo = null;
     this.resetBusinessLogoDetails();
   }
   resetBusinessLogoDetails() {
@@ -241,7 +241,7 @@ export class ProfilesettingComponent {
     }
     this.uploadProgressBusinessDisplayImage = "0%";
     this.isfileUploadedBusinessDisplayImage = false;
-    this.fileNameBusinessDisplayImage = 'Upload Image (Upto 1 MB)';
+    this.fileNameBusinessDisplayImage = null;
     this.resetBusinessDisplayImageDetails();
   }
 
@@ -286,7 +286,7 @@ export class ProfilesettingComponent {
     }
     this.uploadProgressBusinessImage1 = "0%";
     this.isfileUploadedBusinessImage1 = false;
-    this.fileNameBusinessImage1 = 'Upload Image (Upto 1 MB)';
+    this.fileNameBusinessImage1 = null;
     this.resetBusinessImage1Details();
   }
 
@@ -330,7 +330,7 @@ export class ProfilesettingComponent {
     }
     this.uploadProgressBusinessImage2 = "0%";
     this.isfileUploadedBusinessImage2 = false;
-    this.fileNameBusinessImage2 = 'Upload Image (Upto 1 MB)';
+    this.fileNameBusinessImage2 = null;
     this.resetBusinessImage2Details();
   }
 
@@ -374,7 +374,7 @@ export class ProfilesettingComponent {
     }
     this.uploadProgressBusinessImage3 = "0%";
     this.isfileUploadedBusinessImage3 = false;
-    this.fileNameBusinessImage3 = 'Upload Image (Upto 1 MB)';
+    this.fileNameBusinessImage3 = null;
     this.resetBusinessImage3Details();
   }
 
@@ -418,7 +418,7 @@ export class ProfilesettingComponent {
     }
     this.uploadProgressBusinessImage4 = "0%";
     this.isfileUploadedBusinessImage4 = false;
-    this.fileNameBusinessImage4 = 'Upload Image (Upto 1 MB)';
+    this.fileNameBusinessImage4 = null;
     this.resetBusinessImage4Details();
   }
 
@@ -523,6 +523,60 @@ export class ProfilesettingComponent {
             name: this.businessLabels.filter(x => x.id == element.labelID)[0].name
           })
         });
+
+        if (data.logoPath != '' && data.logoPath != null && data.logoPath != undefined) {
+          this.filePathBusinessLogo = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + data.logoPath;
+          this.uploadProgressBusinessLogo = (100).toString() + "%";
+          this.fileNameBusinessLogo = data.logoPath;
+        }
+        else {
+          this.cancelUploadBusinessLogo();
+        }
+
+        if (data.imagePath != '' && data.imagePath != null && data.imagePath != undefined) {
+          this.filePathBusinessDisplayImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + data.imagePath;
+          this.uploadProgressBusinessDisplayImage = (100).toString() + "%";
+          this.fileNameBusinessDisplayImage = data.imagePath;
+        }
+        else {
+          this.cancelUploadBusinessDisplayImage();
+        }
+
+        if (data.galleryImagePath1 != '' && data.galleryImagePath1 != null && data.galleryImagePath1 != undefined) {
+          this.filePathBusinessImage1 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + data.galleryImagePath1;
+          this.uploadProgressBusinessImage1 = (100).toString() + "%";
+          this.fileNameBusinessImage1 = data.galleryImagePath1;
+        }
+        else {
+          this.cancelUploadBusinessImage1();
+        }
+
+        if (data.galleryImagePath2 != '' && data.galleryImagePath2 != null && data.galleryImagePath2 != undefined) {
+          this.filePathBusinessImage2 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + data.galleryImagePath2;
+          this.uploadProgressBusinessImage2 = (100).toString() + "%";
+          this.fileNameBusinessImage2 = data.galleryImagePath2;
+        }
+        else {
+          this.cancelUploadBusinessImage2();
+        }
+
+        if (data.galleryImagePath3 != '' && data.galleryImagePath3 != null && data.galleryImagePath3 != undefined) {
+          this.filePathBusinessImage3 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + data.galleryImagePath3;
+          this.uploadProgressBusinessImage3 = (100).toString() + "%";
+          this.fileNameBusinessImage3 = data.galleryImagePath3;
+        }
+        else {
+          this.cancelUploadBusinessImage3();
+        }
+
+        if (data.galleryImagePath4 != '' && data.galleryImagePath4 != null && data.galleryImagePath4 != undefined) {
+          this.filePathBusinessImage4 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + data.galleryImagePath4;
+          this.uploadProgressBusinessImage4 = (100).toString() + "%";
+          this.fileNameBusinessImage4 = data.galleryImagePath4;
+        }
+        else {
+          this.cancelUploadBusinessImage4();
+        }
       },
       error: (error: any) => {
 
