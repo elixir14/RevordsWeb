@@ -1,0 +1,394 @@
+<div class="bodyclass" style="background-color: white; padding: 20px; border-radius: 13px">
+  <div class="col-lg-12 flexdivHeader">
+    <div class="col-md-9">
+      <h1 class="headerName">
+        <i class="fa fa-spinner" style="font-size: 20px"></i>
+        Spinwheel Settings
+      </h1>
+      <div style="color: #827e7e; font-style: normal; font-weight: 400; font-size: 15px; line-height: 24.3px; margin-top: -11px">
+        <div style="margin-left: 24px; position: relative; display: grid"> </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <form [formGroup]="firstFormGroup">
+      <div class="row" style="margin-top: 2%; margin-bottom: 1%">
+        <div class="col-md-6 text-center"></div>
+        <div class="col-md-6 d-flex align-items-center">
+          <!-- <b> Spin Wheel is required? </b>
+          <input type="checkbox" id="spinRequired" formControlName="spinRequired" style="height: 16px; margin-left: 10px"/> -->
+          <div class="col-md-4">
+            <p class="betweenLbl"
+              ><img src="../../../../assets/img/icons/Allow spin wheel.svg" class="mr-2" /><b>Spin Wheel Enable? </b></p
+            >
+          </div>
+          <div class="col-md-1">
+            <label class="switch">
+              <input type="checkbox" formControlName="spinRequired" />
+              <span class="slider round"></span>
+              <span class="texter"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-lg-12" style="display: inline-flex; margin-bottom: 10px">
+        <div class="col-lg-6">
+          <div style="display: flex; justify-content: center; align-items: center">
+            <div class="container glowing">
+              <div class="one">
+                <span
+                  style="
+                    position: absolute;
+                    background: #c8d92b;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #efff57;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[0].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #ffeda4; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="two">
+                <span
+                  style="
+                    position: absolute;
+                    background: #a51e1e;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #fca1a1;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[7].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #f8d0d0; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="three">
+                <span
+                  style="
+                    position: absolute;
+                    background: #3397f1;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #95cdff;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[6].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #c3e3ff; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="four">
+                <span
+                  style="
+                    position: absolute;
+                    background: #595bfa;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #9394ff;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[5].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #babbff; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="five">
+                <span
+                  style="
+                    position: absolute;
+                    background: #ffa9e9;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #ffc9f1;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[4].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #ffe0f7; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="six">
+                <span
+                  style="
+                    position: absolute;
+                    background: #f1592b;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #ff906f;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[3].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #ffb7a1; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="seven">
+                <span
+                  style="
+                    position: absolute;
+                    background: #f59130;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #ffb56d;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[2].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #ffcd9c; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+              <div class="eight">
+                <span
+                  style="
+                    position: absolute;
+                    background: #fdd843;
+                    width: 100%;
+                    height: 31%;
+                    top: 0%;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+                  "
+                >
+                </span>
+                <span
+                  style="
+                    position: absolute;
+                    background: #ffe57a;
+                    width: 100%;
+                    height: 28%;
+                    top: 26%;
+                    border-radius: 70%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: end;
+                  "
+                >
+                  <p style="color: #403d3d; font-weight: 800; font-size: 14px; text-transform: uppercase; width: 50%">
+                    {{ this.spinFormGroup.controls[1].controls['text'].value }}
+                  </p>
+                </span>
+                <span style="position: absolute; background: #ffeda4; width: 100%; height: 28%; top: 56%"> </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <form [formGroup]="spinFormGroup">
+            <table class="table table-bordered" style="width: 100%">
+              <thead>
+                <tr>
+                  <th scope="col text-center">Index</th>
+                  <th scope="col">Arc Name</th>
+                  <th scope="col text-center">Probability</th>
+                  <th scope="col text-center">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let option of spinWheelControls; let i = index" [formGroupName]="i">
+                  <td style="text-align: center; vertical-align: middle">
+                    {{ i + 1 }}
+                  </td>
+                  <td>
+                    <input
+                      class="form-control"
+                      type="text"
+                      formControlName="text"
+                      (keyup)="onEventLog('arcText', $event, i)"
+                      (keypress)="numberOnly('arcText', $event, i)"
+                      maxlength="15"
+                      style="float: left; width: 90%"
+                    />
+                    <p
+                      class="text-center"
+                      style="float: right; color: green; font-weight: 600; width: 10%; height: 38px; margin-bottom: 0; padding-bottom: 0"
+                    >
+                      {{ indexwiseCharacters[i].length }}</p
+                    >
+                    <div
+                      style="float: left; width: 100%; color: #a51e1e"
+                      *ngIf="submitted && spinFormGroup.controls[i].controls['text'].errors"
+                    >
+                      <div *ngIf="spinFormGroup.controls[i].controls['text'].errors['required']"> Arc Text is required </div>
+                    </div>
+                  </td>
+                  <td style="text-align: center; vertical-align: middle">
+                    <input
+                      class="form-control"
+                      type="number"
+                      formControlName="Probability"
+                      (keypress)="numberOnly('probability', $event, i)"
+                      (keyup)="onEventLog('probability', $event, i)"
+                      (change)="onEventLog('probability', $event, i)"
+                      min="0"
+                    />
+                    <div style="width: 100%; color: #a51e1e" *ngIf="submitted && spinFormGroup.controls[i].controls['Probability'].errors">
+                      <div *ngIf="spinFormGroup.controls[i].controls['Probability'].errors['required']"> Probability is required </div>
+                    </div>
+                  </td>
+                  <td style="text-align: center; vertical-align: middle">
+                    <input type="checkbox" formControlName="IsInteger" (change)="onEventLog('IsPoints', $event, i)" />
+                  </td>
+                </tr>
+                <tr formGroupName="0">
+                  <td style="width: 5%"></td>
+                  <td style="width: 60%">
+                    <div style="width: 100%" *ngIf="submitted && spinFormGroup.controls[0].controls['totalPoints'].errors">
+                      <div
+                        *ngIf="
+                          spinFormGroup.controls[0].controls['totalPoints'].errors['min'] ||
+                          spinFormGroup.controls[0].controls['totalPoints'].errors['max']
+                        "
+                        style="color: #a51e1e"
+                      >
+                        Total Probability must be equal to 100
+                      </div>
+                    </div>
+                  </td>
+                  <td style="width: 15%">
+                    <input class="form-control" type="number" formControlName="totalPoints" readonly />
+                  </td>
+                  <td style="width: 10%"></td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 5px">
+      <div class="col-md-6"></div>
+      <div class="col-md-4">
+        <button matStepperPrevious class="btn btn-dark flexcenter" (click)="resetSpinWheelData()"> <i class="fa fa-refresh mr-2" aria-hidden="true"></i>Reset</button>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-success flexcenter" [disabled]="isLoading" (click)="Save()">
+          Save Changes<i class="fa ml-2" [ngClass]="{ 'fa-spin fa-spinner': isLoading, 'fa-check': !isLoading }" style="color: white"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="isLoading" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div> -->
+  </div>
+</div>

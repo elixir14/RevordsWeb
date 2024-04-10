@@ -83,6 +83,10 @@
               <span class="fa fa-tags subMenu-icon" style="color: #7DA3BA;"></span>
               Tag Definition
             </a>
+            <a *ngIf="isSpinRequired" class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/spinwheelSetting">
+              <span class="fa fa-spinner subMenu-icon" style="color: #7DA3BA;"></span>
+              SpinWheel Settings
+            </a>
             <a class="dropdown-item subMenu-text" [routerLinkActive]="['active']" routerLink="/sample-page">
               <span class="fa fa-commenting subMenu-icon" style="color: #7DA3BA;"></span>
               Text to join

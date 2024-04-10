@@ -277,14 +277,14 @@
                                                             <span class="texter"></span>
                                                         </label>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-3" *ngIf="isSpinRequired">
 
                                                         <p class="betweenLbl"> <img
                                                                 src="../../../../assets/img/icons/Allow spin wheel.svg"
                                                                 class="margin55">Allow
                                                             Spinwheel?</p>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-1" *ngIf="isSpinRequired">
                                                         <label class="switch">
                                                             <input type="checkbox" formControlName="isSpinWheelAllowed1"
                                                                 (change)='allowSpinwheel()'>
@@ -297,7 +297,7 @@
                                                                 src="../../../../assets/img/icons/Turn on word of mouth.svg"
                                                                 class="margin55">Word of Mouth?</p>
                                                         <p class="betweenLbl"
-                                                            style="color: gray;margin-right: -14px;font-size: 11px;">
+                                                            style="color: gray;margin-right: -12px;font-size: 11px;">
                                                             Can
                                                             share
                                                             with friends.</p>
@@ -358,12 +358,12 @@
                                                             <span class="texter"></span>
                                                         </label>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-3" *ngIf="isSpinRequired">
                                                         <p class="betweenLbl"> <img
                                                                 src="../../../../assets/img/icons/Allow spin wheel.svg"
                                                                 class="margin55">Allow Spinwheel?</p>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-1" *ngIf="isSpinRequired">
                                                         <label class="switch">
                                                             <input type="checkbox" formControlName="isSpinWheelAllowed2"
                                                                 (change)='allowSpinwheel()'>
@@ -449,9 +449,9 @@
                                                             </div>
                                                             <div>
                                                                 <button class="btn btn-success buttonColor"
-                                                                    *ngIf="!uploadProgress">
+                                                                    *ngIf="!uploadProgress" (click)="onUpload()">
                                                                     Upload
-                                                                    <mat-icon class="filter-green" (click)="onUpload()"
+                                                                    <mat-icon class="filter-green" 
                                                                         style="margin-bottom: -6px;margin-left: 6px;">
                                                                         cloud_upload
                                                                     </mat-icon></button>
@@ -1619,14 +1619,14 @@
                                                                         {{this.firstFormGroup.controls['isRedeemable1'].value
                                                                         == true ? 'Yes' : 'No'}}
                                                                     </td>
-                                                                    <td style="width:20%;">
+                                                                    <td style="width:20%;" *ngIf="isSpinRequired">
                                                                         <img src="../../../../assets/img/icons/Allow spin wheel.svg"
                                                                             class="margin55">
                                                                         <label>
                                                                             <b> Spinwheel? : </b>
                                                                         </label>
                                                                     </td>
-                                                                    <td style="width: 10%;">
+                                                                    <td style="width: 10%;" *ngIf="isSpinRequired">
                                                                         {{this.firstFormGroup.controls['isSpinWheelAllowed1'].value
                                                                         ? 'Yes' : 'No'}}
                                                                     </td>

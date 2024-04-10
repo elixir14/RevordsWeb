@@ -28,7 +28,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AutopilotComponent } from './demo/pages/autopilot/autopilot.component';
 import { AnnouncementComponent } from './demo/pages/announcement/announcement.component';
-import { AppLinksComponent } from './demo/pages/applinks/applinks.component';
 import { ProfilesettingComponent } from './demo/pages/profilesetting/profilesetting.component';
 import { CampaignreachComponent } from './demo/pages/campaignreach/campaignreach.component';
 import { RewardService } from './services/RewardService';
@@ -82,6 +81,7 @@ import { UserService } from './services/UserService';
 import { SourcesComponent } from './demo/pages/Sources/Sources.component';
 import { AdminPanelComponent } from './demo/pages/admin-panel/admin-panel.component';
 import { BusinessProfileComponent } from './demo/pages/BusinessProfile/BusinessProfile.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -110,7 +110,7 @@ import { BusinessProfileComponent } from './demo/pages/BusinessProfile/BusinessP
     UserProfileComponent,
     SourcesComponent,
     AdminPanelComponent,
-    BusinessProfileComponent
+    BusinessProfileComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, FormsModule,
     ReactiveFormsModule,
@@ -156,7 +156,8 @@ import { BusinessProfileComponent } from './demo/pages/BusinessProfile/BusinessP
     }),
     MatIconModule, MatCheckboxModule, MatTreeModule, PhonePipeModule, AngularEditorModule, PromotionFilterpipeModule, ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
-    })],
+    }),
+    GoogleMapsModule],
   exports: [
     MatAutocompleteModule,
     MatChipsModule,

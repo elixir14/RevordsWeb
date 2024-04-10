@@ -1,4 +1,4 @@
-<form class="example-form" [formGroup]='ProfileFormGroup' (ngSubmit)="Submit()">
+<form class="example-form" [formGroup]='ProfileFormGroup'>
     <div class="wrapper" style="background: white;border-radius: 15px;">
         <div class="row ml-2 d-flex ">
             <div class="col-md-6 mt-3 d-flex">
@@ -56,692 +56,584 @@
                 </tbody>
             </table>
         </div>
-        <div *ngIf="iseditmode" style="margin: 20px;
-        background: #F4F8FB;">
-            <div class="wrapper" style="background: #F4F8FB;">
-                <h4 class="ml-3">
-                    <b>Basic Info</b>
-                </h4>
-                <div style="border-bottom: 1px solid #DADCDC;margin: 20px;"></div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">
-                                    <b>Business Name</b>
-                                </label>
-                                <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip"
-                                    style="vertical-align: middle;"></i>
-                                <input class="form-control" formControlName="businessName"
-                                    [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['businessName'].errors }">
-                                <div *ngIf="submitted && ProfileFormGroup.controls['businessName'].errors"
-                                    class="invalid-feedback">
-                                    <div *ngIf="ProfileFormGroup.controls['businessName'].errors['required']">Business
-                                        Name is required</div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col">
-                                    <label for="exampleInputEmail1">
-                                        <b>Short Name</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="businessNameTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input class="form-control" formControlName="shortName"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['shortName'].errors }">
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['shortName'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['shortName'].errors['required']">Short
-                                            Name is required</div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <label for="exampleInputEmail1">
-                                        <b>Phone Number</b>
-                                    </label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Enter number"
-                                        formControlName="phoneNo" mask="(000) 000-0000"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['phoneNo'].errors }">
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['phoneNo'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['phoneNo'].errors['required']">Phone No.
-                                            is required</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Address</b>
-                                    </label>
-                                    <input type="text" class="form-control" id="address" placeholder="Enter address"
-                                        formControlName="address"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['address'].errors }">
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['address'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['address'].errors['required']">Address is
-                                            required
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control mt-2" id="city" placeholder="Enter city"
-                                        formControlName="city"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['city'].errors }">
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['city'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['city'].errors['required']">City is
-                                            required
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col mt-2">
-                                    <label for="sel1">
-                                        <b>Select list</b>
-                                    </label>
-                                    <select class="form-control" id="sel1" formControlName="stateCodeId"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['stateCodeId'].errors }">
-                                        <option *ngFor="let state of states" [value]="state.id"
-                                            (click)="selectState(state)">{{state.name}}
-                                        </option>
-                                    </select>
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['stateCodeId'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['stateCodeId'].errors['required']">State
-                                            Code is required</div>
-                                    </div>
-                                </div>
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Pin Code</b>
-                                    </label>
-                                    <input type="text" class="form-control" id="zip" placeholder="zip"
-                                        formControlName="pinCode"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['pinCode'].errors }">
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['pinCode'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['pinCode'].errors['required']">PinCode is
-                                            required
-                                        </div>
-                                    </div>
-                                </div>
+        <div *ngIf="iseditmode" style="margin: 20px;">
+            <div class="wrapper">
+                <div class="row" style="margin-bottom: 1%;">
+                    <div class="col">
+                        <label for="businessName">
+                            Legal Name
+                        </label>
+                        <input id="businessName" class="form-control" formControlName="businessName" autocomplete="off"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['businessName'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['businessName'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['businessName'].errors['required']">
+                                Business Name is required
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="exampleInputEmail1">
-                                <b>Hours</b>
-                            </label>
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Mon:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="monFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="monToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Tue:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="tueFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="tueToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col">
+                        <label for="shortName">
+                            Display Name
+                        </label>
+                        <input id="shortName" class="form-control" formControlName="shortName" autocomplete="off"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['shortName'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['shortName'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['shortName'].errors['required']">
+                                Business Short Name is required
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Wed:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="wedFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="wedToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Thu:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="thuFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="thuToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Fri:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="friFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="friToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Sat:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="satFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="satToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>Sun:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="sunFromTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <label for="inputPassword" class="col-sm-2 col-form-label">
-                                                <b>To:</b>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="time" class="form-control" formControlName="sunToTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col">
+                        <label for="phoneNo">
+                            Phone No
+                        </label>
+                        <input id="phoneNo" class="form-control" formControlName="phoneNo" autocomplete="off"
+                            (keypress)="numberOnly($event)" maxlength="10"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['phoneNo'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['phoneNo'].errors" class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['phoneNo'].errors['required']">
+                                Phone No is required
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="wrapper">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <h4 class="ml-4">
-                                <b>Description</b>
-                            </h4>
-                            <div style="border-bottom: 1px solid #DADCDC;margin: 20px;"></div>
-                            <div class="form-row">
-                                <div class="col">
-                                    <label for="exampleInputEmail1">
-                                        <b>Industry</b>
+                <div class="row" style="margin-bottom: 1%;">
+                    <div class="col-md-4">
+                        <label for="address">
+                            Address
+                        </label>
+                        <input #search id="address" type="text" class="form-control" formControlName="address"
+                            autocomplete="off" spellcheck="off" autocapitalize="off" autocorrect="off"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['address'].errors }"
+                            placeholder="Search location" (input)="initAutocomplete()" />
+
+                        <div *ngIf="submitted && ProfileFormGroup.controls['address'].errors" class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['address'].errors['required']">
+                                Address is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="city">
+                            City
+                        </label>
+                        <input id="city" class="form-control" formControlName="city" autocomplete="off"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['city'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['city'].errors" class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['city'].errors['required']">
+                                City is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="stateCodeId">
+                            State
+                        </label>
+                        <ng-multiselect-dropdown [placeholder]="'Select State'" id="stateCodeId"
+                            [settings]="dropdownSettingsSingleState" [data]="statesData" formControlName="stateCodeId">
+                        </ng-multiselect-dropdown>
+                        <div style="width:100%;" *ngIf="submitted && ProfileFormGroup.controls['stateCodeId'].errors"
+                            class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['stateCodeId'].errors['required']">
+                                State is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="pinCode">
+                            Zip Code
+                        </label>
+                        <input id="pinCode" class="form-control" formControlName="pinCode" autocomplete="off"
+                            maxlength="6" (keypress)="numberOnly($event)"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['pinCode'].errors }">
+                        <div *ngIf="submitted && ProfileFormGroup.controls['pinCode'].errors" class="invalid-feedback">
+                            <div *ngIf="ProfileFormGroup.controls['pinCode'].errors['required']">
+                                Pincode is required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 1%;">
+                    <div class="col-md-4">
+                        <label for="exampleInputEmail1">
+                            <b>Business Labels (Up to 5 only)</b>
+                        </label>
+                        <input [matChipInputFor]="chipGrid" type="text" class="form-control" placeholder="Select label"
+                            formControlName="label" (input)="businessLabelOnChange()" autocomplete="off">
+                        <div
+                            *ngIf='ProfileFormGroup.controls["label"].value != undefined && ProfileFormGroup.controls["label"].value.length >= 2'>
+                            <mat-list role="list" *ngFor="let label of filteredBusiness" [value]="label.id">
+                                <mat-list-item role="listitem"
+                                    (click)="selectBusiness(label.id)">{{label.name}}</mat-list-item>
+                            </mat-list>
+                        </div>
+                        <div>
+                            <mat-chip-grid #chipGrid>
+                                <mat-chip-row *ngFor="let b of selectedBusiness">
+                                    {{b.name}}
+                                    <button matChipRemove>
+                                        <mat-icon (click)="removeBusiness(b.id)">cancel</mat-icon>
+                                    </button>
+                                </mat-chip-row>
+                            </mat-chip-grid>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-8">
+                        <label for="description">
+                            Description
+                        </label>
+                        <textarea id="description" class="form-control" formControlName="description" autocomplete="off"
+                            rows="2">
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 1%;">
+                    <div class="col-md-8" style="padding-right: 6px;">
+                        <div class="col-md-12 d-flex pl-0 pr-0">
+                            <div class="col pl-0">
+                                <label for="website">
+                                    Website Url
+                                </label>
+                                <input id="website" class="form-control" formControlName="website" autocomplete="off">
+                            </div>
+
+                            <div class="col" style="padding-right: 6px;">
+                                <label for="facebookUrl">
+                                    Facebook Url
+                                </label>
+                                <input id="facebookUrl" class="form-control" formControlName="facebookUrl"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex pl-0 pr-0" style="margin-top: 1%;">
+                            <div class="col pl-0">
+                                <label for="twitterUrl">
+                                    Twitter Url
+                                </label>
+                                <input id="twitterUrl" class="form-control" formControlName="twitterUrl"
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="col" style="padding-right: 6px;">
+                                <label for="googleUrl">
+                                    Google Url
+                                </label>
+                                <input id="googleUrl" class="form-control" formControlName="googleUrl"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex pl-0 pr-0" style="margin-top: 1%;">
+                            <div class="col pl-0">
+                                <label for="instagramUrl">
+                                    Instagram Url
+                                </label>
+                                <input id="instagramUrl" class="form-control" formControlName="instagramUrl"
+                                    autocomplete="off">
+                            </div>
+
+                            <div class="col" style="padding-right: 6px;">
+                                <label for="yelpUrl">
+                                    Yelp Url
+                                </label>
+                                <input id="yelpUrl" class="form-control" formControlName="yelpUrl" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex pl-0 pr-0" style="margin-top: 1%;">
+                            <div class="col pl-0">
+                                <div class="col-md-12" style="margin-left:0; padding-left: 0;">
+                                    <label>Business Logo</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="file" class="custom-file" id="businessLogo"
+                                        (change)="onChangeBusinessLogo($event)">
+                                    <label class="custom-file-label" for="businessLogo">
+                                        Upload Image (Upto 1 MB)
                                     </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="industryTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input class="form-control" formControlName="industry"
-                                        [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['industry'].errors }">
-                                    <div *ngIf="submitted && ProfileFormGroup.controls['industry'].errors"
-                                        class="invalid-feedback">
-                                        <div *ngIf="ProfileFormGroup.controls['industry'].errors['required']">Industry
-                                            is required</div>
+                                    <div style="width: 80%;background-color: #7DA3BA;height: 20%;margin-top: 1%;
+                                        border-radius: 21px;font-size: 65%;" class="progress-bar" role="progressbar"
+                                        [style.width]="uploadProgressBusinessLogo"
+                                        aria-valuenow="uploadProgressBusinessLogo" aria-valuemin="0" aria-valuemax="100"
+                                        *ngIf="filePathBusinessLogo != null && filePathBusinessLogo !=undefined">
+                                        {{uploadProgressBusinessLogo}}
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <label for="exampleInputEmail1">
-                                        <b>Business Labels</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="businessLabelsTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <!-- <input [matChipInputFor]="chipGrid" type="text" class="form-control"
-                                        placeholder="Select label" formControlName="label"
-                                        (input)="businessLabelOnChange()">
-                                    <div
-                                        *ngIf='ProfileFormGroup.controls["label"].value != undefined && ProfileFormGroup.controls["label"].value.length >= 2'>
-                                        <mat-list role="list" *ngFor="let label of filteredBusiness" [value]="label.id">
-                                            <mat-list-item role="listitem"
-                                                (click)="selectBusiness(label.id)">{{label.name}}</mat-list-item>
-                                        </mat-list>
-                                    </div> -->
-
-                                    <div>
-                                        <input [matChipInputFor]="chipGrid" type="text" class="form-control"
-                                            placeholder="Select label" formControlName="label"
-                                            (input)="businessLabelOnChange()" autocomplete="off">
-                                        <div
-                                            *ngIf='ProfileFormGroup.controls["label"].value != undefined && ProfileFormGroup.controls["label"].value.length >= 2'>
-                                            <mat-list role="list" *ngFor="let label of filteredBusiness"
-                                                [value]="label.id">
-                                                <mat-list-item role="listitem"
-                                                    (click)="selectBusiness(label.id)">{{label.name}}</mat-list-item>
-                                            </mat-list>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <mat-chip-grid #chipGrid>
-                                            <mat-chip-row *ngFor="let b of selectedBusiness">
-                                                {{b.name}}
-                                                <button matChipRemove>
-                                                    <mat-icon (click)="removeBusiness(b.id)">cancel</mat-icon>
-                                                </button>
-                                            </mat-chip-row>
-                                        </mat-chip-grid>
-                                    </div>
+                                <div class="col mt-2" *ngIf="filePathBusinessLogo != null" style="position: relative;">
+                                    <img src="{{filePathBusinessLogo}}" height="70px" />
+                                    <mat-icon class="cancel-upload" (click)="cancelUploadBusinessLogo()"
+                                        *ngIf="uploadProgressBusinessLogo != undefined || (filePathBusinessLogo != null && filePathBusinessLogo !=undefined && filePathBusinessLogo != '')"
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        cancel
+                                    </mat-icon>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">
-                                    <b>Description</b>
-                                </label>
-                                <textarea class="form-control" rows="5" id="hours" style="resize: none;"
-                                    formControlName="description"
-                                    [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['description'].errors }"></textarea>
-                                <div *ngIf="submitted && ProfileFormGroup.controls['description'].errors"
-                                    class="invalid-feedback">
-                                    <div *ngIf="ProfileFormGroup.controls['description'].errors['required']">Description
-                                        is required</div>
+
+                            <div class="col" style="padding-right: 6px;">
+                                <div class="col-md-12" style="margin-left:0; padding-left: 0;">
+                                    <label>Display Image</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="file" class="custom-file" id="businessDisplayImage"
+                                        (change)="onChangeBusinessDisplayImage($event)">
+                                    <label class="custom-file-label" for="businessDisplayImage">
+                                        Upload Image (Upto 1 MB)
+                                    </label>
+                                    <div style="width: 80%;background-color: #7DA3BA;height: 20%;margin-top: 1%;
+                                            border-radius: 21px;font-size: 65%;" class="progress-bar"
+                                        role="progressbar" [style.width]="uploadProgressBusinessDisplayImage"
+                                        aria-valuenow="uploadProgressBusinessDisplayImage" aria-valuemin="0"
+                                        aria-valuemax="100"
+                                        *ngIf="filePathBusinessDisplayImage != null && filePathBusinessDisplayImage !=undefined">
+                                        {{uploadProgressBusinessDisplayImage}}
+                                    </div>
+                                </div>
+                                <div class="col mt-2" *ngIf="filePathBusinessDisplayImage != null"
+                                    style="position: relative;">
+                                    <img src="{{filePathBusinessDisplayImage}}" height="70px" />
+                                    <mat-icon class="cancel-upload" (click)="cancelUploadBusinessDisplayImage()"
+                                        *ngIf="uploadProgressBusinessDisplayImage != undefined || (filePathBusinessDisplayImage != null && filePathBusinessDisplayImage !=undefined && filePathBusinessDisplayImage != '')"
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        cancel
+                                    </mat-icon>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <h4 class="ml-4">
-                                <b>Business Images</b>
-                            </h4>
-                            <div style="border-bottom: 1px solid #DADCDC;margin: 20px;"></div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <div class="business-images-header">
-                                                <img *ngIf="BusinessImageUrl1 != ''" src={{BusinessImageUrl1}} alt=""
-                                                    id="business-img1">
-                                                <div *ngIf="BusinessImageUrl1 == ''">
-                                                    <img src='' alt="" id="business-img1"
-                                                        style="border: 1px solid gray; height: 120px; width: 200px;">
-                                                </div>
-                                            </div>
-                                            <div class="business-images-header">
-                                                Use .jpg or .png Min 120px wide
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="business-images-header">
-                                            <img *ngIf="BusinessImageUrl2 != ''" src={{BusinessImageUrl2}} alt=""
-                                                id="business-img2">
-                                            <div *ngIf="BusinessImageUrl2 == ''">
-                                                <img src='' alt="" id="business-img2"
-                                                    style="border: 1px solid gray; height: 120px; width: 170px;">
-                                            </div>
-                                        </div>
-                                        <div class="business-images-header">
-                                            Use .jpg or .png Min 170px wide
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="col" style="margin-right: 10px;">
-                                    <div class="form-group">
-                                        <div class="form-group row">
-                                            <input type="file" class="custom-file" id="customFileLang"
-                                                text="Upload Image (Upto 1 MB)" (change)="onChange($event)">
-                                            <label class="custom-file-label" for="customFileLang">Upload Image (Upto 1
-                                                MB)
-                                            </label>
-                                            <b *ngIf="file != undefined ">{{file.name}}</b>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <input type="file" class="custom-file" id="customFileLang1"
-                                            text="Upload Image (Upto 1 MB)" (change)="onChange1($event)">
-                                        <label class="custom-file-label" for="customFileLang1">Upload Image (Upto 1 MB)
+                    <div class="col-md-4" style="padding-left: 6px;">
+                        <div class="col-md-12" style="margin-left: 0;padding-left: 0;margin-right: 0;padding-right: 0;">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <label for="hours">
+                                            Business Working Hours
                                         </label>
-                                        <b *ngIf="file1 != undefined">{{file1.name}}</b>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group" style="display: flex;">
-                                        <div style="width: 90%;background-color: #7DA3BA;" class="progress-bar"
-                                            role="progressbar" [style.width]="uploadProgress"
-                                            aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"
-                                            *ngIf="logoPath != null && logoPath !=undefined">
-                                            {{uploadProgress}}</div>
-                                        <mat-icon class="cancel-upload" (click)="onUpload()"
-                                            *ngIf="file != undefined && uploadProgress == undefined ">
-                                            cloud_upload</mat-icon>
-                                        <mat-icon class="cancel-upload" (click)="cancelUpload()"
-                                            *ngIf="uploadProgress !=  undefined || (logoPath != null && logoPath !=undefined && logoPath != '')"
-                                            style="color: red;">
-                                            delete_forever</mat-icon>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group" style="display: flex;">
-
-                                        <div style="width: 90%;background-color: #7DA3BA;" class="progress-bar"
-                                            role="progressbar" [style.width]="uploadProgress1"
-                                            aria-valuenow="uploadProgress1" aria-valuemin="0" aria-valuemax="100"
-                                            *ngIf="imagePath != null && imagePath !=undefined">
-                                            {{uploadProgress1}}</div>
-                                        <mat-icon class="cancel-upload" (click)="onUpload1()"
-                                            *ngIf="file1 != undefined && uploadProgress1 == undefined">
-                                            cloud_upload</mat-icon>
-                                        <mat-icon class="cancel-upload" (click)="cancelUpload1()"
-                                            *ngIf="uploadProgress1 !=  undefined || (imagePath != null && imagePath !=undefined && imagePath != '')"
-                                            style="color: red;">
-                                            delete_forever</mat-icon>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-12 pb-4">
-                            <h4 class="ml-4">
-                                <b>On the Web</b>
-                            </h4>
-                            <div style="border-bottom: 1px solid #DADCDC;margin: 20px;"></div>
-
-                            <div class="form-row">
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Website</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="websiteTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input type="text" class="form-control" id="website" formControlName="website">
-                                </div>
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Facebook URL</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="facebookURLTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input type="text" class="form-control" id="facebook-url"
-                                        formControlName="facebookUrl">
-                                </div>
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Twitter</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="facebookURLTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input type="text" class="form-control" id="twitter" placeholder="Username"
-                                        formControlName="twitterUrl">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Google + URL</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="googleURLTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input type="text" class="form-control" id="google-url" formControlName="googleUrl">
-                                </div>
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>instagram</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="facebookURLTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input type="text" class="form-control" id="instagram" placeholder="Username"
-                                        formControlName="instagramUrl">
-                                </div>
-                                <div class="col mt-2">
-                                    <label for="exampleInputEmail1">
-                                        <b>Yelp URL</b>
-                                    </label>
-                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="yelpURLTooltip"
-                                        style="vertical-align: middle;"></i>
-                                    <input type="text" class="form-control" id="yelp-url" formControlName="yelpUrl">
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-md-12 pb-4">
-                            <h4 class="ml-4" style="display: flex;">
-                                <b>Gallery Photos</b>
-                                <p style="margin-left:10px;">(You can upload maximum 4 photos,use .jpg or .png Min 120px
-                                    wide)</p>
-                            </h4>
-                            <div style="border-bottom: 1px solid #DADCDC;margin: 20px;"></div>
-                            <div class="form-row" style="margin: 10px;">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="form-group">
-                                            <input type="file" class="custom-file" id="GallerycustomFileLang"
-                                                text="Upload Image (Upto 1 MB)" (change)="onChangegallery($event)">
-                                            <label class="custom-file-label" for="GallerycustomFileLang">Upload Image
-                                                (Upto 1 MB)
+                                    <div class="col-md-5">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" [value]="ChkMakeDefaultTime"
+                                                id="defaultTiming" (change)="onChangeDefaultTime()">
+                                            <label class="form-check-label" for="defaultTiming">
+                                                Same for All
                                             </label>
-                                            <div>
-                                                <b *ngIf="filegallery != undefined ">{{filegallery.name}}</b>
-                                                <mat-icon class="cancel-upload" style="vertical-align: middle;"
-                                                    (click)="onUploadgallery()" *ngIf="filegallery != undefined && 
-                                                (galleryuploadProgress1 == undefined ||galleryuploadProgress2 == undefined ||galleryuploadProgress3 == undefined
-                                                ||galleryuploadProgress4 == undefined )">
-                                                    cloud_upload</mat-icon>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="business-images-header">
-                                            <img *ngIf="GalleryImageUrl1 != ''" src={{GalleryImageUrl1}} alt=""
-                                                id="business-gall">
-                                            <div *ngIf="GalleryImageUrl1 == ''">
-                                                <img src='' alt="" id="business-gall"
-                                                    style="border: 1px solid gray; height: 120px; width: 200px;">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Mon</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="monFromTime">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="monFromTime"
+                                                    formControlName="monFromTime">
                                             </div>
                                         </div>
-                                        <div class="form-group" style="display: flex;">
-                                            <div style="width: 90%;background-color: #7DA3BA;" class="progress-bar"
-                                                role="progressbar" [style.width]="galleryuploadProgress1"
-                                                aria-valuenow="galleryuploadProgress1" aria-valuemin="0"
-                                                aria-valuemax="100"
-                                                *ngIf="GalleryPath1 != null && GalleryPath1 !=undefined">
-                                                {{galleryuploadProgress1}}</div>
-                                            <mat-icon class="cancel-upload" (click)="cancelgallery1()"
-                                                *ngIf="galleryuploadProgress1 !=  undefined || (GalleryPath1 != null && GalleryPath1 !=undefined && GalleryPath1 != '')"
-                                                style="color: red;">
-                                                delete_forever</mat-icon>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="monTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="monTo"
+                                                    formControlName="monToTime">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="business-images-header">
-                                            <img *ngIf="GalleryImageUrl2 != ''" src={{GalleryImageUrl2}} alt=""
-                                                id="business-gall">
-                                            <div *ngIf="GalleryImageUrl2 == ''">
-                                                <img src='' alt="" id="business-gall"
-                                                    style="border: 1px solid gray; height: 120px; width: 200px;">
+                                <div class="row mt-2">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Tue</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="tueFrom">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="tueFrom"
+                                                    formControlName="tueFromTime">
                                             </div>
                                         </div>
-                                        <div class="form-group" style="display: flex;">
-                                            <div style="width: 90%;background-color: #7DA3BA;" class="progress-bar"
-                                                role="progressbar" [style.width]="galleryuploadProgress2"
-                                                aria-valuenow="galleryuploadProgress2" aria-valuemin="0"
-                                                aria-valuemax="100"
-                                                *ngIf="GalleryPath2 != null && GalleryPath2 !=undefined">
-                                                {{galleryuploadProgress2}}</div>
-                                            <mat-icon class="cancel-upload" (click)="cancelgallery2()"
-                                                *ngIf="galleryuploadProgress2 !=  undefined || (GalleryPath2 != null && GalleryPath2 !=undefined && GalleryPath2 != '')"
-                                                style="color: red;">
-                                                delete_forever</mat-icon>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="tueTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="tueTo"
+                                                    formControlName="tueToTime">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="business-images-header">
-                                            <img *ngIf="GalleryImageUrl3 != ''" src={{GalleryImageUrl3}} alt=""
-                                                id="business-gall">
-                                            <div *ngIf="GalleryImageUrl3 == ''">
-                                                <img src='' alt="" id="business-gall"
-                                                    style="border: 1px solid gray; height: 120px; width: 200px;">
+                                <div class="row mt-2">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Wed</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="wedFrom">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="wedFrom"
+                                                    formControlName="wedFromTime">
                                             </div>
                                         </div>
-                                        <div class="form-group" style="display: flex;">
-                                            <div style="width: 90%;background-color: #7DA3BA;" class="progress-bar"
-                                                role="progressbar" [style.width]="galleryuploadProgress3"
-                                                aria-valuenow="galleryuploadProgress3" aria-valuemin="0"
-                                                aria-valuemax="100"
-                                                *ngIf="GalleryPath3 != null && GalleryPath3 !=undefined">
-                                                {{galleryuploadProgress3}}</div>
-                                            <mat-icon class="cancel-upload" (click)="cancelgallery3()"
-                                                *ngIf="galleryuploadProgress3 !=  undefined || (GalleryPath3 != null && GalleryPath3 !=undefined && GalleryPath3 != '')"
-                                                style="color: red;">
-                                                delete_forever</mat-icon>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="wedTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="wedTo"
+                                                    formControlName="wedToTime">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <div class="business-images-header">
-                                            <img *ngIf="GalleryImageUrl4 != ''" src={{GalleryImageUrl4}} alt=""
-                                                id="business-gall">
-                                            <div *ngIf="GalleryImageUrl4 == ''">
-                                                <img src='' alt="" id="business-gall"
-                                                    style="border: 1px solid gray; height: 120px; width: 200px;">
+
+                                <div class="row mt-2">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Thu</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="thuFrom">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="thuFrom"
+                                                    formControlName="thuFromTime">
                                             </div>
                                         </div>
-                                        <div class="form-group" style="display: flex;">
-                                            <div style="width: 90%;background-color: #7DA3BA;" class="progress-bar"
-                                                role="progressbar" [style.width]="galleryuploadProgress4"
-                                                aria-valuenow="galleryuploadProgress4" aria-valuemin="0"
-                                                aria-valuemax="100"
-                                                *ngIf="GalleryPath4 != null && GalleryPath4 !=undefined">
-                                                {{uploadProgress}}</div>
-                                            <mat-icon class="cancel-upload" (click)="cancelgallery4()"
-                                                *ngIf="galleryuploadProgress4 !=  undefined || (GalleryPath4 != null && GalleryPath4 !=undefined && GalleryPath4 != '')"
-                                                style="color: red;">
-                                                delete_forever</mat-icon>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="thuTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="thuTo"
+                                                    formControlName="thuToTime">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row mt-2">
-                                <button class="btn btn-success" type="submit">
-                                    Save Changes
-                                </button>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Fri</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="friFrom">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="friFrom"
+                                                    formControlName="friFromTime">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="friTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="friTo"
+                                                    formControlName="friToTime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Sat</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="satFrom">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="satFrom"
+                                                    formControlName="satFromTime">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="satTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="satTo"
+                                                    formControlName="satToTime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-12 p-0 text-center d-flex">
+                                        <div class="col-md-1">
+                                            <label><b>Sun</b></label>
+                                        </div>
+
+                                        <div class="col-md-6 pr-0 text-center d-flex">
+                                            <div class="col-md-3"><label for="sunFrom">From: </label></div>
+                                            <div class="col-md-9 pr-0">
+                                                <input type="time" class="form-control" id="sunFrom"
+                                                    formControlName="sunFromTime">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5 p-0 text-center d-flex">
+                                            <div class="col-md-3 p-0"><label for="sunTo">To: </label></div>
+                                            <div class="col-md-9 p-0">
+                                                <input type="time" class="form-control" id="sunTo"
+                                                    formControlName="sunToTime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <div class="row" style="margin-bottom: 1%;">
+                    <div class="col-md-12">
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <div class="col-md-12" style="margin-left:0; padding-left: 0;">
+                                    <label>Image 1</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="file" class="custom-file" id="businessImage1"
+                                        (change)="onChangeBusinessImage1($event)">
+                                    <label class="custom-file-label" for="businessImage1">
+                                        Upload Image (Upto 1 MB)
+                                    </label>
+                                    <div style="width: 80%;background-color: #7DA3BA;height: 20%;margin-top: 1%;
+                                    border-radius: 21px;font-size: 65%;" class="progress-bar" role="progressbar"
+                                        [style.width]="uploadProgressBusinessImage1"
+                                        aria-valuenow="uploadProgressBusinessImage1" aria-valuemin="0"
+                                        aria-valuemax="100"
+                                        *ngIf="filePathBusinessImage1 != null && filePathBusinessImage1 !=undefined">
+                                        {{uploadProgressBusinessImage1}}
+                                    </div>
+                                </div>
+                                <div class="col" *ngIf="filePathBusinessImage1 != null" style="position: relative;">
+                                    <img src="{{filePathBusinessImage1}}" height="70px" />
+                                    <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage1()"
+                                        *ngIf="uploadProgressBusinessImage1 != undefined || (filePathBusinessImage1 != null && filePathBusinessImage1 !=undefined && filePathBusinessImage1 != '')"
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        cancel
+                                    </mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12" style="margin-left:0; padding-left: 0;">
+                                    <label>Image 2</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="file" class="custom-file" id="businessImage2"
+                                        (change)="onChangeBusinessImage2($event)">
+                                    <label class="custom-file-label" for="businessImage2">
+                                        Upload Image (Upto 1 MB)
+                                    </label>
+                                    <div style="width: 80%;background-color: #7DA3BA;height: 20%;margin-top: 1%;
+                                    border-radius: 21px;font-size: 65%;" class="progress-bar" role="progressbar"
+                                        [style.width]="uploadProgressBusinessImage2"
+                                        aria-valuenow="uploadProgressBusinessImage2" aria-valuemin="0"
+                                        aria-valuemax="100"
+                                        *ngIf="filePathBusinessImage2 != null && filePathBusinessImage2 !=undefined">
+                                        {{uploadProgressBusinessImage2}}
+                                    </div>
+                                </div>
+                                <div class="col" *ngIf="filePathBusinessImage2 != null" style="position: relative;">
+                                    <img src="{{filePathBusinessImage2}}" height="70px" />
+                                    <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage2()"
+                                        *ngIf="uploadProgressBusinessImage2 != undefined || (filePathBusinessImage2 != null && filePathBusinessImage2 !=undefined && filePathBusinessImage2 != '')"
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        cancel
+                                    </mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12" style="margin-left:0; padding-left: 0;">
+                                    <label>Image 3</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="file" class="custom-file" id="businessImage3"
+                                        (change)="onChangeBusinessImage3($event)">
+                                    <label class="custom-file-label" for="businessImage3">
+                                        Upload Image (Upto 1 MB)
+                                    </label>
+                                    <div style="width: 80%;background-color: #7DA3BA;height: 20%;margin-top: 1%;
+                                    border-radius: 21px;font-size: 65%;" class="progress-bar" role="progressbar"
+                                        [style.width]="uploadProgressBusinessImage3"
+                                        aria-valuenow="uploadProgressBusinessImage3" aria-valuemin="0"
+                                        aria-valuemax="100"
+                                        *ngIf="filePathBusinessImage3 != null && filePathBusinessImage3 !=undefined">
+                                        {{uploadProgressBusinessImage3}}
+                                    </div>
+                                </div>
+                                <div class="col" *ngIf="filePathBusinessImage3 != null" style="position: relative;">
+                                    <img src="{{filePathBusinessImage3}}" height="70px" />
+                                    <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage3()"
+                                        *ngIf="uploadProgressBusinessImage3 != undefined || (filePathBusinessImage3 != null && filePathBusinessImage3 !=undefined && filePathBusinessImage3 != '')"
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        cancel
+                                    </mat-icon>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="col-md-12" style="margin-left:0; padding-left: 0;">
+                                    <label>Image 4</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="file" class="custom-file" id="businessImage4"
+                                        (change)="onChangeBusinessImage4($event)">
+                                    <label class="custom-file-label" for="businessImage4">
+                                        Upload Image (Upto 1 MB)
+                                    </label>
+                                    <div style="width: 80%;background-color: #7DA3BA;height: 20%;margin-top: 1%;
+                                    border-radius: 21px;font-size: 65%;" class="progress-bar" role="progressbar"
+                                        [style.width]="uploadProgressBusinessImage4"
+                                        aria-valuenow="uploadProgressBusinessImage4" aria-valuemin="0"
+                                        aria-valuemax="100"
+                                        *ngIf="filePathBusinessImage4 != null && filePathBusinessImage4 !=undefined">
+                                        {{uploadProgressBusinessImage4}}
+                                    </div>
+                                </div>
+                                <div class="col" *ngIf="filePathBusinessImage4 != null" style="position: relative;">
+                                    <img src="{{filePathBusinessImage4}}" height="70px" />
+                                    <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage4()"
+                                        *ngIf="uploadProgressBusinessImage4 != undefined || (filePathBusinessImage4 != null && filePathBusinessImage4 !=undefined && filePathBusinessImage4 != '')"
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        cancel
+                                    </mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"
+                    style=" margin-bottom: 1%;display: flex;justify-content: center;align-items: center;width: 100%; ">
+                    <div class="btn-container" style="width: 10%;padding-bottom: 15px;">
+                        <button class="btn btn-success" type="submit" (click)="Submit()">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

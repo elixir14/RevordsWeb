@@ -60,6 +60,12 @@ const routes: Routes = [
           import('./demo/pages/tag-definition/tagdefinition.module').then((m) => m.TagdefinitionModule)
       },
       {
+        path: 'spinwheelSetting',
+        data: { preload: true, loadAfterSeconds: 2 },
+        loadChildren: () =>
+          import('./demo/pages/spinwheelSetting/spinwheelSetting.module').then((m) => m.SpinwheelSettingModule)
+      },
+      {
         path: 'activity',
         data: { preload: true, loadAfterSeconds: 2 },
         loadChildren: () =>

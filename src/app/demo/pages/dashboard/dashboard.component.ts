@@ -382,10 +382,6 @@ export class DashboardComponent implements OnInit {
     this.CumulativeBarchartData = [];
     this.isLoadingInsightChart = true;
 
-    console.log(start)
-    console.log(end)
-    console.log(type)
-
     await this._dashBoardservice.GetVisitorInsightsByBusinessGroupId(businessGroupID, type, start, end).subscribe({
       next: (data) => {
         this.barchartData = data['table1'];
@@ -1386,7 +1382,7 @@ export class DashboardComponent implements OnInit {
         series: this.chartOptions1Value,
         labels: this.chartOptions1label,
         chart: {
-          width: '100%',
+          width: '130%',
           type: "donut",
           height: 340,
           events: {

@@ -21,4 +21,11 @@ export class SpinWheelService {
                 return member;
             }));
     }
+
+    public PutSpinWheeldefaultConfigurationDetails(headerId, spinRequired, spinData) {
+        return this._http.put<any>(`${this.apiUrl}PutSpinWheeldefaultConfigurationDetails/${headerId}/${spinRequired}`, spinData )
+            .pipe(map(data => {
+                return data;
+            }));
+    }
 }

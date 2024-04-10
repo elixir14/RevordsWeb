@@ -27,11 +27,13 @@ export class AdminComponent implements OnInit {
   bussinessData: any = [];
   logoPath: any;
   selectedBusinessGroup: any = [];
+  isSpinRequired: any;
   _defaultOpts: { indexID: number, arctext: string, colorCode: string, probability: number, IsPoints: boolean }[] = [];
   // Constructor
   constructor(private zone: NgZone, private location: Location, private locationStrategy: LocationStrategy,
     private _commonService: CommonService, private _spinwheel: SpinWheelService,
     private _profileService: ProfileSettingService, private _Route: Router) {
+    this.isSpinRequired = JSON.parse(localStorage.getItem('IsSpinRequired'))
     this.getbusinessGroups();
     let current_url = this.location.path();
     if (this.location['_baseHref']) {
@@ -111,6 +113,7 @@ export class AdminComponent implements OnInit {
     localStorage.removeItem('selectedBusiness');
     localStorage.removeItem('Business');
     localStorage.removeItem('BusinessGroup');
+    localStorage.removeItem('OPTS');
     localStorage.removeItem('UserData');
     this._Route.navigate(['login']);
     // this.currentUserSubject.next(null);

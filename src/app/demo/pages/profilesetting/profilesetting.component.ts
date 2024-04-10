@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { ProfileSettingService } from '../../../services/ProfileSettingService';
 import { StateService } from '../../../services/StateService';
-import { stat } from 'fs';
 import { BusinessLabelService } from '../../../services/businessLabelService';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators'
 import { Subscription } from 'rxjs';
 import { FileUploadService } from '../../../services/fileuploadservie';
 import { HttpEventType } from '@angular/common/http';
 import { AppSettings } from '../../../services/Constants';
 import { ToastService } from '../../../services/ToastService';
 import * as moment from "moment";
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { GoogleMapsService } from '../../../services/google-maps.service'
+import { PromotionService } from 'src/app/services/PromotionService';
 
 @Component({
   selector: 'app-profilesetting',
@@ -20,68 +20,101 @@ import * as moment from "moment";
 })
 export class ProfilesettingComponent {
   businessGroupID: any;
+  businessLocationID: number = 0;
   businessID: any;
   countryID: number = 2;
-  app: any;
-  x: any;
+  industry: any = '';
   labelsReq: any = false;
-  businessNameTooltip: string = "You can contact Support to change your business name";
-  shortNameTooltip: string = "We use your business short name when sending out mobile campaigns and some places on the website. You can contact Support to change your business short name";
-  hoursTooltip: string = "One day per line.";
-  industryTooltip: string = "Choosing an Industry helps us cater the Revords program better to your unique business. You can contact Support to change your Industry";
-  businessLabelsTooltip: string = "Accurate and specific labels help customers find your business easier.";
-  websiteTooltip: string = "The full URL! This includes the http:// or https:// at the beginning for the best SEO results.";
-  facebookURLTooltip: string = "The full URL! This includes the http:// or https:// at the beginning for the best SEO results.";
-  googleURLTooltip: string = "The full URL! This includes the http:// or https:// at the beginning for the best SEO results.";
-  yelpURLTooltip: string = "The full URL! This includes the http:// or https:// at the beginning for the best SEO results.";
   states: any = [];
   businessLabels: any = [];
   ProfileFormGroup: FormGroup;
   selectedBusiness: { id: number, name: string }[] = [];
   filteredBusiness: any = [];
-  file: File = null;
-  file1: File = null;
-  uploadProgress: any = undefined;
-  uploadProgress1: any = undefined;
-  uploadSub: Subscription;
-  uploadSub1: Subscription;
-  loadingLoading: boolean = false;
-  isfileUploaded = false;
-  isfileUploaded1 = false;
-  filegallery: File = null;
-  galleryuploadSub: Subscription;
-  galleryuploadProgress1: any = undefined;
-  GalleryImageUrl1: any;
-  GalleryPath1: any;
-  galleryuploadProgress2: any = undefined;
-  GalleryImageUrl2: any;
-  GalleryPath2: any;
-  galleryuploadProgress3: any = undefined;
-  GalleryImageUrl3: any;
-  GalleryPath3: any;
-  galleryuploadProgress4: any = undefined;
-  GalleryImageUrl4: any;
-  GalleryPath4: any;
   submitted = false;
   isLoading = false;
-  imagePath: any;
-  logoPath: any;
   latitude: any;
   longitude: any;
   uniqueId: any;
-  id: any;
   dataSource: any;
   labels: any;
-  workingHoursID: any;
   iseditmode: any = false;
-  workingHoursUniqueID: any;
-  BusinessImageUrl1: any;
-  BusinessImageUrl2: any;
   isAgeRestriction: Boolean = false;
+  ChkMakeDefaultTime = false;
+  dropdownSettingsSingleState: IDropdownSettings = {};
+  statesData: any = [];
+
+  @ViewChild('search') searchElementRef: ElementRef;
+
+  //#region Business Logo variables
+  fileBusinessLogo: File;
+  uploadProgressBusinessLogo: any;
+  loadingBusinessLogo: boolean = false;
+  uploadSubBusinessLogo: Subscription;
+  isfileUploadedBusinessLogo = false;
+  annImageBusinessLogo: any;
+  fileNameBusinessLogo: any = null;
+  filePathBusinessLogo: any = null;
+  //#endregion
+
+
+  //#region Business Display Image
+  fileBusinessDisplayImage: File;
+  uploadProgressBusinessDisplayImage: any;
+  loadingBusinessDisplayImage: boolean = false;
+  uploadSubBusinessDisplayImage: Subscription;
+  isfileUploadedBusinessDisplayImage = false;
+  annImageBusinessDisplayImage: any;
+  fileNameBusinessDisplayImage: any = null;
+  filePathBusinessDisplayImage: any = null;
+  //#endregion
+
+  //#region Business Image 1
+  fileBusinessImage1: File;
+  uploadProgressBusinessImage1: any;
+  loadingBusinessImage1: boolean = false;
+  uploadSubBusinessImage1: Subscription;
+  isfileUploadedBusinessImage1 = false;
+  annImageBusinessImage1: any;
+  fileNameBusinessImage1: any = null;
+  filePathBusinessImage1: any = null;
+  //#endregion
+
+  //#region Business Image 2
+  fileBusinessImage2: File;
+  uploadProgressBusinessImage2: any;
+  loadingBusinessImage2: boolean = false;
+  uploadSubBusinessImage2: Subscription;
+  isfileUploadedBusinessImage2 = false;
+  annImageBusinessImage2: any;
+  fileNameBusinessImage2: any = null;
+  filePathBusinessImage2: any = null;
+  //#endregion
+
+  //#region Business Image 3
+  fileBusinessImage3: File;
+  uploadProgressBusinessImage3: any;
+  loadingBusinessImage3: boolean = false;
+  uploadSubBusinessImage3: Subscription;
+  isfileUploadedBusinessImage3 = false;
+  annImageBusinessImage3: any;
+  fileNameBusinessImage3: any = null;
+  filePathBusinessImage3: any = null;
+  //#endregion
+
+  //#region Business Image 4
+  fileBusinessImage4: File;
+  uploadProgressBusinessImage4: any;
+  loadingBusinessImage4: boolean = false;
+  uploadSubBusinessImage4: Subscription;
+  isfileUploadedBusinessImage4 = false;
+  annImageBusinessImage4: any;
+  fileNameBusinessImage4: any = null;
+  filePathBusinessImage4: any = null;
+  //#endregion
 
   constructor(private profileSettingService: ProfileSettingService, private stateService: StateService,
-    private businessLabelService: BusinessLabelService, private uploadService: FileUploadService,
-    public toastService: ToastService) {
+    private businessLabelService: BusinessLabelService, private uploadService: PromotionService,
+    public toastService: ToastService, private googleMapsService: GoogleMapsService, private ngZone: NgZone) {
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
     this.ProfileFormGroup = new FormGroup({
       businessName: new FormControl('', Validators.required),
@@ -91,7 +124,6 @@ export class ProfilesettingComponent {
       stateCodeId: new FormControl('', Validators.required),
       phoneNo: new FormControl('', Validators.required),
       pinCode: new FormControl('', Validators.required),
-      industry: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       label: new FormControl(''),
       website: new FormControl(''),
@@ -119,122 +151,400 @@ export class ProfilesettingComponent {
     this.ProfileFormGroup.controls['businessName'].disable();
     this.ProfileFormGroup.controls['shortName'].disable();
   }
+
   ngOnInit() {
     this.GetStatesByCountryID();
     this.GetBusinessLabelsByBusinessID();
     this.GetBusinessProfilesByGroupID();
+    this.getStates();
+    this.dropdownSettingsSingleState = {
+      idField: 'id',
+      textField: 'name',
+      singleSelection: true
+    }
   }
+
+  //#region BusinessLogo
+  onChangeBusinessLogo(event: any) {
+    this.fileBusinessLogo = event.target.files[0];
+
+    if (this.fileBusinessLogo) {
+      this.loadingBusinessLogo = true;
+      this.uploadSubBusinessLogo = this.uploadService.uploadFile(this.fileBusinessLogo).subscribe((event: any) => {
+        console.log(event);
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgressBusinessLogo = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+        }
+        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+          this.loadingBusinessLogo = false; // Flag variable
+          this.isfileUploadedBusinessLogo = true;
+          this.annImageBusinessLogo = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileBusinessLogo.name;
+          let array = event.partialText.split('|')[1].split('\\');
+          this.fileNameBusinessLogo = array[array.length - 1];
+          this.filePathBusinessLogo = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileNameBusinessLogo;
+        } else {
+          this.loadingBusinessLogo = false;
+          this.isfileUploadedBusinessLogo = false;
+        }
+      });
+    }
+    this.loadingBusinessLogo = false;
+  }
+
+  cancelUploadBusinessLogo() {
+    if (this.uploadSubBusinessLogo != null) {
+      this.uploadSubBusinessLogo.unsubscribe();
+    }
+    this.uploadProgressBusinessLogo = "0%";
+    this.isfileUploadedBusinessLogo = false;
+    this.fileNameBusinessLogo = 'Upload Image (Upto 1 MB)';
+    this.resetBusinessLogoDetails();
+  }
+  resetBusinessLogoDetails() {
+    this.fileBusinessLogo = null;
+    this.filePathBusinessLogo = null;
+    this.uploadProgressBusinessLogo = null;
+    this.uploadSubBusinessLogo = null;
+  }
+  //#endregion
+
+
+  //#region BusinessDisplayImage
+  onChangeBusinessDisplayImage(event: any) {
+    this.fileBusinessDisplayImage = event.target.files[0];
+
+    if (this.fileBusinessDisplayImage) {
+      this.loadingBusinessDisplayImage = true;
+      this.uploadSubBusinessDisplayImage = this.uploadService.uploadFile(this.fileBusinessDisplayImage).subscribe((event: any) => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgressBusinessDisplayImage = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+        }
+        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+          this.loadingBusinessDisplayImage = false; // Flag variable
+          this.isfileUploadedBusinessDisplayImage = true;
+          this.annImageBusinessDisplayImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileBusinessDisplayImage.name;
+          let array = event.partialText.split('|')[1].split('\\');
+          this.fileNameBusinessDisplayImage = array[array.length - 1];
+          this.filePathBusinessDisplayImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileNameBusinessDisplayImage;
+        } else {
+          this.loadingBusinessDisplayImage = false;
+          this.isfileUploadedBusinessDisplayImage = false;
+        }
+      });
+    }
+    this.loadingBusinessDisplayImage = false;
+  }
+
+  cancelUploadBusinessDisplayImage() {
+    if (this.uploadSubBusinessDisplayImage != null) {
+      this.uploadSubBusinessDisplayImage.unsubscribe();
+    }
+    this.uploadProgressBusinessDisplayImage = "0%";
+    this.isfileUploadedBusinessDisplayImage = false;
+    this.fileNameBusinessDisplayImage = 'Upload Image (Upto 1 MB)';
+    this.resetBusinessDisplayImageDetails();
+  }
+
+  resetBusinessDisplayImageDetails() {
+    this.fileBusinessDisplayImage = null;
+    this.filePathBusinessDisplayImage = null;
+    this.uploadProgressBusinessDisplayImage = null;
+    this.uploadSubBusinessDisplayImage = null;
+  }
+  //#endregion
+
+
+  //#region BusinessImage1
+  onChangeBusinessImage1(event: any) {
+    this.fileBusinessImage1 = event.target.files[0];
+
+    if (this.fileBusinessImage1) {
+      this.loadingBusinessImage1 = true;
+      this.uploadSubBusinessImage1 = this.uploadService.uploadFile(this.fileBusinessImage1).subscribe((event: any) => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgressBusinessImage1 = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+        }
+        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+          this.loadingBusinessImage1 = false; // Flag variable
+          this.isfileUploadedBusinessImage1 = true;
+          this.annImageBusinessImage1 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileBusinessImage1.name;
+          let array = event.partialText.split('|')[1].split('\\');
+          this.fileNameBusinessImage1 = array[array.length - 1];
+          this.filePathBusinessImage1 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileNameBusinessImage1;
+        } else {
+          this.loadingBusinessImage1 = false;
+          this.isfileUploadedBusinessImage1 = false;
+        }
+      });
+    }
+    this.loadingBusinessImage1 = false;
+  }
+
+  cancelUploadBusinessImage1() {
+    if (this.uploadSubBusinessImage1 != null) {
+      this.uploadSubBusinessImage1.unsubscribe();
+    }
+    this.uploadProgressBusinessImage1 = "0%";
+    this.isfileUploadedBusinessImage1 = false;
+    this.fileNameBusinessImage1 = 'Upload Image (Upto 1 MB)';
+    this.resetBusinessImage1Details();
+  }
+
+  resetBusinessImage1Details() {
+    this.fileBusinessImage1 = null;
+    this.filePathBusinessImage1 = null;
+    this.uploadProgressBusinessImage1 = null;
+    this.uploadSubBusinessImage1 = null;
+  }
+  //#endregion
+
+  //#region BusinessImage2
+  onChangeBusinessImage2(event: any) {
+    this.fileBusinessImage2 = event.target.files[0];
+
+    if (this.fileBusinessImage2) {
+      this.loadingBusinessImage2 = true;
+      this.uploadSubBusinessImage2 = this.uploadService.uploadFile(this.fileBusinessImage2).subscribe((event: any) => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgressBusinessImage2 = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+        }
+        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+          this.loadingBusinessImage2 = false; // Flag variable
+          this.isfileUploadedBusinessImage2 = true;
+          this.annImageBusinessImage2 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileBusinessImage2.name;
+          let array = event.partialText.split('|')[1].split('\\');
+          this.fileNameBusinessImage2 = array[array.length - 1];
+          this.filePathBusinessImage2 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileNameBusinessImage2;
+        } else {
+          this.loadingBusinessImage2 = false;
+          this.isfileUploadedBusinessImage2 = false;
+        }
+      });
+    }
+    this.loadingBusinessImage2 = false;
+  }
+
+  cancelUploadBusinessImage2() {
+    if (this.uploadSubBusinessImage2 != null) {
+      this.uploadSubBusinessImage2.unsubscribe();
+    }
+    this.uploadProgressBusinessImage2 = "0%";
+    this.isfileUploadedBusinessImage2 = false;
+    this.fileNameBusinessImage2 = 'Upload Image (Upto 1 MB)';
+    this.resetBusinessImage2Details();
+  }
+
+  resetBusinessImage2Details() {
+    this.fileBusinessImage2 = null;
+    this.filePathBusinessImage2 = null;
+    this.uploadProgressBusinessImage2 = null;
+    this.uploadSubBusinessImage2 = null;
+  }
+  //#endregion
+
+  //#region BusinessImage3
+  onChangeBusinessImage3(event: any) {
+    this.fileBusinessImage3 = event.target.files[0];
+
+    if (this.fileBusinessImage3) {
+      this.loadingBusinessImage3 = true;
+      this.uploadSubBusinessImage3 = this.uploadService.uploadFile(this.fileBusinessImage3).subscribe((event: any) => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgressBusinessImage3 = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+        }
+        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+          this.loadingBusinessImage3 = false; // Flag variable
+          this.isfileUploadedBusinessImage3 = true;
+          this.annImageBusinessImage3 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileBusinessImage3.name;
+          let array = event.partialText.split('|')[1].split('\\');
+          this.fileNameBusinessImage3 = array[array.length - 1];
+          this.filePathBusinessImage3 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileNameBusinessImage3;
+        } else {
+          this.loadingBusinessImage3 = false;
+          this.isfileUploadedBusinessImage3 = false;
+        }
+      });
+    }
+    this.loadingBusinessImage3 = false;
+  }
+
+  cancelUploadBusinessImage3() {
+    if (this.uploadSubBusinessImage3 != null) {
+      this.uploadSubBusinessImage3.unsubscribe();
+    }
+    this.uploadProgressBusinessImage3 = "0%";
+    this.isfileUploadedBusinessImage3 = false;
+    this.fileNameBusinessImage3 = 'Upload Image (Upto 1 MB)';
+    this.resetBusinessImage3Details();
+  }
+
+  resetBusinessImage3Details() {
+    this.fileBusinessImage3 = null;
+    this.filePathBusinessImage3 = null;
+    this.uploadProgressBusinessImage3 = null;
+    this.uploadSubBusinessImage3 = null;
+  }
+  //#endregion
+
+  //#region BusinessImage4
+  onChangeBusinessImage4(event: any) {
+    this.fileBusinessImage4 = event.target.files[0];
+
+    if (this.fileBusinessImage4) {
+      this.loadingBusinessImage4 = true;
+      this.uploadSubBusinessImage4 = this.uploadService.uploadFile(this.fileBusinessImage4).subscribe((event: any) => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgressBusinessImage4 = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+        }
+        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+          this.loadingBusinessImage4 = false; // Flag variable
+          this.isfileUploadedBusinessImage4 = true;
+          this.annImageBusinessImage4 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileBusinessImage4.name;
+          let array = event.partialText.split('|')[1].split('\\');
+          this.fileNameBusinessImage4 = array[array.length - 1];
+          this.filePathBusinessImage4 = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileNameBusinessImage4;
+        } else {
+          this.loadingBusinessImage4 = false;
+          this.isfileUploadedBusinessImage4 = false;
+        }
+      });
+    }
+    this.loadingBusinessImage4 = false;
+  }
+
+  cancelUploadBusinessImage4() {
+    if (this.uploadSubBusinessImage4 != null) {
+      this.uploadSubBusinessImage4.unsubscribe();
+    }
+    this.uploadProgressBusinessImage4 = "0%";
+    this.isfileUploadedBusinessImage4 = false;
+    this.fileNameBusinessImage4 = 'Upload Image (Upto 1 MB)';
+    this.resetBusinessImage4Details();
+  }
+
+  resetBusinessImage4Details() {
+    this.fileBusinessImage4 = null;
+    this.filePathBusinessImage4 = null;
+    this.uploadProgressBusinessImage4 = null;
+    this.uploadSubBusinessImage4 = null;
+  }
+  //#endregion
+
+
+  getStates() {
+    this.stateService.GetStates().subscribe({
+      next: (data: any) => {
+        this.statesData = data;
+      },
+      error: (error: any) => {
+        console.log("This is error message", error)
+      }
+    })
+  }
+
   Cancle() {
     this.iseditmode = false;
     this.businessID = 0;
     this.isAgeRestriction = false;
   }
+
   GetBusinessProfilesByGroupID() {
     this.profileSettingService.GetBusinessProfilesByGroupID(this.businessGroupID.id).pipe().subscribe((data) => {
       this.dataSource = data;
       console.log(this.dataSource);
     })
   }
-  GetBusinessProfile(bID) {
-    this.businessID = bID;
-    this.profileSettingService.GetBusinessProfilesByID(bID).pipe().subscribe((data) => {      
-      this.isAgeRestriction = data.isAgeRestriction;
-      console.log(data);
-      this.ProfileFormGroup.controls['businessName'].setValue(data["legalName"]);
-      this.ProfileFormGroup.controls['shortName'].setValue(data["businessName"]);
-      this.ProfileFormGroup.controls['address'].setValue(data["adress"]);
-      this.ProfileFormGroup.controls['city'].setValue(data["city"]);
-      this.ProfileFormGroup.controls['stateCodeId'].setValue(data['stateCodeID']);
-      this.ProfileFormGroup.controls['phoneNo'].setValue(data["phoneNo"]);
-      this.ProfileFormGroup.controls['pinCode'].setValue(data["pinCode"]);
-      this.ProfileFormGroup.controls['industry'].setValue(data["industry"]);
-      this.ProfileFormGroup.controls['description'].setValue(data["descriptions"]);
-      this.ProfileFormGroup.controls['website'].setValue(data["website"]);
-      this.ProfileFormGroup.controls['facebookUrl'].setValue(data["facebookUrl"]);
-      this.ProfileFormGroup.controls['twitterUrl'].setValue(data["twitterUrl"]);
-      this.ProfileFormGroup.controls['googleUrl'].setValue(data["googleUrl"]);
-      this.ProfileFormGroup.controls['instagramUrl'].setValue(data["instagramUrl"]);
-      this.ProfileFormGroup.controls['yelpUrl'].setValue(data["yelpUrl"]);
-      if (data['imagePath'] != null && data['imagePath'] != "") {
-        this.BusinessImageUrl2 = AppSettings.API_ENDPOINT + "/" + data['imagePath'].replace(" ", "%20");
-      }
-      if (data['logoPath'] != null && data['logoPath'] != "") {
-        this.BusinessImageUrl1 = AppSettings.API_ENDPOINT + "/" + data['logoPath'].replace(" ", "%20");
-      }
-      if (data['galleryImagePath1'] != null && data['galleryImagePath1'] != "") {
-        this.GalleryImageUrl1 = AppSettings.API_ENDPOINT + "/" + data['galleryImagePath1'].replace(" ", "%20");
-      }
-      if (data['galleryImagePath2'] != null && data['galleryImagePath2'] != "") {
-        this.GalleryImageUrl2 = AppSettings.API_ENDPOINT + "/" + data['galleryImagePath2'].replace(" ", "%20");
-      }
-      if (data['galleryImagePath3'] != null && data['galleryImagePath3'] != "") {
-        this.GalleryImageUrl3 = AppSettings.API_ENDPOINT + "/" + data['galleryImagePath3'].replace(" ", "%20");
-      }
-      if (data['galleryImagePath4'] != null && data['galleryImagePath4'] != "") {
-        this.GalleryImageUrl4 = AppSettings.API_ENDPOINT + "/" + data['galleryImagePath4'].replace(" ", "%20");
-      }
-      this.logoPath = data['logoPath'];
-      this.imagePath = data['imagePath'];
-      this.GalleryPath1 = data['galleryImagePath1'];
-      this.GalleryPath2 = data['galleryImagePath2'];
-      this.GalleryPath3 = data['galleryImagePath3'];
-      this.GalleryPath4 = data['galleryImagePath4'];
-      this.latitude = data['latitude'];
-      this.longitude = data['longitude'];
-      this.uniqueId = data['uniqueId'];
-      this.id = data['id'];
-      this.labels = this.GetBusinessLabelsForEdit(data['businesswiseLabels']);
-      this.BindBusinessWorkingDays(data['businesswiseWorkingDays']);
-      this.selectedBusiness = [];
-      this.labels.forEach(element => {
-        this.selectedBusiness.push({
-          id: element.labelID,
-          name: this.businessLabels.filter(x => x.id == element.labelID)[0].name
-        })
-      });
-      // document.getElementById("dLabel").innerText = this.states.filter(x => x.id == data['stateCodeID'])[0].name;
-      console.log(data);
 
+  Edit(e) {
+    this.profileSettingService.GetBusinessProfilesByID(e.id).subscribe({
+      next: (data: any) => {
+        console.log("This is my data", data);
+        this.businessLocationID = e.id;
+        this.latitude = data.latitude;
+        this.longitude = data.longitude;
+        this.industry = data.industry;
+
+        this.ProfileFormGroup.controls['businessName'].setValue(data.legalName);
+        this.ProfileFormGroup.controls['shortName'].setValue(data.businessName);
+        this.ProfileFormGroup.controls['phoneNo'].setValue(data.phoneNo);
+        this.ProfileFormGroup.controls['address'].setValue(data.adress);
+        this.ProfileFormGroup.controls['city'].setValue(data.city);
+        let selectedState: { id: any, name: any }[] = [];
+        selectedState.push({
+          id: data.stateCodeID,
+          name: this.statesData.filter(x => x.id == data.stateCodeID)[0].name
+        });
+        this.ProfileFormGroup.controls['stateCodeId'].setValue(selectedState);
+
+        this.ProfileFormGroup.controls['pinCode'].setValue(data.pinCode);
+        this.ProfileFormGroup.controls['description'].setValue(data.descriptions);
+        this.ProfileFormGroup.controls['website'].setValue(data.website);
+        this.ProfileFormGroup.controls['facebookUrl'].setValue(data.facebookUrl);
+        this.ProfileFormGroup.controls['twitterUrl'].setValue(data.twitterUrl);
+        this.ProfileFormGroup.controls['googleUrl'].setValue(data.googleUrl);
+        this.ProfileFormGroup.controls['instagramUrl'].setValue(data.instagramUrl);
+        this.ProfileFormGroup.controls['yelpUrl'].setValue(data.yelpUrl);
+        this.ProfileFormGroup.controls['monFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].monFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].monFromTime).getMinutes());
+        this.ProfileFormGroup.controls['monToTime'].setValue(new Date(data.businesswiseWorkingDays[0].monToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].monToTime).getMinutes());
+        this.ProfileFormGroup.controls['tueFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].tueFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].tueFromTime).getMinutes());
+        this.ProfileFormGroup.controls['tueToTime'].setValue(new Date(data.businesswiseWorkingDays[0].tueToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].tueToTime).getMinutes());
+        this.ProfileFormGroup.controls['wedFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].wedFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].wedFromTime).getMinutes());
+        this.ProfileFormGroup.controls['wedToTime'].setValue(new Date(data.businesswiseWorkingDays[0].wedToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].wedToTime).getMinutes());
+        this.ProfileFormGroup.controls['thuFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].thuFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].thuFromTime).getMinutes());
+        this.ProfileFormGroup.controls['thuToTime'].setValue(new Date(data.businesswiseWorkingDays[0].thuToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].thuToTime).getMinutes());
+        this.ProfileFormGroup.controls['friFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].friFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].friFromTime).getMinutes());
+        this.ProfileFormGroup.controls['friToTime'].setValue(new Date(data.businesswiseWorkingDays[0].friToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].friToTime).getMinutes());
+        this.ProfileFormGroup.controls['satFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].satFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].satFromTime).getMinutes());
+        this.ProfileFormGroup.controls['satToTime'].setValue(new Date(data.businesswiseWorkingDays[0].satToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].satToTime).getMinutes());
+        this.ProfileFormGroup.controls['sunFromTime'].setValue(new Date(data.businesswiseWorkingDays[0].sunFromTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].sunFromTime).getMinutes());
+        this.ProfileFormGroup.controls['sunToTime'].setValue(new Date(data.businesswiseWorkingDays[0].sunToTime).getHours() + ':' +
+          new Date(data.businesswiseWorkingDays[0].sunToTime).getMinutes());
+        this.iseditmode = true;
+
+        // BusinessLabelID: ['', Validators.required],
+        let labels = this.GetBusinessLabelsForEdit(data['businesswiseLabels']);
+        this.selectedBusiness = [];
+        labels.forEach(element => {
+          this.selectedBusiness.push({
+            id: element.labelID,
+            name: this.businessLabels.filter(x => x.id == element.labelID)[0].name
+          })
+        });
+      },
+      error: (error: any) => {
+
+      }
     })
   }
-  Edit(item) {
-    console.log(item);
-    this.file = null;
-    this.file1 = null;
-    this.filegallery = null;
-    this.uploadProgress = undefined;
-    this.uploadProgress1 = undefined;
-    this.galleryuploadProgress1 = undefined;
-    this.galleryuploadProgress2 = undefined;
-    this.galleryuploadProgress3 = undefined;
-    this.galleryuploadProgress4 = undefined;
-    this.BusinessImageUrl1 = '';
-    this.BusinessImageUrl2 = '';
-    this.GalleryImageUrl1 = '';
-    this.GalleryImageUrl2 = '';
-    this.GalleryImageUrl3 = '';
-    this.GalleryImageUrl4 = '';
-    this.GetBusinessProfile(item.id);
-    this.iseditmode = true;
-    if (this.imagePath != '') {
-      this.uploadProgress1 = "100%";
+
+  selectBusiness(id: any) {
+    if (this.selectedBusiness.length == 5) {
+      this.toastService.show("You can select upto 5 Business labels only !")
+      return;
     }
-    if (this.logoPath != '') {
-      this.uploadProgress = "100%";
-    }
-    if (this.GalleryPath1 != '') {
-      this.galleryuploadProgress1 = "100%";
-    }
-    if (this.GalleryPath2 != '') {
-      this.galleryuploadProgress2 = "100%";
-    }
-    if (this.GalleryPath3 != '') {
-      this.galleryuploadProgress3 = "100%";
-    }
-    if (this.GalleryPath4 != '') {
-      this.galleryuploadProgress4 = "100%";
+
+    if (this.selectedBusiness.filter(x => x.id == id).length == 0) {
+      this.ProfileFormGroup.controls['label'].setValue('');
+      this.selectedBusiness.push({
+        id: id,
+        name: this.businessLabels.filter(x => x.id == id)[0].name
+      })
     }
   }
+
   GetBusinessLabelsForEdit(data: any) {
     let details = [];
     data.forEach((element: any) => {
@@ -290,11 +600,6 @@ export class ProfilesettingComponent {
     })
   }
 
-  selectState(state: any) {
-    // document.getElementById("dLabel").innerText = state.name;
-    this.ProfileFormGroup.controls['stateCodeId'].setValue(state.id)
-  }
-
   businessLabelOnChange() {
     if (this.ProfileFormGroup.controls["label"].value.length >= 2) {
       this.filteredBusiness = this.filteredBusiness.filter(x => x.name.toLowerCase().includes(this.ProfileFormGroup.controls['label'].value.toLowerCase()));
@@ -304,221 +609,6 @@ export class ProfilesettingComponent {
     }
   }
 
-  selectBusiness(id: any) {
-    if (this.selectedBusiness.filter(x => x.id == id).length == 0) {
-      this.ProfileFormGroup.controls['label'].setValue('');
-      this.selectedBusiness.push({
-        id: id,
-        name: this.businessLabels.filter(x => x.id == id)[0].name
-      })
-    }
-  }
-
-  removeBusiness(id: any) {
-    this.selectedBusiness = this.selectedBusiness.filter(x => x.id != id);
-  }
-  onChangegallery(event) {
-    this.filegallery = event.target.files[0];
-  }
-  onUploadgallery() {
-    this.loadingLoading = true;
-    // this.galleryuploadProgress1 = "100";
-    if (this.filegallery) {
-      this.loadingLoading = true;
-      this.galleryuploadSub = this.uploadService.uploadBusinessImage(this.filegallery).subscribe((event: any) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          let ProgressValue = Math.round(100 * (event.loaded / event.total)).toString() + "%";
-          if (this.galleryuploadProgress1 == null || this.galleryuploadProgress1 == "" || this.galleryuploadProgress1 == 'undefined') {
-            this.galleryuploadProgress1 = ProgressValue;
-          }
-          else if (this.galleryuploadProgress2 == null || this.galleryuploadProgress2 == "" || this.galleryuploadProgress2 == 'undefined') {
-            this.galleryuploadProgress2 = ProgressValue;
-          }
-          else if (this.galleryuploadProgress3 == null || this.galleryuploadProgress3 == "" || this.galleryuploadProgress3 == 'undefined') {
-            this.galleryuploadProgress3 = ProgressValue;
-          }
-          else if (this.galleryuploadProgress4 == null || this.galleryuploadProgress4 == "" || this.galleryuploadProgress4 == 'undefined') {
-            this.galleryuploadProgress4 = ProgressValue;
-          }
-        }
-        if (event.partialText == "file uploaded") {
-          this.loadingLoading = false; // Flag variable
-          this.isfileUploaded = true;
-
-          // Add code for preview uploaded image by shahi
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-            if (this.GalleryPath1 == null || this.GalleryPath1 == "" || this.GalleryPath1 == 'undefined') {
-              this.GalleryPath1 = this.filegallery.name;
-              this.GalleryImageUrl1 = e.target.result;
-            }
-            else if (this.GalleryPath2 == null || this.GalleryPath2 == "" || this.GalleryPath2 == 'undefined') {
-              this.GalleryPath2 = this.filegallery.name;
-              this.GalleryImageUrl2 = e.target.result;
-            }
-            else if (this.GalleryPath3 == null || this.GalleryPath3 == "" || this.GalleryPath3 == 'undefined') {
-              this.GalleryPath3 = this.filegallery.name;
-              this.GalleryImageUrl3 = e.target.result;
-            }
-            else if (this.GalleryPath4 == null || this.GalleryPath4 == "" || this.GalleryPath4 == 'undefined') {
-              this.GalleryPath4 = this.filegallery.name;
-              this.GalleryImageUrl4 = e.target.result;
-            }
-          };
-          reader.readAsDataURL(this.filegallery);
-
-        }
-        else {
-          this.loadingLoading = false;
-          this.isfileUploaded = false;
-        }
-      });
-    }
-    this.loadingLoading = false;
-  }
-  cancelgallery1() {
-    if (this.galleryuploadSub) {
-      this.galleryuploadSub.unsubscribe();
-    }
-    this.filegallery = null;
-    this.galleryuploadProgress1 = null;
-    this.galleryuploadSub = null;
-    this.GalleryImageUrl1 = '';
-    this.GalleryPath1 = null;
-  }
-  cancelgallery2() {
-    if (this.galleryuploadSub) {
-      this.galleryuploadSub.unsubscribe();
-    }
-    this.galleryuploadSub = null;
-    this.filegallery = null;
-    this.galleryuploadProgress2 = null;
-    this.GalleryImageUrl2 = '';
-    this.GalleryPath2 = null;
-  }
-  cancelgallery3() {
-    if (this.galleryuploadSub) {
-      this.galleryuploadSub.unsubscribe();
-    }
-    this.galleryuploadSub = null;
-    this.filegallery = null;
-    this.galleryuploadProgress3 = null;
-    this.GalleryImageUrl3 = '';
-    this.GalleryPath3 = null;
-  }
-  cancelgallery4() {
-    if (this.galleryuploadSub) {
-      this.galleryuploadSub.unsubscribe();
-    }
-    this.galleryuploadSub = null;
-    this.filegallery = null;
-    this.galleryuploadProgress4 = null;
-    this.GalleryImageUrl4 = '';
-    this.GalleryPath4 = null;
-  }
-
-  onChange(event) {
-    this.file = event.target.files[0];
-  }
-
-  onUpload() {
-    this.loadingLoading = true;
-    this.uploadProgress = "100";
-    if (this.file) {
-      this.loadingLoading = true;
-      this.uploadSub = this.uploadService.uploadBusinessImage(this.file).subscribe((event: any) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
-        }
-        if (event.partialText == "file uploaded") {
-          this.loadingLoading = false; // Flag variable
-          this.isfileUploaded = true;
-
-          // Add code for preview uploaded image by shahi
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-            this.logoPath = this.file.name;
-            this.BusinessImageUrl1 = e.target.result;
-          };
-          reader.readAsDataURL(this.file);
-          // end 
-        }
-        else {
-          this.loadingLoading = false;
-          this.isfileUploaded = false;
-        }
-      });
-    }
-    this.loadingLoading = false;
-  }
-  cancelUpload() {
-    if (this.uploadSub) {
-      this.uploadSub.unsubscribe();
-    }
-    this.uploadProgress = "0%";
-    this.reset();
-  }
-
-  reset() {
-    this.file = null;
-    this.uploadProgress = null;
-    this.uploadSub = null;
-    this.BusinessImageUrl1 = '';
-    this.logoPath = null;
-  }
-
-  onChange1(event) {
-    this.file1 = event.target.files[0];
-  }
-
-  onUpload1() {
-    this.loadingLoading = true;
-    this.uploadProgress1 = "100";
-
-    if (this.file1) {
-      this.loadingLoading = true;
-      this.uploadSub1 = this.uploadService.uploadBusinessImage(this.file1).subscribe((event: any) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress1 = Math.round(100 * (event.loaded / event.total)).toString() + "%";
-        }
-        if (event.partialText == "file uploaded") {
-          this.loadingLoading = false; // Flag variable
-          this.isfileUploaded1 = true;
-          // Add code for preview uploaded image by shahi
-          const reader = new FileReader();
-
-          reader.onload = (e: any) => {
-            this.imagePath = this.file1.name;
-            this.BusinessImageUrl2 = e.target.result;
-          };
-
-          reader.readAsDataURL(this.file1);
-          // end 
-        } else {
-          this.loadingLoading = false;
-          this.isfileUploaded1 = false;
-          this.BusinessImageUrl2 = '';
-        }
-      });
-    }
-    this.loadingLoading = false;
-  }
-  cancelUpload1() {
-    if (this.uploadSub1) {
-      this.uploadSub1.unsubscribe();
-    }
-    this.uploadProgress1 = "0%";
-    this.reset1();
-  }
-
-  reset1() {
-    this.file1 = null;
-    this.uploadProgress1 = null;
-    this.uploadSub1 = null;
-    this.BusinessImageUrl2 = '';
-    this.imagePath = null;
-  }
-
   GetBusinessLabels() {
     let details = [];
     this.selectedBusiness.forEach((element: any) => {
@@ -526,7 +616,7 @@ export class ProfilesettingComponent {
         "uniqueID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         "id": 0,
         "labelID": element.id,
-        "businessID": this.businessID,
+        "businessID": this.businessLocationID,
         "isActive": true,
         "createdBy": AppSettings.GetCreatedBy(),
         "createdDate": AppSettings.GetDate(),
@@ -544,7 +634,7 @@ export class ProfilesettingComponent {
     let tempdefDetails = {
       "uniqueId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "id": 0,
-      "businessId": this.businessID,
+      "businessId": this.businessLocationID,
       "monFromTime": this.ProfileFormGroup.controls['monFromTime'].value,
       "monToTime": this.ProfileFormGroup.controls['monToTime'].value,
       "tueFromTime": this.ProfileFormGroup.controls['tueFromTime'].value,
@@ -573,7 +663,9 @@ export class ProfilesettingComponent {
   Submit() {
     this.submitted = true;
     console.log(this.ProfileFormGroup.invalid);
+    // console.log(this.ProfileFormGroup.valid);
     if (this.ProfileFormGroup.invalid) {
+      console.log(this.ProfileFormGroup.controls)
       return;
     }
 
@@ -584,17 +676,17 @@ export class ProfilesettingComponent {
     console.log("out")
     this.isLoading = true;
     let details = {
-      "uniqueId": this.uniqueId,
-      "id": this.id,
+      "uniqueId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "id": this.businessLocationID,
       "legalName": this.ProfileFormGroup.controls['businessName'].value,
       "businessName": this.ProfileFormGroup.controls['shortName'].value,
       "adress": this.ProfileFormGroup.controls['address'].value,
       "phoneNo": this.ProfileFormGroup.controls['phoneNo'].value,
       "pinCode": this.ProfileFormGroup.controls['pinCode'].value,
-      "industry": this.ProfileFormGroup.controls['industry'].value,
+      "industry": this.industry,
       "descriptions": this.ProfileFormGroup.controls['description'].value,
-      "logoPath": this.logoPath,
-      "imagePath": this.imagePath,
+      "logoPath": this.fileNameBusinessLogo,
+      "imagePath": this.fileNameBusinessDisplayImage,
       "website": this.ProfileFormGroup.controls['website'].value,
       "facebookUrl": this.ProfileFormGroup.controls['facebookUrl'].value,
       "twitterUrl": this.ProfileFormGroup.controls['twitterUrl'].value,
@@ -603,21 +695,21 @@ export class ProfilesettingComponent {
       "latitude": this.latitude,
       "longitude": this.longitude,
       "yelpUrl": this.ProfileFormGroup.controls['yelpUrl'].value,
-      "stateId": 0,
+      "stateId": 3,
       "isActive": true,
       "businessGroupId": this.businessGroupID.id,
       "createdBy": AppSettings.GetCreatedBy(),
       "createdDate": AppSettings.GetDate(),
       "lastModifiedBy": AppSettings.GetCreatedBy(),
       "lastModifiedDate": AppSettings.GetDate(),
-      "stateCodeID": this.ProfileFormGroup.controls['stateCodeId'].value,
+      "stateCodeID": this.ProfileFormGroup.controls['stateCodeId'].value[0].id,
       "city": this.ProfileFormGroup.controls['city'].value,
       "businesswiseLabels": this.GetBusinessLabels(),
       "businesswiseWorkingDays": this.GetBusinessWorkingHours(),
-      "galleryImagePath1": this.GalleryPath1,
-      "galleryImagePath2": this.GalleryPath2,
-      "galleryImagePath3": this.GalleryPath3,
-      "galleryImagePath4": this.GalleryPath4,
+      "galleryImagePath1": this.fileNameBusinessImage1,
+      "galleryImagePath2": this.fileNameBusinessImage2,
+      "galleryImagePath3": this.fileNameBusinessImage3,
+      "galleryImagePath4": this.fileNameBusinessImage4,
       "isAgeRestriction": this.isAgeRestriction
     }
 
@@ -626,6 +718,7 @@ export class ProfilesettingComponent {
     this.profileSettingService.PutBusinessProfile(details.id, details)
       .subscribe({
         next: (data) => {
+          console.log("In_bc")
           this.isLoading = false;
           this.submitted = false;
           this.iseditmode = false;
@@ -639,5 +732,75 @@ export class ProfilesettingComponent {
           this.submitted = false;
         }
       });
+  }
+
+  onChangeDefaultTime() {
+    let getValueFrom = this.ProfileFormGroup.controls['monFromTime'].value;
+    let getValueTo = this.ProfileFormGroup.controls['monToTime'].value;
+
+    this.ChkMakeDefaultTime = !this.ChkMakeDefaultTime;
+
+    if (this.ChkMakeDefaultTime) {
+      this.ProfileFormGroup.controls['tueFromTime'].disable();
+      this.ProfileFormGroup.controls['tueToTime'].disable();
+      this.ProfileFormGroup.controls['wedFromTime'].disable();
+      this.ProfileFormGroup.controls['wedToTime'].disable();
+      this.ProfileFormGroup.controls['thuFromTime'].disable();
+      this.ProfileFormGroup.controls['thuToTime'].disable();
+      this.ProfileFormGroup.controls['friFromTime'].disable();
+      this.ProfileFormGroup.controls['friToTime'].disable();
+      this.ProfileFormGroup.controls['satFromTime'].disable();
+      this.ProfileFormGroup.controls['satToTime'].disable();
+      this.ProfileFormGroup.controls['sunFromTime'].disable();
+      this.ProfileFormGroup.controls['sunToTime'].disable();
+    }
+    else if (!this.ChkMakeDefaultTime) {
+      this.ProfileFormGroup.controls['tueFromTime'].enable();
+      this.ProfileFormGroup.controls['tueToTime'].enable();
+      this.ProfileFormGroup.controls['wedFromTime'].enable();
+      this.ProfileFormGroup.controls['wedToTime'].enable();
+      this.ProfileFormGroup.controls['thuFromTime'].enable();
+      this.ProfileFormGroup.controls['thuToTime'].enable();
+      this.ProfileFormGroup.controls['friFromTime'].enable();
+      this.ProfileFormGroup.controls['friToTime'].enable();
+      this.ProfileFormGroup.controls['satFromTime'].enable();
+      this.ProfileFormGroup.controls['satToTime'].enable();
+      this.ProfileFormGroup.controls['sunFromTime'].enable();
+      this.ProfileFormGroup.controls['sunToTime'].enable();
+    }
+    this.ProfileFormGroup.controls['tueFromTime'].setValue(getValueFrom);
+    this.ProfileFormGroup.controls['tueToTime'].setValue(getValueTo);
+    this.ProfileFormGroup.controls['wedFromTime'].setValue(getValueFrom);
+    this.ProfileFormGroup.controls['wedToTime'].setValue(getValueTo);
+    this.ProfileFormGroup.controls['thuFromTime'].setValue(getValueFrom);
+    this.ProfileFormGroup.controls['thuToTime'].setValue(getValueTo);
+    this.ProfileFormGroup.controls['friFromTime'].setValue(getValueFrom);
+    this.ProfileFormGroup.controls['friToTime'].setValue(getValueTo);
+    this.ProfileFormGroup.controls['satFromTime'].setValue(getValueFrom);
+    this.ProfileFormGroup.controls['satToTime'].setValue(getValueTo);
+    this.ProfileFormGroup.controls['sunFromTime'].setValue(getValueFrom);
+    this.ProfileFormGroup.controls['sunToTime'].setValue(getValueTo);
+  }
+
+  // search Google Maps....
+  initAutocomplete() {
+    this.googleMapsService.api.then((maps) => {
+      let autocomplete = new maps.places.Autocomplete(
+        this.searchElementRef.nativeElement
+      );
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          this.latitude = autocomplete.getPlace().geometry.location.lat();
+          this.longitude = autocomplete.getPlace().geometry.location.lng();
+          this.ProfileFormGroup.controls['address'].setValue(this.searchElementRef.nativeElement.value);
+        });
+      });
+
+      this.searchElementRef.nativeElement.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+        }
+      })
+    });
   }
 }

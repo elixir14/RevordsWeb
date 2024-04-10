@@ -7,10 +7,10 @@
       <div class="col-md-2">
       </div>
       <div class="col-md-2" style="text-align: end;">
-        <button class="btn btn-sm" *ngIf="isAdministrator == true" [routerLink]="['/admin-panel']"
+        <!-- <a class="btn btn-sm" *ngIf="isAdministrator == true" href="https://dashboard.revords.com/AdminPanel"
           style="display: inline-flex;align-items: center;justify-content: center;background-color: #7da3ba;color: white;font-size: 100%;">
           <i class="fa fa-lock" aria-hidden="true" style="margin-right: 6px;font-size: 14px;"></i>Admin Panel
-        </button>
+        </a> -->
       </div>
       <div class="col-md-3">
         <ng-multiselect-dropdown [placeholder]="'Choose business locations'" #select (onSelect)="onItemSelect($event)"
@@ -24,7 +24,7 @@
   <div class="row">
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body" style="padding: 25px 0% !important;">
           <div class="row">
             <div class="col-md-12 text-center">
               <div class="col-md-12 text-center">
@@ -326,12 +326,12 @@
               <div class="col-md-1"
                 style="display: inline-flex;align-items: center;justify-content: center;padding-left: 41px;padding-right: 0px;">
                 <!-- <i class="fa fa-sign-in" style="color:#a17c43; font-size:30px;"></i> -->
-                <img src="../../../../assets/img/add-user1.png" height="40px"/>
+                <img src="../../../../assets/img/add-user1.png" height="40px" />
               </div>
               <div class="col-md-8" style="color: black;padding-right: 0px;padding-left: 14px;">
                 <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Monthly New SignUp Goals</h3>
               </div>
-              <div class="col-md-3" style="padding-right: 0px;padding-left: 10px;">
+              <div class="col-md-3" style="padding: 0;">
                 <circle-progress [percent]="percentage" [radius]="30" [outerStrokeWidth]="6" [innerStrokeWidth]="4"
                   [outerStrokeColor]="'#63c76a'" [innerStrokeColor]="'#DADCDC'" [animation]="true"
                   [animationDuration]="300" [unitsColor]="'green'" [titleColor]="'green'" [subtitleColor]="'black'"

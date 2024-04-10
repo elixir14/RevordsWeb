@@ -44,6 +44,7 @@ export class ExportData {
   'Birth Day': string;
   'Birth Month': string;
   'Highroller': string;
+  'Freeplayer': string;
   'Lifettime Visits': string;
   'Time Spent': string;
   'Notes': string;
@@ -120,6 +121,7 @@ export class MemberProfileComponent {
     monthID: [0],
     pointstobeadded: [''],
     isHighroller: [false],
+    isFreeplayer: [false],
     businessLocationID: ['', Validators.required],
     phoneNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]]
   });
@@ -146,6 +148,8 @@ export class MemberProfileComponent {
   SelectedTagName: any = "";
   SelectedBUisnessName: any = "";
   SelectedSearchText: any = "";
+  highroller: boolean = false;
+  freePlayer: boolean = false;
   constructor(private _memberservice: MemberService, private _Route: Router, private _commonService: CommonService,
     public toastService: ToastService, private _snackBar: MatSnackBar,
     private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder,
@@ -163,6 +167,7 @@ export class MemberProfileComponent {
       monthID: 0,
       pointstobeadded: '',
       isHighroller: false,
+      isFreeplayer: false,
       businessLocationID: 0,
       phoneNumber: ['']
     });
@@ -178,6 +183,23 @@ export class MemberProfileComponent {
   @ViewChild('paginator') paginator: MatPaginator;
   @ViewChild('closebutton') closebutton;
   @ViewChild('closebutton1') closebutton1;
+
+  handleHighRollerChange(event) {
+    console.log(event)
+    if (event.target.checked) {
+      // If High Roller is checked, uncheck Free Player
+      // this.freePlayer = false;
+      this.jobForm.controls['isFreeplayer'].setValue(false);
+    }
+  }
+
+  handleFreePlayerChange(event) {
+    if (event.target.checked) {
+      // If Free Player is checked, uncheck High Roller
+      // this.highroller = false;
+      this.jobForm.controls['isHighroller'].setValue(false);
+    }
+  }
 
   common(type: any) {
     let tagInput = this.MemeberProfileGroup.controls['tags'].value;
@@ -220,6 +242,7 @@ export class MemberProfileComponent {
       monthID: 0,
       pointstobeadded: '',
       isHighroller: false,
+      isFreeplayer: false,
       businessLocationID: '',
       phoneNumber: ['']
     });
@@ -306,6 +329,7 @@ export class MemberProfileComponent {
     this.jobForm.controls['phoneNumber'].setValue(newVal);
   }
   async SetData(data) {
+    console.log('data', data)
     let month = data[0].birthMonth != null && data[0].birthMonth != '' ?
       this.monthlist.filter(x => x.name.substring(0, 3).toLowerCase() == data[0].birthMonth.toLowerCase()) : [];
     await this.jobForm.setValue({
@@ -319,7 +343,8 @@ export class MemberProfileComponent {
         (data[0].birthDay < 10 ? parseInt(data[0].birthDay.substring(1, 2)) : parseInt(data[0].birthDay.substring(0, 2))) : ''),
       monthID: month.length > 0 ? month[0].id : 0,
       pointstobeadded: '',
-      isHighroller: data[0].isHighroller.toString() == "true" ? true : false,
+      isHighroller: data[0].isHighroller.toString() == "true" && data[0].isHighroller != null ? true : false,
+      isFreeplayer: data[0].isFreePlayer.toString() == "true" && data[0].isFreePlayer != null ? true : false,
       businessLocationID: data[0].businessLocationId != null && data[0].businessLocationId != '' ? parseInt(data[0].businessLocationId) : 0,
       phoneNumber: data[0].phone
     });
@@ -408,6 +433,7 @@ export class MemberProfileComponent {
             "emailOptIn": this.jobForm.controls['email'].value != "" ? true : false,
             "notificationOptIn": false,
             "isHighroller": this.jobForm.controls['isHighroller'].value != null && this.jobForm.controls['isHighroller'].value != "" ? this.jobForm.controls['isHighroller'].value : false,
+            "isFreeplayer": this.jobForm.controls['isFreeplayer'].value != null && this.jobForm.controls['isFreeplayer'].value != "" ? this.jobForm.controls['isFreeplayer'].value : false,
             "currentPoints": this.jobForm.controls['pointstobeadded'] != null && this.jobForm.controls['pointstobeadded'].value != "" && this.jobForm.controls['pointstobeadded'].value != null ? this.jobForm.controls['pointstobeadded'].value : 0,
             "sourceId": 1,// 1 for web - Dashboard source
             "stateId": AppSettings.Approved,
@@ -448,6 +474,7 @@ export class MemberProfileComponent {
         "lastModifiedDate": AppSettings.GetDate(),
         "points": this.jobForm.controls['pointstobeadded'] != null && this.jobForm.controls['pointstobeadded'].value != "" && this.jobForm.controls['pointstobeadded'].value != null ? this.jobForm.controls['pointstobeadded'].value : 0,
         "isHighroller": this.jobForm.controls['isHighroller'].value != null && this.jobForm.controls['isHighroller'].value != "" ? this.jobForm.controls['isHighroller'].value : false,
+        "isFreeplayer": this.jobForm.controls['isFreeplayer'].value != null && this.jobForm.controls['isFreeplayer'].value != "" ? this.jobForm.controls['isFreeplayer'].value : false,
       }
       this._memberservice.PutMemberProfileInCustomerScreen(memberDetails.id, memberDetails)
         .subscribe({
@@ -600,6 +627,7 @@ export class MemberProfileComponent {
               'Birth Day': x['birthDay'],
               'Birth Month': x['birthMonth'],
               'Highroller': (x['isHighroller']).toString().toLowerCase() == 'true' ? 'Yes' : 'No',
+              'Freeplayer': (x['isFreePlayer']).toString().toLowerCase() == 'true' ? 'Yes' : 'No',
               'Lifettime Visits': x['totalvisits'],
               'Time Spent': x['timeSpent'],
               'Notes': x['notes'],

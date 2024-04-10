@@ -136,6 +136,7 @@ export default class LoginComponent {
       .subscribe({
         next: async (data) => {
           localStorage.setItem('PackageDetails', JSON.stringify(data.package));
+          localStorage.setItem('IsSpinRequired', JSON.stringify(data.business[0].isSpinRequired));          
           localStorage.setItem('UserData', JSON.stringify(data));
           this.showSnackbarAction("Login successfully", "1");
           this.loading = false;

@@ -131,6 +131,7 @@ export class AutopilotComponent {
     this._autopilotService.GetAutoPilotHistoryByBusinessGroupID(this.businessGroupID.id, start, end,this.location).pipe()
       .subscribe({
         next: (data) => {
+          console.log(data)
           this.displayData = data;
           this.totalDelivered = 0;
           this.totalVisitRate = 0;

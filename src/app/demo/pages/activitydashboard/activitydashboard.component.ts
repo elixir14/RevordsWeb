@@ -194,7 +194,7 @@ export class ActivitydashboardComponent {
     this.SelectedSearchText = searchInput;
 
     this.filtereddata = this.dataSourceForFilter.data;
-
+    this.paginator.firstPage();
     if (businessInput != null && businessInput != undefined) {
       for (let index = 0; index < businessInput.length; index++) {
         if (index == 0) {
@@ -267,6 +267,7 @@ export class ActivitydashboardComponent {
   }
 
   ngAfterViewInit() {
+    console.log(this.paginator);
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }

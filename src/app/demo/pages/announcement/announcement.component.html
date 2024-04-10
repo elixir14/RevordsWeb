@@ -207,10 +207,9 @@
                                                                 </div>
                                                                 <div>
                                                                     <button class="btn btn-success buttonColor"
-                                                                        *ngIf="!uploadProgress">
+                                                                        *ngIf="!uploadProgress" (click)="onUpload()">
                                                                         Upload
                                                                         <mat-icon class="filter-green"
-                                                                            (click)="onUpload()"
                                                                             style="margin-bottom: -6px;margin-left: 6px;">
                                                                             cloud_upload
                                                                         </mat-icon>

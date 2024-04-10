@@ -9,6 +9,8 @@
   font-size: 14px;
   color: #574e4e;
   font-weight: 450;
+  text-align: center;
+    display: inline;
 }
 
 .subMenu-icon {
@@ -145,3 +147,34 @@ i.icon-fs-x-button {
   border-bottom: 3px solid #7DA3BA;
   border-radius: 5px;
 }
+@media (device-width: 100vw) and (device-height: 100vh) {
+  .topnav a{
+    padding: 7px 5px 0px 0px;
+  }
+  li.nav-item.dropdown{
+    text-align: center !important;
+    padding: 7px 5px 0px 0px !important;
+  }
+}
+
+li.nav-item.dropdown{
+  text-align: center;
+  // margin-top: 8px;
+  padding: 7px 12px 0px 0px;
+}
+#navbarDropdownMenuLink{
+  display: contents;
+}
+#navbarDropdownMenuLink1{
+  display: contents;
+}
+#navbarNavDropdown{
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  }
+  

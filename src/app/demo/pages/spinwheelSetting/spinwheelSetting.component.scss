@@ -1,0 +1,89 @@
+.flexdivHeader {
+  display: flex;
+  border-bottom: solid 1pt #dce3e7;
+  padding-bottom: 5px;
+  align-items: center;
+}
+
+.headerName {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 43.2px;
+}
+
+.container {
+  width: 480px;
+  height: 480px;
+  background: linear-gradient(180deg, #fcef47 -0%, #6a3b2c 100%);
+  border-radius: 50%;
+  /* // border: 15px solid #ffa903; */
+  position: relative;
+  overflow: hidden;
+  transition: 5s;
+  /* // animation: animateTop 3s ease-in-out infinite; */
+}
+
+.container div {
+  height: 50%;
+  width: 200px;
+  position: absolute;
+  clip-path: polygon(99% 0, 50% 95%, 0 0);
+  transform: translateX(-50%);
+  transform-origin: bottom;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  left: 140px;
+}
+
+.container .one {
+  background-color: #C8D92B;
+  left: 50%;
+  background-image: linear-gradient(#C8D92B, #EFFF57, #FFEDA4);
+}
+
+.container .two {
+  background-color: #A51E1E;
+  transform: rotate(45deg);
+  background-image: linear-gradient(#A51E1E, #FCA1A1, #F8D0D0);
+}
+
+.container .three {
+  background-color: #3397F1;
+  transform: rotate(90deg);
+  background-image: linear-gradient(#3397F1, #95CDFF, #C3E3FF);
+}
+
+.container .four {
+  background-color: #595BFA;
+  transform: rotate(135deg);
+  background-image: linear-gradient(#595BFA, #9394FF, #BABBFF);
+}
+
+.container .five {
+  background-color: #FFA9E9;
+  background-image: linear-gradient(#FFA9E9, #FFC9F1, #FFE0F7);
+  transform: rotate(180deg);
+}
+
+.container .six {
+  background-color: #fc6630;
+  background-image: linear-gradient(#F1592B, #FF906F, #FFB7A1);
+  transform: rotate(225deg);
+}
+
+.container .seven {
+  background-color: #F59130;
+  background-image: linear-gradient(#F59130, #FFB56D, #FFCD9C);
+  transform: rotate(270deg);
+}
+
+.container .eight {
+  background-color: #FDD843;
+  background-image: linear-gradient(#FDD843, #FFE57A, #FFEDA4);
+  transform: rotate(315deg);
+}

@@ -227,6 +227,7 @@ export class PromotionComponent {
   smsCount: number = 0;
   draftPromo: any = [];
   filtereddata: any = [];
+  isSpinRequired: any;
   allowedWords = [{ text: 'beer', reward: 'beverages' }, { text: 'wine', reward: 'beverages' },
   { text: 'drinks', reward: 'beverages' }, { text: 'off', reward: '$ off' }, { text: '%', reward: 'discount' },
   { text: 'offer', reward: 'exciting offer' }, { text: 'gift card', reward: 'dollar' },
@@ -240,6 +241,7 @@ export class PromotionComponent {
     public toastService: ToastService, private _defination: DefinationService, private modalService: NgbModal,
     private _formBuilder: FormBuilder, private _memberservice: MemberService, public sanitizer: DomSanitizer,
     private _spinwheel: SpinWheelService, private datePipe: DatePipe) {
+    this.isSpinRequired = JSON.parse(localStorage.getItem('IsSpinRequired'))
     this.business = JSON.parse(localStorage.getItem('Business'));
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
     this.packageDetails = JSON.parse(localStorage.getItem('PackageDetails'));
@@ -299,6 +301,7 @@ export class PromotionComponent {
       });
   }
   async setBusiness() {
+    console.log(this.membersData);
     let data = JSON.parse(localStorage.getItem('Business'));
     this.bussinessDataForStep3 = [];
     this.bussinessDataForRedemption = [];
@@ -313,7 +316,7 @@ export class PromotionComponent {
         id: element.id,
         businessName: element.businessName,
         checked: false,
-        memberCount: this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0
+        memberCount: this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ? (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
       });
     });
     this.bussinessDataForStep3 = this.bussinessDataForRedemption;
@@ -349,7 +352,7 @@ export class PromotionComponent {
       "badgeIDs": '',
       "tagIDs": ''
     }
-
+    console.log(details);
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
@@ -1093,7 +1096,7 @@ export class PromotionComponent {
         "fileContentType": this.file != null && this.file != undefined ? this.file.type : "",
         "filePath": AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName,
         "stateID": 3,
-        "promotionReferenceID" : 0,
+        "promotionReferenceID": 0,
         "promotionalDetails": this.GetPromotionDetails(),
         "spinWheelConfiguration": isSpinWheel1 == true ? this.GetSpinWheelDetails() : [],
         "locationwisePromotionRedemption": this.GetRedemptionDetails()
@@ -1130,7 +1133,7 @@ export class PromotionComponent {
         "fileContentType": this.file != null && this.file != undefined ? this.file.type : "",
         "filePath": AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName,
         "stateID": 3,
-        "promotionReferenceID" : 0,
+        "promotionReferenceID": 0,
         "promotionalDetails": this.GetPromotionDetails(),
         "spinWheelConfiguration": isSpinWheel2 == true ? this.GetSpinWheelDetails() : [],
         "locationwisePromotionRedemption": this.GetRedemptionDetails()
@@ -1301,7 +1304,7 @@ export class PromotionComponent {
     }
     else if (this.firstFormGroup.controls['isSpinWheelAllowed1'].value == false) {
       this.firstFormGroup.controls['isSpinWheelAllowed2'].enable();
-      if(this.firstFormGroup.controls['promotionalMessage1'].value == "Spin wheel available at store"){
+      if (this.firstFormGroup.controls['promotionalMessage1'].value == "Spin wheel available at store") {
         this.firstFormGroup.controls['promotionalMessage1'].setValue('')
       }
       this.firstFormGroup.controls['promotionalMessage1'].enable();
@@ -1316,7 +1319,7 @@ export class PromotionComponent {
     }
     else if (this.firstFormGroup.controls['isSpinWheelAllowed2'].value == false) {
       this.firstFormGroup.controls['isSpinWheelAllowed1'].enable();
-      if(this.firstFormGroup.controls['promotionalMessage2'].value == "Spin wheel available at store"){
+      if (this.firstFormGroup.controls['promotionalMessage2'].value == "Spin wheel available at store") {
         this.firstFormGroup.controls['promotionalMessage2'].setValue('')
       }
       this.firstFormGroup.controls['promotionalMessage2'].enable();
@@ -1503,8 +1506,7 @@ export class PromotionComponent {
     this.isLoadingSaveData = true;
     let model = this.createModel();
     model[0].stateID = 2;
-    if(model.length > 1)
-    {
+    if (model.length > 1) {
       model[1].stateID = 2;
     }
     // 
