@@ -772,7 +772,6 @@ export class ProfilesettingComponent {
     this.profileSettingService.PutBusinessProfile(details.id, details)
       .subscribe({
         next: (data) => {
-          console.log("In_bc")
           this.isLoading = false;
           this.submitted = false;
           this.iseditmode = false;
