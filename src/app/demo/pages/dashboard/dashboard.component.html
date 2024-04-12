@@ -26,13 +26,13 @@
       <div class="card">
         <div class="card-body" style="padding: 25px 0% !important;">
           <div class="row">
-            <div class="col-md-12 text-center">
-              <div class="col-md-12 text-center">
-                <h3 style="margin-bottom: 0px;font-size: 1.10rem;margin-right: -15%;">Live Review</h3>
+            <div class="col-md-12 d-flex">
+              <div class="col-md-7 d-flex pr-0" style="align-items: center;justify-content: end;">
+                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Live Review</h3>
               </div>
-              <div style="position: absolute;right: 12%;">
+              <div class="col-md-4 d-flex pr-0" style="align-items: center;justify-content: end;">
                 <button class="btn btn-sm btn-success" (click)="!isLoadingMemberVisitCounts ? GetAllData() : justAlert"
-                  style="display: inline-flex;align-items: center;justify-content: center;">
+                  >
                   Refresh<i class="fa fa-refresh" aria-hidden="true" style="margin-left: 6px;font-size: 14px;"></i>
                 </button>
               </div>
@@ -45,14 +45,14 @@
               <div class="col-md-1"></div>
               <div class="col-md-10 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;
                 color: #ffffff;cursor: pointer;border-radius: 20px;">
-                <div class="col-md-7 text-center" style="padding-right: 0px;padding-left: 0px;background: #233138;color: #ffffff;height: 90%;
+                <div class="col-md-6 text-center" style="padding-right: 0px;padding-left: 0px;background: #233138;color: #ffffff;height: 90%;
                 cursor: pointer;border-radius: 20px;" (click)="onNavChange1(1)"
-                  [ngClass]="{'activeTab1 col-md-7': activeTabId == 1, 'activeTab2 col-md-5': activeTabId == 2}">
+                  [ngClass]="{'activeTab1': activeTabId == 1, 'activeTab2': activeTabId == 2}">
                   <b style="padding: 4%;">Active Customers</b>
                 </div>
-                <div class="col-md-5 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;color: #ffffff;height: 90%;
+                <div class="col-md-6 text-center" style="padding-right: 0px;padding-left: 0px;background: #7da3ba;color: #ffffff;height: 90%;
                 cursor: pointer;border-radius: 20px;" (click)="onNavChange1(2)"
-                  [ngClass]="{'activeTab1 col-md-7': activeTabId == 2, 'activeTab2 col-md-5': activeTabId == 1 }">
+                  [ngClass]="{'activeTab1': activeTabId == 2, 'activeTab2': activeTabId == 1 }">
                   <b style="padding: 4%;">Today's Visits</b>
                 </div>
               </div>
