@@ -87,7 +87,7 @@ export class SpinwheelSettingComponent {
   }
 
   ngOnInit() {
-    this.setSpinWheelData();
+    this.GetSpinWheeldefaultConfigByBusinessGroupID();
   }
 
   async GetSpinWheeldefaultConfigByBusinessGroupID() {
@@ -97,7 +97,6 @@ export class SpinwheelSettingComponent {
       .subscribe({
         next: (data) => {
           localStorage.removeItem('OPTS');
-          console.log(data);
           this._defaultOpts = [];
           data.forEach((element) => {
             this._defaultOpts.push({
@@ -110,7 +109,6 @@ export class SpinwheelSettingComponent {
               isSpinEnable: element.isSpinEnable
             });
           });
-          console.log('this._defaultOpts', this._defaultOpts);
           localStorage.setItem('OPTS', JSON.stringify(this._defaultOpts));
           this.setSpinWheelData();
         },
@@ -123,31 +121,24 @@ export class SpinwheelSettingComponent {
   async setSpinWheelData() {
     this.totalPoints = 0;
     let spinWheelData = JSON.parse(localStorage.getItem('OPTS'));
-    console.log(spinWheelData);
-    if (spinWheelData != null) {
-      console.log(spinWheelData);
-      this.headerId = spinWheelData[0].headerId;
-      this.isSpinEnable = spinWheelData[0].isSpinEnable;
-      this.firstFormGroup.controls['spinRequired'].setValue(this.isSpinEnable);
-      this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
-      for (let index = 0; index < this.spinWheelControls.length; index++) {
-        this.spinFormGroup.controls[index].controls['indexID'].setValue(spinWheelData[index].indexID);
-        this.spinFormGroup.controls[index].controls['text'].setValue(spinWheelData[index].arctext);
-        this.spinFormGroup.controls[index].controls['Probability'].setValue(spinWheelData[index].probability);
-        this.spinFormGroup.controls[index].controls['IsInteger'].setValue(spinWheelData[index].IsPoints);
-        this.totalPoints += parseInt(spinWheelData[index].probability);
-      }
-      this.spinFormGroup.controls[0].controls['totalPoints'].setValue(this.totalPoints);
-      let length = spinWheelData.length;
-      for (let i = 0; i < length; i++) {
-        this.indexwiseCharacters.push({
-          index: i,
-          length: 15 - spinWheelData[i].arctext.length
-        });
-      }
-      this.isLoading = false;
-    } else {
-      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
+    this.headerId = spinWheelData[0].headerId;
+    this.isSpinEnable = spinWheelData[0].isSpinEnable;
+    this.firstFormGroup.controls['spinRequired'].setValue(this.isSpinEnable);
+    this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
+    for (let index = 0; index < this.spinWheelControls.length; index++) {
+      this.spinFormGroup.controls[index].controls['indexID'].setValue(spinWheelData[index].indexID);
+      this.spinFormGroup.controls[index].controls['text'].setValue(spinWheelData[index].arctext);
+      this.spinFormGroup.controls[index].controls['Probability'].setValue(spinWheelData[index].probability);
+      this.spinFormGroup.controls[index].controls['IsInteger'].setValue(spinWheelData[index].IsPoints);
+      this.totalPoints += parseInt(spinWheelData[index].probability);
+    }
+    this.spinFormGroup.controls[0].controls['totalPoints'].setValue(this.totalPoints);
+    let length = spinWheelData.length;
+    for (let i = 0; i < length; i++) {
+      this.indexwiseCharacters.push({
+        index: i,
+        length: 15 - spinWheelData[i].arctext.length
+      });
     }
   }
 

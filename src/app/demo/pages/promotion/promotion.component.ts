@@ -284,6 +284,7 @@ export class PromotionComponent {
     this._spinwheel.GetSpinWheeldefaultConfigByBusinessGroupID(this.businessGroupID.id).pipe()
       .subscribe({
         next: (data) => {
+          localStorage.removeItem('OPTS');
           data.forEach(element => {
             this._defaultOpts.push({
               indexID: element.indexID,
@@ -294,6 +295,7 @@ export class PromotionComponent {
             });
           });
           localStorage.setItem("OPTS", JSON.stringify(this._defaultOpts));
+          this.setSpinWheelData();
         },
         error: error => {
           console.log(error);
@@ -325,7 +327,7 @@ export class PromotionComponent {
     this.GetDraftPromotionByBusinessGroupID();
     this.GetPromotions();
     this.GetMembersData();
-    this.setSpinWheelData();
+    this.GetSpinWheeldefaultConfigByBusinessGroupID();
     this.dropdownSettings = {
       idField: 'id',
       textField: 'businessName',
@@ -389,39 +391,26 @@ export class PromotionComponent {
   async setSpinWheelData() {
     this.totalPoints = 0;
     let spinWheelData = JSON.parse(localStorage.getItem('OPTS'));
-    if (spinWheelData != null) {
-      this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
-      for (let index = 0; index < this.spinWheelControls.length; index++) {
-        this.spinFormGroup.controls[index].controls['indexID'].setValue(spinWheelData[index].indexID);
-        this.spinFormGroup.controls[index].controls['text'].setValue(spinWheelData[index].arctext);
-        this.spinFormGroup.controls[index].controls['Probability'].setValue(spinWheelData[index].probability);
-        this.spinFormGroup.controls[index].controls['IsInteger'].setValue(spinWheelData[index].IsPoints);
-        this.totalPoints += parseInt(spinWheelData[index].probability);
-      }
-      this.spinFormGroup.controls[0].controls['totalPoints'].setValue(this.totalPoints);
-      let length = spinWheelData.length;
-      for (let i = 0; i < length; i++) {
-        this.indexwiseCharacters.push({
-          index: i,
-          length: 15 - spinWheelData[i].arctext.length
-        })
-      }
+    this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
+    for (let index = 0; index < this.spinWheelControls.length; index++) {
+      this.spinFormGroup.controls[index].controls['indexID'].setValue(spinWheelData[index].indexID);
+      this.spinFormGroup.controls[index].controls['text'].setValue(spinWheelData[index].arctext);
+      this.spinFormGroup.controls[index].controls['Probability'].setValue(spinWheelData[index].probability);
+      this.spinFormGroup.controls[index].controls['IsInteger'].setValue(spinWheelData[index].IsPoints);
+      this.totalPoints += parseInt(spinWheelData[index].probability);
     }
-    else {
-      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
+    this.spinFormGroup.controls[0].controls['totalPoints'].setValue(this.totalPoints);
+    let length = spinWheelData.length;
+    for (let i = 0; i < length; i++) {
+      this.indexwiseCharacters.push({
+        index: i,
+        length: 15 - spinWheelData[i].arctext.length
+      })
     }
   }
 
   resetSpinWheelData() {
-    this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
-    this.indexwiseCharacters = [];
-    for (let index = 0; index < this.spinWheelControls.length; index++) {
-      this.spinFormGroup.controls[index].reset();
-      this.indexwiseCharacters.push({
-        index: index,
-        length: 15
-      })
-    }
+    this.GetSpinWheeldefaultConfigByBusinessGroupID();
   }
 
   selectAllBusiness() {
@@ -784,10 +773,10 @@ export class PromotionComponent {
       this.iseditmode = false;
       this.submitted = false;
       await this.ClearControlandView();
-      await this.setSpinWheelData();
+      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
     }
     else {
-      await this.setSpinWheelData();
+      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
       await this.setBusiness();
       this.GetMembersData();
       this.iseditmode = true;
@@ -1546,7 +1535,7 @@ export class PromotionComponent {
     this.iseditmode = false;
     this.submitted = false;
     await this.ClearControlandView();
-    await this.setSpinWheelData();
+    await this.GetSpinWheeldefaultConfigByBusinessGroupID();
   }
   //#region BusinessDropdown
   async onItemSelectAll(items) {
