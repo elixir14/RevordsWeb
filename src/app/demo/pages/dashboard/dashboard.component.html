@@ -516,6 +516,8 @@
           <th scope="col">Name</th>
           <th scope="col" style="text-align: center;">Badge</th>
           <th scope="col" style="text-align: center;">HighRoller</th>
+          <th scope="col" style="text-align: center;">FreePlayer</th>
+          <th scope="col" style="text-align: center;">Since</th>
         </tr>
       </thead>
       <tbody style="display: block;height: 250px;overflow-y: scroll;">
@@ -525,10 +527,16 @@
           <td>{{item.memberName}}</td>
           <td style="text-align: center;">{{item.badgeName}}</td>
           <td style="text-align: center;">{{item.isHighRoller}}
-            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(248, 80, 80)" class="fa fa-dollar"></i>
-            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(248, 80, 80)" class="fa fa-dollar"></i>
-            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(248, 80, 80)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(29, 189, 37)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(29, 189, 37)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isHighRoller == 'Yes'" style="color:rgb(29, 189, 37)" class="fa fa-dollar"></i>
           </td>
+          <td style="text-align: center;">{{item.isFreePlayer}}
+            <i *ngIf="item.isFreePlayer == 'Yes'" style="color:rgb(189, 48, 29)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isFreePlayer == 'Yes'" style="color:rgb(189, 48, 29)" class="fa fa-dollar"></i>
+            <i *ngIf="item.isFreePlayer == 'Yes'" style="color:rgb(189, 48, 29)" class="fa fa-dollar"></i>
+          </td>
+          <td style="text-align: center;">{{item.inTime}}</td>
         </tr>
       </tbody>
     </table>

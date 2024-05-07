@@ -28,6 +28,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AutopilotComponent } from './demo/pages/autopilot/autopilot.component';
 import { AnnouncementComponent } from './demo/pages/announcement/announcement.component';
+import { AppLinksComponent } from './demo/pages/applinks/applinks.component';
 import { ProfilesettingComponent } from './demo/pages/profilesetting/profilesetting.component';
 import { CampaignreachComponent } from './demo/pages/campaignreach/campaignreach.component';
 import { RewardService } from './services/RewardService';

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HttpEventType } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -52,11 +52,15 @@ export class PromotionComponent {
   icon: 'fa-edit';
   isLoadingSaveData = false;
   location: string = "";
+  LatestSMSstatus = "";
+  LatestSMSstatus2 = "";
+  SMSStatus = "";
   businessLocationIDs: string = "";
+  errorMessage: string = "";
   config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
+    height: '8rem',
     minHeight: '5rem',
     placeholder: 'Enter text here...',
     translate: 'no',
@@ -83,7 +87,7 @@ export class PromotionComponent {
   };
   subjectCharacterCount1: number = 50;
   subjectCharacterCount2: number = 50;
-  descriptionCharacterCount: number = 145;
+  descriptionCharacterCount: number = 1200;
   showSendBtn: boolean = false;
   showPromo2: boolean = false;
   IsPriviewAvailable = true;
@@ -228,13 +232,16 @@ export class PromotionComponent {
   draftPromo: any = [];
   filtereddata: any = [];
   isSpinRequired: any;
-  allowedWords = [{ text: 'beer', reward: 'beverages' }, { text: 'wine', reward: 'beverages' },
+  allowedWords = [{ text: 'friend', reward: 'bring a friend' }, { text: 'beer', reward: 'beverages' }, { text: 'wine', reward: 'beverages' },
   { text: 'drinks', reward: 'beverages' }, { text: 'off', reward: '$ off' }, { text: '%', reward: 'discount' },
   { text: 'offer', reward: 'exciting offer' }, { text: 'gift card', reward: 'dollar' },
   { text: '$', reward: 'dollar' }, { text: 'buy one get', reward: 'BOGO' }, { text: 'bogo', reward: 'BOGO' },
   { text: 'free', reward: 'free item' }, { text: 'spinwheel', reward: 'Spin wheel' }]
+
   @ViewChild('select') select: MatSelect;
   @ViewChild('editor') editor;
+  // @ViewChild('exampleModal') modal: ElementRef;
+
   dropdownSettings: IDropdownSettings = {};
   dropdownSettingsSingle: IDropdownSettings = {};
   constructor(private _liveAnnouncer: LiveAnnouncer, private _promotionService: PromotionService,
@@ -284,7 +291,6 @@ export class PromotionComponent {
     this._spinwheel.GetSpinWheeldefaultConfigByBusinessGroupID(this.businessGroupID.id).pipe()
       .subscribe({
         next: (data) => {
-          localStorage.removeItem('OPTS');
           data.forEach(element => {
             this._defaultOpts.push({
               indexID: element.indexID,
@@ -295,15 +301,14 @@ export class PromotionComponent {
             });
           });
           localStorage.setItem("OPTS", JSON.stringify(this._defaultOpts));
-          this.setSpinWheelData();
         },
         error: error => {
-          console.log(error);
+
         }
       });
   }
   async setBusiness() {
-    console.log(this.membersData);
+
     let data = JSON.parse(localStorage.getItem('Business'));
     this.bussinessDataForStep3 = [];
     this.bussinessDataForRedemption = [];
@@ -327,7 +332,8 @@ export class PromotionComponent {
     this.GetDraftPromotionByBusinessGroupID();
     this.GetPromotions();
     this.GetMembersData();
-    this.GetSpinWheeldefaultConfigByBusinessGroupID();
+    this.setSpinWheelData();
+    this.GetLastSMSDetails();
     this.dropdownSettings = {
       idField: 'id',
       textField: 'businessName',
@@ -354,7 +360,7 @@ export class PromotionComponent {
       "badgeIDs": '',
       "tagIDs": ''
     }
-    console.log(details);
+
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
@@ -362,9 +368,6 @@ export class PromotionComponent {
           let tagData = data['table2'];
           this.membersData = data['table3'];
           let summary = data['table4'];
-
-          console.log(data)
-
           badgeData.forEach(element => {
             let x = { "id": element.id, "badgeName": element.name, "counts": element.count.toString(), "checked": false };
             this.badgeDataForStep3.push(x);
@@ -391,26 +394,39 @@ export class PromotionComponent {
   async setSpinWheelData() {
     this.totalPoints = 0;
     let spinWheelData = JSON.parse(localStorage.getItem('OPTS'));
-    this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
-    for (let index = 0; index < this.spinWheelControls.length; index++) {
-      this.spinFormGroup.controls[index].controls['indexID'].setValue(spinWheelData[index].indexID);
-      this.spinFormGroup.controls[index].controls['text'].setValue(spinWheelData[index].arctext);
-      this.spinFormGroup.controls[index].controls['Probability'].setValue(spinWheelData[index].probability);
-      this.spinFormGroup.controls[index].controls['IsInteger'].setValue(spinWheelData[index].IsPoints);
-      this.totalPoints += parseInt(spinWheelData[index].probability);
+    if (spinWheelData != null) {
+      this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
+      for (let index = 0; index < this.spinWheelControls.length; index++) {
+        this.spinFormGroup.controls[index].controls['indexID'].setValue(spinWheelData[index].indexID);
+        this.spinFormGroup.controls[index].controls['text'].setValue(spinWheelData[index].arctext);
+        this.spinFormGroup.controls[index].controls['Probability'].setValue(spinWheelData[index].probability);
+        this.spinFormGroup.controls[index].controls['IsInteger'].setValue(spinWheelData[index].IsPoints);
+        this.totalPoints += parseInt(spinWheelData[index].probability);
+      }
+      this.spinFormGroup.controls[0].controls['totalPoints'].setValue(this.totalPoints);
+      let length = spinWheelData.length;
+      for (let i = 0; i < length; i++) {
+        this.indexwiseCharacters.push({
+          index: i,
+          length: 15 - spinWheelData[i].arctext.length
+        })
+      }
     }
-    this.spinFormGroup.controls[0].controls['totalPoints'].setValue(this.totalPoints);
-    let length = spinWheelData.length;
-    for (let i = 0; i < length; i++) {
-      this.indexwiseCharacters.push({
-        index: i,
-        length: 15 - spinWheelData[i].arctext.length
-      })
+    else {
+      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
     }
   }
 
   resetSpinWheelData() {
-    this.GetSpinWheeldefaultConfigByBusinessGroupID();
+    this.spinWheelControls = Object.keys(this.spinFormGroup.controls);
+    this.indexwiseCharacters = [];
+    for (let index = 0; index < this.spinWheelControls.length; index++) {
+      this.spinFormGroup.controls[index].reset();
+      this.indexwiseCharacters.push({
+        index: index,
+        length: 15
+      })
+    }
   }
 
   selectAllBusiness() {
@@ -472,7 +488,6 @@ export class PromotionComponent {
       "badgeIDs": badgeIDs,
       "tagIDs": tagIDs
     }
-    console.log(details);
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
@@ -497,7 +512,6 @@ export class PromotionComponent {
         }
       });
   }
-
   selectAllBadges() {
     if (this.isAllBadgeChecked) {
       this.isAllBadgeChecked = false;
@@ -510,7 +524,6 @@ export class PromotionComponent {
     this.onMembersOfSelected();
     this.BadgeTagForSummary();
   }
-
   onBadgeSelected(id: number) {
     if (this.badgeDataForStep3.filter(x => x.id == id)[0].checked) {
       this.badgeDataForStep3.filter(x => x.id == id)[0].checked = false;
@@ -602,13 +615,11 @@ export class PromotionComponent {
     await this.ClearForEdit();
     await this.GetMembersData();
 
-    let length: any = this.packageDetails.isMMS == true ? 1200 : 145;
+    let length: any = 1200;
     this.firstFormGroup.controls['promotionalMessage1'].reset();
     this.firstFormGroup.controls['promotionalMessage1'].enable();
     this.firstFormGroup.controls['promotionalMessage1'].setValidators([Validators.required]);
     this.firstFormGroup.controls['promotionalMessage2'].reset();
-    this.firstFormGroup.controls['occasion'].reset();
-    this.firstFormGroup.controls['occasion'].setValidators([Validators.required, Validators.maxLength(length)]);
 
     this._promotionService.GetPromotionByID(id).pipe()
       .subscribe({
@@ -620,7 +631,7 @@ export class PromotionComponent {
             isWordOfMouth1: [data.isWordOfMouth],
             isWordOfMouth2: [false],
             occasion: [data.occasion, Validators.compose([Validators.required, Validators.maxLength(length)])],
-            occasionHTML: [data.occasionHTML],
+            occasionHTML: [data.occasion],
             offerStartDate: ['', Validators.required],
             offerEndDate: ['', Validators.required],
             isSendSoon: [data.isSendSoon, Validators.required],
@@ -758,6 +769,22 @@ export class PromotionComponent {
         }
       });
   }
+  async GetLastSMSDetails() {
+    this._memberservice.GetLastSMSDetails().pipe()
+      .subscribe({
+        next: async (data) => {
+          console.log(data);
+          this.LatestSMSstatus = "Last SMS Status : " + "Sent To : " + data.toNumber + " Sent on : " + data.created_at + " UTC";
+          this.LatestSMSstatus2 = "delivery_status : " + data.delivery_status + " StatusCode : " + data.statusCode;
+          this.SMSStatus = (data.delivery_status == "40002" || data.delivery_status == "40003") ? "delivery_Failed" : "delivered";
+        },
+        error: error => {
+          this.LatestSMSstatus = "";
+          this.LatestSMSstatus2 = "";
+          this.SMSStatus = "";
+        }
+      });
+  }
 
   async CreatePromotion() {
     if (this.iseditmode) {
@@ -773,10 +800,10 @@ export class PromotionComponent {
       this.iseditmode = false;
       this.submitted = false;
       await this.ClearControlandView();
-      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
+      await this.setSpinWheelData();
     }
     else {
-      await this.GetSpinWheeldefaultConfigByBusinessGroupID();
+      await this.setSpinWheelData();
       await this.setBusiness();
       this.GetMembersData();
       this.iseditmode = true;
@@ -817,7 +844,7 @@ export class PromotionComponent {
     }
     else if (control == "occasion") {
       let text: any = this.editor.textArea.nativeElement.innerText;
-      this.descriptionCharacterCount = (this.packageDetails.isMMS == true ? 1200 : 145) - (text == "\n" ? 0 : text.length);
+      this.descriptionCharacterCount = (this.packageDetails.isMMS == true ? 1200 : 1200) - (text == "\n" ? 0 : text.length);
       this.firstFormGroup.controls['occasion'].setValue(text == "\n" ? '' : text);
     }
     await this.getRewardstring();
@@ -830,6 +857,7 @@ export class PromotionComponent {
     let valueCheckspromotionalMessage2 = checkwordspromotionalMessage2.replace(' ', '').toLowerCase();
     let checkwordsoccasion = (this.firstFormGroup.controls['occasion'] != null ? this.firstFormGroup.controls['occasion'].value : '');
     let valueChecksoccasion = checkwordsoccasion != null ? checkwordsoccasion.replace(' ', '').toLowerCase() : '';
+
     if (this.showPromo2) {
       this.messageString = this.businessGroupID.businessGroupName + " sent you a " + "double reward!";
       for (let index = 0; index < this.allowedWords.length; index++) {
@@ -837,44 +865,89 @@ export class PromotionComponent {
         if (valueCheckspromotionalMessage1.includes(element.text.toLowerCase())) {
           this.isValidPromoMSG1 = true;
           this.isValidPromoMSG1MSG = "Hey!!! A " + element.reward + "" + " Reward has been detected. "
-          if (element.reward == 'beverages') {
-            let setstring = "Offer on your favorite beverages!";
-            this.messageString1 += "1: " + setstring;
+          if (element.reward == 'bring a friend') {
+            let x = checkwordspromotionalMessage1;
+            let setstring = this.extractIntegersFromString(x).toString();
+            setstring = setstring == "" ? "" : "$" + setstring;
+            this.messageString1 += "1: Bring a friend and get " + setstring + " reward!";
             break;
           }
-          else if (element.reward == '$ off') {
+          else if (element.reward == 'beverages') {
             let x = checkwordspromotionalMessage1;
-            var indexstart = checkwordspromotionalMessage1.indexOf("$");
-            let localstring = checkwordspromotionalMessage1.substring(indexstart, checkwordspromotionalMessage1.length);
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(0, indexend);
-            this.messageString1 += "1: " + setstring + " Off " + " reward!";
+            let setstring = this.extractIntegersFromString(x).toString();
+            if (setstring == "") {
+              setstring = "Offer on your favorite beverages!";
+            }
+            else {
+              if (x.toLowerCase().includes('beer') && x.toLowerCase().includes('wine')) {
+                setstring = "ALL Beer/Wines for $" + setstring + " Reward!";
+              } else if (x.toLowerCase().includes('beer') && !x.toLowerCase().includes('wine')) {
+                setstring = "ALL Beer for $" + setstring + " Reward!";
+              } else if (!x.toLowerCase().includes('beer') && x.toLowerCase().includes('wine')) {
+                setstring = "ALL Wines for $" + setstring + " Reward!";
+              }
+            }
+            this.messageString1 += "1: " + setstring;
             break;
           }
           else if (element.reward == 'dollar') {
             let x = checkwordspromotionalMessage1;
             var indexstart = checkwordspromotionalMessage1.indexOf("$");
-            let localstring = checkwordspromotionalMessage1.substring(indexstart, checkwordspromotionalMessage1.length);
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(0, indexend);
-            this.messageString1 += "1: " + setstring + " reward!";
+            let setstring = "";
+            if (indexstart == -1) {
+              setstring = "1: Special Reward!";
+              this.messageString1 = "\n" + setstring;
+            }
+            else {
+              let checkamount = checkwordspromotionalMessage1.substring((indexstart + 1), (checkwordspromotionalMessage1.length - (indexstart + 1)));
+              let indexendNumber = checkamount.indexOf(' ');
+              let actualAmount = checkamount.substring(0, (indexendNumber >= 0 ? indexendNumber : checkamount.length));
+              let successfullyParsed = parseInt(actualAmount);
+              if (successfullyParsed) {
+                let localstring = checkwordspromotionalMessage1.substring(indexstart, (checkwordspromotionalMessage1.length - indexstart));
+                let indexend = localstring.indexOf(' ');
+                setstring = localstring.substring(0, (indexend >= 0 ? indexend : localstring.length));
+                this.messageString1 = "\n" + "1: " + setstring + " Reward!";
+              }
+              else {
+                setstring = "1: Special Reward!";
+                this.messageString1 = "\n" + setstring;
+              }
+            }
             break;
           }
           else if (element.reward == 'discount') {
             let x = checkwordspromotionalMessage1;
             var indexstart = checkwordspromotionalMessage1.indexOf("%");
-            let localstring = checkwordspromotionalMessage1.substring(0, (indexstart + 1));
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(indexend, localstring.length);
-            this.messageString1 += "1: " + setstring + " " + element.reward + " reward!";
+            let setstring = "";
+            if (indexstart == -1) {
+              setstring = "1: " + "Special " + element.reward + " reward!";
+              this.messageString1 = "\n" + setstring;
+            }
+            else {
+              let checkamount = checkwordspromotionalMessage1.substring(0, (indexstart + 1));
+              let indexendNumber = checkamount.indexOf(' ');
+              let actualAmount = checkamount.substring((indexendNumber >= 0 ? indexendNumber : 0), (checkamount.length));
+              let successfullyParsed = parseInt(actualAmount);
+              if (successfullyParsed) {
+                let localstring = checkwordspromotionalMessage1.substring(0, (indexstart + 1));
+                let indexend = localstring.indexOf(' ');
+                setstring = localstring.substring((indexend >= 0 ? indexend : 0), localstring.length);
+                this.messageString1 = "\n" + "1: " + setstring + " " + element.reward + " reward!";
+              }
+              else {
+                setstring = "1: " + "Special " + element.reward + " reward!";
+                this.messageString1 = "\n" + setstring;
+              }
+            }
             break;
           }
           else if (element.reward == 'free item') {
-            this.messageString1 += "1: " + element.reward + " reward!";
+            this.messageString1 += "1: " + "Special " + element.reward + " reward!";
             break;
           }
           else {
-            this.messageString1 += "1: " + element.reward + " reward!";
+            this.messageString1 += "1: " +  element.reward + " reward!";
           }
         } else {
           this.isValidPromoMSG1 = false;
@@ -888,40 +961,85 @@ export class PromotionComponent {
         if (valueCheckspromotionalMessage2.includes(element.text.toLowerCase())) {
           this.isValidPromoMSG2 = true;
           this.isValidPromoMSG2MSG = "Hey!!! A " + element.reward + "" + " Reward has been detected. "
-          if (element.reward == 'beverages') {
-            let setstring = "Offer on your favorite beverages!";
-            this.messageString1 += "2: " + setstring;
+          if (element.reward == 'bring a friend') {
+            let x = checkwordspromotionalMessage2;
+            let setstring = this.extractIntegersFromString(x).toString();
+            setstring = setstring == "" ? "" : "$" + setstring;
+            this.messageString1 += "2: Bring a friend and get " + setstring + " reward!";
             break;
           }
-          else if (element.reward == '$ off') {
+          else if (element.reward == 'beverages') {
             let x = checkwordspromotionalMessage2;
-            var indexstart = checkwordspromotionalMessage2.indexOf("$");
-            let localstring = checkwordspromotionalMessage2.substring(indexstart, checkwordspromotionalMessage2.length);
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(0, indexend);
-            this.messageString2 += "2: " + setstring + " Off " + " reward!";
+            let setstring = this.extractIntegersFromString(x).toString();
+            if (setstring == "") {
+              setstring = "Offer on your favorite beverages!";
+            }
+            else {
+              if (x.toLowerCase().includes('beer') && x.toLowerCase().includes('wine')) {
+                setstring = "ALL Beer/Wines for $" + setstring + " Reward!";
+              } else if (x.toLowerCase().includes('beer') && !x.toLowerCase().includes('wine')) {
+                setstring = "ALL Beer for $" + setstring + " Reward!";
+              } else if (!x.toLowerCase().includes('beer') && x.toLowerCase().includes('wine')) {
+                setstring = "ALL Wines for $" + setstring + " Reward!";
+              }
+            }
+            this.messageString2 += "2: " + setstring;
             break;
           }
           else if (element.reward == 'dollar') {
             let x = checkwordspromotionalMessage2;
             var indexstart = checkwordspromotionalMessage2.indexOf("$");
-            let localstring = checkwordspromotionalMessage2.substring(indexstart, checkwordspromotionalMessage2.length);
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(0, indexend);
-            this.messageString2 += "2: " + setstring + " reward!";
+            let setstring = "";
+            if (indexstart == -1) {
+              setstring = "2: Special Reward!";
+              this.messageString2 = "\n" + setstring;
+            }
+            else {
+              let checkamount = checkwordspromotionalMessage2.substring((indexstart + 1), (checkwordspromotionalMessage2.length - (indexstart + 1)));
+              let indexendNumber = checkamount.indexOf(' ');
+              let actualAmount = checkamount.substring(0, (indexendNumber >= 0 ? indexendNumber : checkamount.length));
+              let successfullyParsed = parseInt(actualAmount);
+              if (successfullyParsed) {
+                let localstring = checkwordspromotionalMessage2.substring(indexstart, (checkwordspromotionalMessage2.length - indexstart));
+                let indexend = localstring.indexOf(' ');
+                setstring = localstring.substring(0, (indexend >= 0 ? indexend : localstring.length));
+                this.messageString2 = "\n" + "2: " + setstring + " Reward!";
+              }
+              else {
+                setstring = "2: Special Reward!";
+                this.messageString2 = "\n" + setstring;
+              }
+            }
             break;
           }
           else if (element.reward == 'discount') {
             let x = checkwordspromotionalMessage2;
             var indexstart = checkwordspromotionalMessage2.indexOf("%");
-            let localstring = checkwordspromotionalMessage2.substring(0, (indexstart + 1));
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(indexend, localstring.length);
-            this.messageString2 += "2: " + setstring + " " + element.reward + " reward!";
+            let setstring = "";
+            if (indexstart == -1) {
+              setstring = "2: " + "Special " + element.reward + " reward!";
+              this.messageString2 = "\n" + setstring;
+            }
+            else {
+              let checkamount = checkwordspromotionalMessage2.substring((indexstart + 1), (checkwordspromotionalMessage2.length - (indexstart + 1)));
+              let indexendNumber = checkamount.indexOf(' ');
+              let actualAmount = checkamount.substring(0, (indexendNumber >= 0 ? indexendNumber : checkamount.length));
+              let successfullyParsed = parseInt(actualAmount);
+              if (successfullyParsed) {
+                let localstring = checkwordspromotionalMessage2.substring(indexstart, (checkwordspromotionalMessage2.length - indexstart));
+                let indexend = localstring.indexOf(' ');
+                setstring = localstring.substring(0, (indexend >= 0 ? indexend : localstring.length));
+                this.messageString2 = "\n" + "2: " + setstring + " " + element.reward + " reward!";
+              }
+              else {
+                setstring = "2: " + "Special " + element.reward + " reward!";
+                this.messageString2 = "\n" + setstring;
+              }
+            }
             break;
           }
           else if (element.reward == 'free item') {
-            this.messageString2 += "2: " + element.reward + " reward!";
+            this.messageString2 += "2: " + "Special " + element.reward + " reward!";
             break;
           }
           else {
@@ -932,43 +1050,78 @@ export class PromotionComponent {
           this.isValidPromoMSG2MSG = "No Reward detected";
         }
       }
-    } else {
+    }
+
+    else {
       for (let index = 0; index < this.allowedWords.length; index++) {
         const element = this.allowedWords[index];
-
         if (valueCheckspromotionalMessage1.includes(element.text.toLowerCase())) {
+          console.log('in')
           this.isValidPromoMSG1 = true;
           this.isValidPromoMSG1MSG = "Hey!!! A " + element.reward + "" + " Reward has been detected. "
-          if (element.reward == 'beverages') {
-            let setstring = "Offer on your favorite beverages!";
-            this.messageString1 = this.businessGroupID.businessGroupName + " sent you an " + setstring;
+          if (element.reward == 'bring a friend') {
+            let x = checkwordspromotionalMessage1;
+            let setstring = this.extractIntegersFromString(x).toString();
+            setstring = setstring == "" ? "" : "$" + setstring;
+            this.messageString = this.businessGroupID.businessGroupName + " sent you Bring a friend and get " + setstring + " reward!";
             break;
           }
-          else if (element.reward == '$ off') {
+          else if (element.reward == 'beverages') {
             let x = checkwordspromotionalMessage1;
-            var indexstart = checkwordspromotionalMessage1.indexOf("$");
-            let localstring = checkwordspromotionalMessage1.substring(indexstart, checkwordspromotionalMessage1.length);
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(0, indexend);
-            this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + " Off " + " reward!";
+            let setstring = this.extractIntegersFromString(x).toString();
+            if (setstring == "") {
+              setstring = "Offer on your favorite beverages!";
+            }
+            else {
+              if (x.toLowerCase().includes('beer') && x.toLowerCase().includes('wine')) {
+                setstring = "ALL Beer/Wines for $" + setstring + " Reward!";
+              } else if (x.toLowerCase().includes('beer') && !x.toLowerCase().includes('wine')) {
+                setstring = "ALL Beer for $" + setstring + " Reward!";
+              } else if (!x.toLowerCase().includes('beer') && x.toLowerCase().includes('wine')) {
+                setstring = "ALL Wines for $" + setstring + " Reward!";
+              }
+            }
+            this.messageString = this.businessGroupID.businessGroupName + " sent you " + setstring;
             break;
           }
           else if (element.reward == 'dollar') {
-            let x = checkwordspromotionalMessage1;
             var indexstart = checkwordspromotionalMessage1.indexOf("$");
-            let localstring = checkwordspromotionalMessage1.substring(indexstart, checkwordspromotionalMessage1.length);
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(0, indexend);
-            this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + " reward!";
+            let setstring = "";
+            let checkamount = checkwordspromotionalMessage1.substring((indexstart + 1), (checkwordspromotionalMessage1.length - (indexstart + 1)));
+            let indexendNumber = checkamount.indexOf(' ');
+            let actualAmount = checkamount.substring(0, (indexendNumber >= 0 ? indexendNumber : checkamount.length));
+            let successfullyParsed = parseInt(actualAmount);
+            console.log(successfullyParsed)
+            if (successfullyParsed) {
+              let localstring = checkwordspromotionalMessage1.substring(indexstart, (checkwordspromotionalMessage1.length - indexstart));
+              let indexend = localstring.indexOf(' ');
+              setstring = localstring.substring(0, (indexend >= 0 ? indexend : localstring.length));
+              this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + " reward!";
+            }
+            else {
+              console.log('else')
+              setstring = "dollar reward!";
+              this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring;
+            }
             break;
           }
           else if (element.reward == 'discount') {
             let x = checkwordspromotionalMessage1;
             var indexstart = checkwordspromotionalMessage1.indexOf("%");
-            let localstring = checkwordspromotionalMessage1.substring(0, (indexstart + 1));
-            let indexend = localstring.indexOf(' ');
-            let setstring = localstring.substring(indexend, localstring.length);
-            this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + " " + element.reward + " reward!";
+            let setstring = "";
+            let checkamount = checkwordspromotionalMessage1.substring(0, (indexstart + 1));
+            let indexendNumber = checkamount.indexOf(' ');
+            let actualAmount = checkamount.substring((indexendNumber >= 0 ? indexendNumber : 0), (checkamount.length - 1));
+            let successfullyParsed = parseInt(actualAmount);
+            if (successfullyParsed) {
+              let localstring = checkwordspromotionalMessage1.substring(0, (indexstart + 1));
+              let indexend = localstring.indexOf(' ');
+              setstring = localstring.substring((indexend >= 0 ? indexend : 0), localstring.length);
+              this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + " " + element.reward + " reward!";
+            }
+            else {
+              this.messageString = this.businessGroupID.businessGroupName + " sent you a " + element.reward + " reward!";
+            }
             break;
           }
           else if (element.reward == 'free item') {
@@ -992,8 +1145,17 @@ export class PromotionComponent {
         }
       }
     }
-
   }
+
+  extractIntegersFromString(str: string): number[] {
+    const matches = str.match(/\d+/g);
+    if (matches) {
+      return matches.map(match => parseInt(match, 10));
+    } else {
+      return [];
+    }
+  }
+
   Submit(): void {
     this.submitted = true;
     if (this.firstFormGroup.invalid || this.secondFormGroup.invalid || this.spinFormGroup.invalid) {
@@ -1025,7 +1187,6 @@ export class PromotionComponent {
           this.ClearControlandView();
         },
         error: error => {
-          console.log(error);
           this.isLoadingSaveData = false;
           this.isLoading = false;
           this.submitted = false;
@@ -1359,27 +1520,43 @@ export class PromotionComponent {
   onUpload() {
     if (this.file) {
       this.loadingLoading = true;
-      this.uploadSub = this._promotionService.uploadFile(this.file).subscribe((event: any) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
-        }
-        if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
-          this.loadingLoading = false; // Flag variable
-          this.isfileUploaded = true;
-          this.annImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.file.name;
-          let array = event.partialText.split('|')[1].split('\\');
-          this.fileName = array[array.length - 1];
-          this.filePath = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName;
-        } else {
-          this.loadingLoading = false;
-          this.isfileUploaded = false;
-        }
-      });
+      this.uploadSub = this._promotionService.uploadPromotionalfile(this.file).pipe()
+        .subscribe({
+          next: (event: any) => {
+            console.log("This is on upload event:- ", event);
+            if (event.type == HttpEventType.UploadProgress) {
+              this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+            }
+            if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
+              this.loadingLoading = false; // Flag variable
+              this.isfileUploaded = true;
+              this.annImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.file.name;
+              let array = event.partialText.split('|')[1].split('\\');
+              this.fileName = array[array.length - 1];
+              this.filePath = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName;
+            } else {
+              this.loadingLoading = false;
+              this.isfileUploaded = false;
+            }
+          },
+          error: error => {
+            console.log("This is on upload error", error);
+            this.errorMessage = error.error;
+            this.modalService.open(this.errorMessage, {
+              animation: true,
+              size: 'lg',
+              centered: true,
+            });
+            this.cancelUpload();
+          }
+        });
     }
     this.loadingLoading = false;
   }
   cancelUpload() {
-    this.uploadSub.unsubscribe();
+    if (this.uploadSub != null) {
+      this.uploadSub.unsubscribe();
+    }
     this.uploadProgress = "0%";
     this.isfileUploaded = false;
     this.fileName = "";
@@ -1511,7 +1688,6 @@ export class PromotionComponent {
           this.buttonname = "Resume Editing";
         },
         error: error => {
-          console.log(error);
           this.isLoadingSaveData = false;
           this.isLoading = false;
           this.submitted = false;
@@ -1527,7 +1703,7 @@ export class PromotionComponent {
             this.draftPromo = [];
           },
           error: error => {
-            console.log(error);
+
           }
         });
     }
@@ -1535,7 +1711,7 @@ export class PromotionComponent {
     this.iseditmode = false;
     this.submitted = false;
     await this.ClearControlandView();
-    await this.GetSpinWheeldefaultConfigByBusinessGroupID();
+    await this.setSpinWheelData();
   }
   //#region BusinessDropdown
   async onItemSelectAll(items) {

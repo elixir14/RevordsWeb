@@ -44,6 +44,17 @@ export class PromotionService {
         });
         return this._http.request(req);
     }
+    uploadPromotionalfile(file: File): Observable<HttpEvent<any>> {
+        const formData: FormData = new FormData();
+
+        formData.append('file', file);
+
+        const req = new HttpRequest('POST', `${this.apiUrl}UploadPromotionalFile`, formData, {
+            reportProgress: true,
+            responseType: 'text',
+        });
+        return this._http.request(req);
+    }
 
     public GetPromotionHistoryByBusinessGroupId(bussinessGroupID, startDate, endDate, businessLocationID) {
         return this._http.get<any>(this.apiUrl + "GetPromotionHistoryByBusinessGroupId/" + bussinessGroupID + "/" + startDate + "/" + endDate + "/" + businessLocationID)

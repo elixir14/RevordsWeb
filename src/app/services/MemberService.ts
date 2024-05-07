@@ -42,11 +42,15 @@ export class MemberService {
     public GetMemberByPhoneNo(phoneNo) {
         return this._http.get<any>(this.apiUrl + "GetMemberByPhoneNo/" + phoneNo)
             .pipe(map(member => {
+             
                 return member;
             }));
     }
 
     public GetMembersDataForPromotion(details): Observable<any> {
         return this._http.get<any>(this.apiUrl + "GetMembersDataForPromotion", { params: details })
+    }
+    public GetLastSMSDetails(){
+        return this._http.get<any>(this.apiUrl + "GetLastSMSDetails");
     }
 }

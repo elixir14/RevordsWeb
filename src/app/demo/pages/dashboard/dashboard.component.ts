@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 import * as dayjs from 'dayjs';
 import { MemberService } from 'src/app/services/MemberService';
 import { ProfileSettingService } from 'src/app/services/ProfileSettingService';
+import { AppSettings } from 'src/app/services/Constants';
 
 export type ChartOptions = {
   title: ApexTitleSubtitle;
@@ -752,6 +753,16 @@ export class DashboardComponent implements OnInit {
     await this._dashBoardservice.GetActiveMemberDetailByBusinessGroupId(this.selectedbusinessGroup.id).pipe()
       .subscribe({
         next: (data) => {
+          console.log(data);
+          data.forEach(element => {
+            var startTime = new Date(element.inTime);
+            var endTime = new Date();
+            var difference = startTime.getTime() - endTime.getTime(); // This will give difference in milliseconds
+            var resultInMinutes = Math.round(difference / 60000);
+            var hours = Math.trunc(resultInMinutes/60);
+            var minutes = resultInMinutes % 60;
+            element.inTime = (hours < 10 ? "0" + hours : hours) +":"+ (minutes < 10 ? "0" + minutes : minutes);
+          });
           this.detailactiveFullMemberData = data;
           this.detailactiveMemberData = data;
         },
@@ -1056,9 +1067,9 @@ export class DashboardComponent implements OnInit {
 
   calculateGoalData() {
     var today = new Date();
+    today = today.getHours() <= 2 ? (new Date(today.setDate(today.getDate() - 1))) : today;
+
     var month = today.toLocaleString('default', { month: 'long' });
-    console.log(this.goalValue)
-    console.log(this.totalNewSignUpsThisMonth)
     this.ThismonthText = month + " Goal: " + this.goalValue + " Signups";
     this.Tillnowsignups = this.totalNewSignUpsThisMonth + " Signups.";
     this.Pendingsignups = (this.goalValue - this.totalNewSignUpsThisMonth) > 0 ? (this.goalValue - this.totalNewSignUpsThisMonth) + " more to go!" : "Congrats !";
@@ -1090,6 +1101,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OpendataModal() {
+    
     this.modalService.open(this.wizardRef);
   }
 
@@ -1115,20 +1127,23 @@ export class DashboardComponent implements OnInit {
     this.isLoading = false;
   }
   async UpdateGoals() {
+    var today = new Date();
+    today = today.getHours() <= 2 ? (new Date(today.setDate(today.getDate() - 1))) : today;
+
     let action: any;
     this.goalData.forEach(element => {
       let MonthlyGoal = {
         "uniqueId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         "id": 0,
         "signUpGoals": element.Goal,
-        "monthId": (new Date().getMonth() + 1).toString(),
-        "yearId": (new Date().getFullYear()).toString(),
+        "monthId": (today.getMonth() + 1).toString(),
+        "yearId": (today.getFullYear()).toString(),
         "stateId": 3,
         "isActive": 1,
         "createdBy": 1,
-        "createdDate": new Date(),
+        "createdDate": AppSettings.GetDate(),
         "lastModifiedBy": 1,
-        "lastModifiedDate": new Date(),
+        "lastModifiedDate": AppSettings.GetDate(),
         "businessGroupId": this.selectedbusinessGroup.id,
         "businessLocationId": element.businessLocationId,
       }

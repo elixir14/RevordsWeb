@@ -43,32 +43,18 @@
                             <mat-expansion-panel-header style="height:100% !important; padding: 10px 20px 10px 20px;">
                                 <mat-panel-title style="display: block !important;">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-5">
                                             <div class="row" class="info">{{p.promotionalMessage}}</div>
                                             <div class="row" class="summary">
-                                                <div class="col-md-12 d-flex pr-0 pl-0">
-                                                    <div class="col-md-8 pl-0 pr-0">
-                                                        <div>
-                                                            <span>Sent : </span>
-                                                            {{p.sentDate | utcToLocalTime: 'short'}}
-                                                        </div>
-                                                        <div>
-                                                            Valid : {{p.offerStartDate | date:'M/d'}} - {{p.offerEndDate
-                                                            |
-                                                            date:'M/d'}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4 d-flex" style="align-items: center;justify-content: center;">
-                                                        <span id='summaryLabel'
-                                                            (click)="EditReplicate(p.id)">Replicate</span>
-                                                    </div>
-                                                </div>
-                                                <!-- <span id='summaryLabel' class="ml-2"
-                                                    (click)="EditReplicate(p.id)">Replicate </span> -->
-                                                <!-- <br>  -->
+                                                <span>Sent : </span>
+                                                {{p.sentDate | utcToLocalTime: 'short'}}
+                                                <span id='summaryLabel' class="ml-2"
+                                                    (click)="EditReplicate(p.id)">Replicate </span>
+                                                <br> Valid : {{p.offerStartDate | date:'M/d'}} - {{p.offerEndDate |
+                                                date:'M/d'}}
                                             </div>
                                         </div>
-                                        <div class="col-md-8 d-flex">
+                                        <div class="col-md-7 d-flex">
                                             <div class="col-md-4">
                                                 <div class=" row d-flex p-3">
                                                     <div class="col-md-6 col-auto p-0">
@@ -103,12 +89,12 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="row d-flex p-3">
-                                                    <div class="col-md-8 col-auto p-0">
+                                                    <div class="col-md-6 col-auto p-0">
                                                         <div class="p-0 details ">
-                                                            {{p.totalVisitsRate}}%
+                                                            {{p.totalVisitsRate}} %
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 p-0 ">
+                                                    <div class="col-md-6 p-0 ">
                                                         <div class="mt-2 mr-2">
                                                             <span class="overview-amount ng-binding inner ">
                                                                 Visit Rate
@@ -122,17 +108,17 @@
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div class="row ">
-                                <div class="col-md-4">
+                                <div class="col-md-5 ">
                                     <!-- <p class="detailsummary">{{p.occasion}}</p> -->
                                 </div>
-                                <div class="col-md-8 d-flex" style="padding-left: 0px !important;">
+                                <div class="col-md-7 d-flex" style="padding-left: 0px !important;margin-left: 39%; ">
                                     <div class="col-md-4" style="border-right: 1px solid #d7d3d3;">
                                         <div class="row d-flex p-0">
-                                            <div class="col-md-4 col-auto p-0">
+                                            <div class="col-md-6 col-auto p-0">
                                                 <div class="p-0 details ">
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 p-0 ">
+                                            <div class="col-md-6 p-0 ">
                                                 <div class="mt-2 mr-2">
                                                     <p style="margin-bottom: 0px !important; ">
                                                         App
@@ -153,11 +139,11 @@
                                     </div>
                                     <div class="col-md-4" style="border-right: 1px solid #d7d3d3;">
                                         <div class="row d-flex p-0">
-                                            <div class="col-md-4 col-auto p-0">
+                                            <div class="col-md-6 col-auto p-0">
                                                 <div class="p-0 details ">
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 p-0 ">
+                                            <div class="col-md-6 p-0 ">
                                                 <div class="mt-2 mr-2">
                                                     <p style="margin-bottom: 0px !important; ">Claim
                                                         <span class="float-right"> {{p.claims}} </span>
@@ -174,20 +160,21 @@
                                     </div>
                                     <div class="col-md-4" style="border-right: 1px solid #d7d3d3;">
                                         <div class="row d-flex p-0">
-                                            <div class="col-md-4 col-auto p-0">
+                                            <div class="col-md-6 col-auto p-0">
                                                 <div class="p-0 details ">
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 p-0 ">
+                                            <div class="col-md-6 p-0 ">
                                                 <div class="mt-2 mr-2">
                                                     <p style="margin-bottom: 0px !important; ">Claim
-                                                        <span class="float-right"> {{p.totalClaimRate}}%</span>
+                                                        <span class="float-right"> {{p.totalClaimRate}} %</span>
                                                     </p>
                                                     <p style="margin-bottom: 0px !important; ">Redemptions
-                                                        <span class="float-right"> {{p.totalredeemRate}}%</span>
+                                                        <span class="float-right"> {{p.totalredeemRate}}
+                                                            %</span>
                                                     </p>
                                                     <p style="margin-bottom: 0px !important; ">Opt-Outs
-                                                        <span class="float-right"> {{p.totaloptoutRate}}% </span>
+                                                        <span class="float-right"> {{p.totaloptoutRate}} % </span>
                                                     </p>
                                                 </div>
                                             </div>
@@ -475,6 +462,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="progress">
                                                         <div class="progress-bar bluecolor" role="progressbar"
                                                             [style.width]="uploadProgress"
@@ -972,16 +960,20 @@
                                                                             <p>
                                                                                 {{messageString2}}
                                                                             </p>
-                                                                            <p>Exp.
-                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
-                                                                                | date: 'MM/dd'}}</p>
-                                                                            <p>Redeemable at
+                                                                            <p>Redeem at :
                                                                                 {{selectedRedemtionOption}}
                                                                             </p>
-                                                                            <p>OFF to stop</p>
-                                                                            <p>Download our app to save your reward
-                                                                                rvd.lnk
+                                                                            <p>
+                                                                                Valid :
+                                                                                {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                                | date: 'MM/dd'}} -
+                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
+                                                                                | date: 'MM/dd'}}
                                                                             </p>
+                                                                            <p>Download Revords.com/apps to save your
+                                                                                reward
+                                                                            </p>
+                                                                            <p>Reply STOP to opt out</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1012,29 +1004,28 @@
                                                                                     style="width: 207px;" />
                                                                             </div>
                                                                             <p>
-                                                                                <span *ngIf='showPromo2 == true'>Promo
-                                                                                    1:
-                                                                                </span>
-                                                                                {{this.firstFormGroup.controls['promotionalMessage1'].value}}
+                                                                                {{messageString}}
                                                                             </p>
-
-                                                                            <p *ngIf='showPromo2 == true'>
-                                                                                Promo 2:
-                                                                                {{this.firstFormGroup.controls['promotionalMessage2'].value}}
+                                                                            <p>
+                                                                                {{messageString1}}
                                                                             </p>
-
-                                                                            <p
-                                                                                [innerHTML]="this.firstFormGroup.controls['occasionHTML'].value">
+                                                                            <p>
+                                                                                {{messageString2}}
                                                                             </p>
-
-                                                                            <p>Exp.
-                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
-                                                                                | date:
-                                                                                'dd MMM, YYYY'}}</p>
-
-                                                                            <p>Redeemable at
+                                                                            <p>Redeem at :
                                                                                 {{selectedRedemtionOption}}
                                                                             </p>
+                                                                            <p>
+                                                                                Valid :
+                                                                                {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                                | date: 'MM/dd'}} -
+                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
+                                                                                | date: 'MM/dd'}}
+                                                                            </p>
+                                                                            <p>Download Revords.com/apps to save your
+                                                                                reward
+                                                                            </p>
+                                                                            <p>Reply STOP to opt out</p>
                                                                         </div>
                                                                         <div class="content"
                                                                             *ngIf="!isValidPromoMSG1 || !isValidPromoMSG2 || !isValidOcassion">
@@ -1043,24 +1034,29 @@
                                                                                 <img src={{filePath}}
                                                                                     style="width: 207px;" />
                                                                             </div>
-                                                                            <p *ngIf="showPromo2 == true">
-                                                                                Furtune's Group sent you double
-                                                                                rewards!!
+                                                                            <p>
+                                                                                {{messageString}}
                                                                             </p>
-                                                                            <p *ngIf="showPromo2 == false">
-                                                                                Furtune's Group sent you a reward!
+                                                                            <p>
+                                                                                {{messageString1}}
                                                                             </p>
-                                                                            <p>Exp.
-                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
-                                                                                | date: 'dd MMM'}}</p>
-                                                                            <p>Redeemable at
+                                                                            <p>
+                                                                                {{messageString2}}
+                                                                            </p>
+                                                                            <p>Redeem at :
                                                                                 {{selectedRedemtionOption}}
                                                                             </p>
-                                                                            <p>OFF to stop</p>
-                                                                            <p>Download our app to save your reward
-                                                                                rvd.lnk
+                                                                            <p>
+                                                                                Valid :
+                                                                                {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                                | date: 'MM/dd'}} -
+                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
+                                                                                | date: 'MM/dd'}}
                                                                             </p>
-                                                                            <p>via Revords</p>
+                                                                            <p>Download Revords.com/apps to save your
+                                                                                reward
+                                                                            </p>
+                                                                            <p>Reply STOP to opt out</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1191,11 +1187,7 @@
                                                                         display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[0].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[0].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[0].controls['text'].value}}
+                                                                {{this.spinFormGroup.controls[0].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1212,12 +1204,7 @@
                                                                         display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[7].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[7].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[7].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[7].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1234,12 +1221,7 @@
                                                                         display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[6].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[6].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[6].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[6].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1256,12 +1238,7 @@
                                                                             display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[5].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[5].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[5].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[5].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1278,12 +1255,7 @@
                                                                           display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[4].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[4].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[4].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[4].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1300,12 +1272,7 @@
                                                                             display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[3].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[3].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[3].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[3].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1321,12 +1288,7 @@
                                                                         justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[2].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[2].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[2].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[2].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1343,12 +1305,7 @@
                                                                             display: flex;justify-content: center;align-items: end;">
                                                             <p
                                                                 style="color: #403d3d;font-weight: 800;font-size: 14px; text-transform: uppercase; width: 50%;">
-                                                                {{this.spinFormGroup.controls[1].controls['IsInteger'].value
-                                                                == true ?
-                                                                this.spinFormGroup.controls[1].controls['text'].value +
-                                                                " Points" :
-                                                                this.spinFormGroup.controls[1].controls['text'].value
-                                                                }}
+                                                                {{this.spinFormGroup.controls[1].controls['text'].value}}
                                                             </p>
                                                         </span>
                                                         <span
@@ -1465,7 +1422,7 @@
                                                     <b>Redeemable At : </b>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <ng-multiselect-dropdown placeholder="Choose RedemptionAt"
+                                                    <ng-multiselect-dropdown placeholder="Choose Redeemable At"
                                                         (onSelect)="onRedemptionOptionChanged()"
                                                         (onSelectAll)="onRedemptionOptionChanged()"
                                                         formControlName="RedemptionAt"
@@ -2216,6 +2173,15 @@
                                             </div>
                                         </div>
                                         <div class="row" style="margin-top:5px;">
+                                            <div class="col-md-12">
+                                                <h4>{{LatestSMSstatus}} </h4>
+
+                                                <h5> <span
+                                                        [ngClass]="(SMSStatus == 'delivered' || SMSStatus == 'sent') ? 'greendot' : 'reddot' "
+                                                        [class]="greendot"></span>{{LatestSMSstatus2}}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top:5px;">
                                             <div class="col-md-2">
                                                 <button matStepperPrevious class="btn btn-dark flexcenter">
                                                     <img alt="phonevector" class="filter-green mr3"
@@ -2231,6 +2197,7 @@
                                             </div>
                                             <div class="col-md-6"></div>
                                         </div>
+
                                     </div>
                                     <div class="col-md-4"
                                         style="border:1px solid #DADCDC;border-radius: 15px; height: 826px;">
@@ -2261,18 +2228,26 @@
                                                                             <p>
                                                                                 {{messageString}}
                                                                             </p>
-
-                                                                            <p>Exp.
+                                                                            <p>
+                                                                                {{messageString1}}
+                                                                            </p>
+                                                                            <p>
+                                                                                {{messageString2}}
+                                                                            </p>
+                                                                            <p>Redeem at :
+                                                                                {{selectedRedemtionOption}}
+                                                                            </p>
+                                                                            <p>
+                                                                                Valid :
+                                                                                {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                                | date: 'MM/dd'}} -
                                                                                 {{this.firstFormGroup.controls['offerEndDate'].value
-                                                                                | date:'MM/dd'}}</p>
-
-                                                                            <p>Redeemable at {{selectedRedemtionOption}}
+                                                                                | date: 'MM/dd'}}
                                                                             </p>
-
-                                                                            <p>OFF to stop</p>
-                                                                            <p>Download our app to save your reward
-                                                                                rvd.lnk
+                                                                            <p>Download Revords.com/apps to save your
+                                                                                reward
                                                                             </p>
+                                                                            <p>Reply STOP to opt out</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -2295,37 +2270,67 @@
                                                                                     src="../../../../assets/images/rewords.png">
                                                                             </div>
                                                                         </div>
-                                                                        <div class="content">
+                                                                        <div class="content"
+                                                                            *ngIf="isValidPromoMSG1 && isValidPromoMSG2 && isValidOcassion">
                                                                             <div
                                                                                 style="display: flex;margin-bottom: 7px;align-items: center;">
                                                                                 <img src={{filePath}}
                                                                                     style="width: 207px;" />
                                                                             </div>
                                                                             <p>
-                                                                                <span *ngIf='showPromo2 == true'>Promo
-                                                                                    1:
-                                                                                </span>
-                                                                                {{this.firstFormGroup.controls['promotionalMessage1'].value}}
+                                                                                {{messageString}}
                                                                             </p>
-
-                                                                            <p *ngIf='showPromo2 == true'>
-                                                                                Promo 2:
-                                                                                {{this.firstFormGroup.controls['promotionalMessage2'].value}}
+                                                                            <p>
+                                                                                {{messageString1}}
                                                                             </p>
-
-                                                                            <p
-                                                                                [innerHTML]="this.firstFormGroup.controls['occasionHTML'].value">
+                                                                            <p>
+                                                                                {{messageString2}}
                                                                             </p>
-
-                                                                            <p>Exp.
+                                                                            <p>Redeem at :
+                                                                                {{selectedRedemtionOption}}
+                                                                            </p>
+                                                                            <p>
+                                                                                Valid :
+                                                                                {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                                | date: 'MM/dd'}} -
                                                                                 {{this.firstFormGroup.controls['offerEndDate'].value
-                                                                                | date:
-                                                                                'dd MMM, YYYY'}}</p>
-
-                                                                            <p>Redeemable at {{selectedRedemtionOption}}
+                                                                                | date: 'MM/dd'}}
                                                                             </p>
-
-                                                                            via Revords
+                                                                            <p>Download Revords.com/apps to save your
+                                                                                reward
+                                                                            </p>
+                                                                            <p>Reply STOP to opt out</p>
+                                                                        </div>
+                                                                        <div class="content"
+                                                                            *ngIf="!isValidPromoMSG1 || !isValidPromoMSG2 || !isValidOcassion">
+                                                                            <div
+                                                                                style="display: flex;margin-bottom: 7px;align-items: center;">
+                                                                                <img src={{filePath}}
+                                                                                    style="width: 207px;" />
+                                                                            </div>
+                                                                            <p>
+                                                                                {{messageString}}
+                                                                            </p>
+                                                                            <p>
+                                                                                {{messageString1}}
+                                                                            </p>
+                                                                            <p>
+                                                                                {{messageString2}}
+                                                                            </p>
+                                                                            <p>Redeem at :
+                                                                                {{selectedRedemtionOption}}
+                                                                            </p>
+                                                                            <p>
+                                                                                Valid :
+                                                                                {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                                | date: 'MM/dd'}} -
+                                                                                {{this.firstFormGroup.controls['offerEndDate'].value
+                                                                                | date: 'MM/dd'}}
+                                                                            </p>
+                                                                            <p>Download Revords.com/apps to save your
+                                                                                reward
+                                                                            </p>
+                                                                            <p>Reply STOP to opt out</p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -2395,9 +2400,11 @@
                                                                             <p
                                                                                 style="padding-bottom: 0px !important;margin-bottom: 0px !important;">
                                                                                 {{businessGroupName}} sent you a
-                                                                                promotion valid till
+                                                                                promotion
+                                                                                valid till
                                                                                 {{this.firstFormGroup.controls['offerEndDate'].value|
-                                                                                date: 'MM/dd'}}
+                                                                                date: 'dd MMM,
+                                                                                YYYY'}}
                                                                             </p>
                                                                         </div>
                                                                     </div>

@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MemberService } from 'src/app/services/MemberService';
+import { PromotionService } from 'src/app/services/PromotionService';
 
 export class Tree {
   root: TreeNode;
@@ -157,7 +158,7 @@ export class AnnouncementComponent {
    */
   constructor(private uploadService: FileUploadService,
     private fb: FormBuilder, private _announcementService: AnnouncementService,
-    public toastService: ToastService, private _defination: DefinationService,
+    public toastService: ToastService, private _defination: DefinationService, private _promotionService: PromotionService,
     public dialog: MatDialog, public sanitizer: DomSanitizer, private _memberservice: MemberService) {
     this.business = JSON.parse(localStorage.getItem('Business'));
     this.packageDetails = JSON.parse(localStorage.getItem('PackageDetails'));
@@ -417,23 +418,36 @@ export class AnnouncementComponent {
 
     if (this.file) {
       this.loadingLoading = true;
-      this.uploadSub = this.uploadService.uploadAnnouncement(this.file).subscribe((event: any) => {
-        if (event.type == HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
-        }
-        if (event.partialText == "file uploaded") {
-          this.loadingLoading = false; // Flag variable
-          this.isfileUploaded = true;
-          this.annImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.file.name;
-          this.fileName = this.file.name;
-          this.filePath = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName;
-          this.jobForm.controls['fileName'].setValue(this.file.name);
-          this.jobForm.controls['ImageInput'].setValue(this.file.name);
-        } else {
-          this.loadingLoading = false;
-          this.isfileUploaded = false;
-        }
-      });
+      this.uploadSub = this._promotionService.uploadPromotionalfile(this.file).pipe()
+        .subscribe({
+          next: (event: any) => {
+            if (event.type == HttpEventType.UploadProgress) {
+              this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
+            }
+            console.log(event.partialText);
+            if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded")  {
+              this.loadingLoading = false; // Flag variable
+              this.isfileUploaded = true;
+              this.annImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.file.name;
+              console.log(this.annImage);
+              let array = event.partialText.split('|')[1].split('\\');
+              console.log(array);
+              this.fileName = array[array.length - 1];
+              this.jobForm.controls['fileName'].setValue(this.fileName);
+              this.jobForm.controls['ImageInput'].setValue(this.fileName);
+              console.log(this.fileName);
+              
+              this.filePath = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName;
+            } else {
+              this.loadingLoading = false;
+              this.isfileUploaded = false;
+            }
+          }, error: error => {
+            console.log(error);
+            alert(error.error);
+            this.cancelUpload();
+          }
+        });
     }
     this.loadingLoading = false;
   }
@@ -441,10 +455,11 @@ export class AnnouncementComponent {
     if (this.uploadSub != null) {
       this.uploadSub.unsubscribe();
     }
+    this.jobForm.controls['fileName'].setValue('');
+    this.jobForm.controls['ImageInput'].setValue('');
     this.uploadProgress = "0%";
     this.reset();
   }
-
   reset() {
     this.file = null;
     this.fileName = null;
