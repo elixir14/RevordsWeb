@@ -753,15 +753,16 @@ export class DashboardComponent implements OnInit {
     await this._dashBoardservice.GetActiveMemberDetailByBusinessGroupId(this.selectedbusinessGroup.id).pipe()
       .subscribe({
         next: (data) => {
-          console.log(data);
           data.forEach(element => {
+            let today = new Date();
             var startTime = new Date(element.inTime);
-            var endTime = new Date();
-            var difference = startTime.getTime() - endTime.getTime(); // This will give difference in milliseconds
+            var endTime = new Date(today.getUTCFullYear(), (today.getUTCMonth()), today.getUTCDate(),
+              today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds());
+            var difference = endTime.getTime() - startTime.getTime(); // This will give difference in milliseconds
             var resultInMinutes = Math.round(difference / 60000);
-            var hours = Math.trunc(resultInMinutes/60);
+            var hours = Math.trunc(resultInMinutes / 60);
             var minutes = resultInMinutes % 60;
-            element.inTime = (hours < 10 ? "0" + hours : hours) +":"+ (minutes < 10 ? "0" + minutes : minutes);
+            element.inTime = (hours < 10 ? "0" + hours : hours) + ":" + (minutes < 10 ? "0" + minutes : minutes);
           });
           this.detailactiveFullMemberData = data;
           this.detailactiveMemberData = data;
@@ -1101,7 +1102,7 @@ export class DashboardComponent implements OnInit {
   }
 
   OpendataModal() {
-    
+
     this.modalService.open(this.wizardRef);
   }
 
