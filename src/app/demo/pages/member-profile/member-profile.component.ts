@@ -504,7 +504,7 @@ export class MemberProfileComponent {
     let businessId = "";
     if (businessInput != null && businessInput != undefined && businessInput != '' && businessInput.length) {
       for (let index = 0; index < businessInput.length; index++) {
-        businessId += businessInput[index].id + ', '
+        businessId += businessInput[index].id + ','
       }
     }
     let details = {
@@ -523,8 +523,6 @@ export class MemberProfileComponent {
       .subscribe({
         next: (data) => {
           this.dataSource.data = data['table1'];
-          console.log(data);
-          console.log(data['table2'][0].cnt);
           this.totalData = parseInt(data['table2'][0].cnt);
           this.totalPages = Math.ceil(parseInt(this.totalData) / parseInt(this.pageSize));
           if (this.pageNumber < this.totalPages) {
@@ -547,7 +545,7 @@ export class MemberProfileComponent {
             this.platinum = 0;
 
             this.filtereddata = data['table3'];
-            this.filtereddata.filter((t) => t.businessLocationID == -1).forEach(element => {
+            this.filtereddata.forEach(element => {
               this.totalMembers += element.memberCount;
               if (element.badgeID == 1) {
                 this.bronze += element.memberCount;
@@ -588,7 +586,7 @@ export class MemberProfileComponent {
     let businessId = "";
     if (businessInput1 != null && businessInput1 != undefined && businessInput1 != '' && businessInput1.length) {
       for (let index = 0; index < businessInput1.length; index++) {
-        businessId += businessInput1[index].id + ', '
+        businessId += businessInput1[index].id + ','
       }
     }
     let details = {
