@@ -216,14 +216,6 @@ table {
   color: #0d78b9;
 }
 
-// .member-modal .member-modal-row .member-overview {
-//   padding-bottom: 15px;
-// }
-
-// .member-modal .first-row .point-incrementer {
-//   padding-top: 40px;
-// } shahi
-
 .member-modal .member-modal-row .point-incrementer>button {
   height: 45px;
   width: 45px;
@@ -559,7 +551,7 @@ element.style {
 .header-text {
   color: black;
   //font-weight: 500;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
@@ -594,4 +586,14 @@ element.style {
 
 .mat-mdc-table .mdc-data-table__header-row {
   background: #efefef;
+}
+
+::ng-deep .modal {
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  height: 8px;
 }

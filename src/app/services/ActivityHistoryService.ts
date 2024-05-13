@@ -17,8 +17,15 @@ export class ActivityHistoryService {
 
     private apiUrl = AppSettings.API_ENDPOINT + "/api/ActivityHistories/";
 
-    public GetActivityDashboardByBusinessGroupId(bussinessGroupID,start, end) {
+    public GetActivityDashboardByBusinessGroupId(bussinessGroupID, start, end) {
         return this._http.get<any>(this.apiUrl + "GetActivityDashboardByBusinessGroupId/" + bussinessGroupID + "/" + start + "/" + end)
+            .pipe(map(member => {
+                return member;
+            }));
+    }
+
+    public GetActivityByMemberId(memberID) {
+        return this._http.get<any>(this.apiUrl + "GetActivityByMemberId/" + memberID)
             .pipe(map(member => {
                 return member;
             }));

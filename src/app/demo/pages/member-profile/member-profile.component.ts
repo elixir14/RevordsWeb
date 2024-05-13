@@ -16,6 +16,7 @@ import { IDropdownSettings, } from 'ng-multiselect-dropdown';
 import { AdminComponent } from 'src/app/theme/layout/admin/admin.component';
 import { UtcConverterService, UtcToLocalTimeFormat } from 'src/app/services/UtcConverterService';
 import { catchError, map, startWith, switchMap, pipe, of as observableOf } from 'rxjs';
+import { ActivityHistoryService } from 'src/app/services/ActivityHistoryService';
 
 export interface PeriodicElement {
   name: string;
@@ -78,7 +79,6 @@ export class MemberProfileComponent {
   memberName: any = "";
   tagname: any = "";
   badgename: any = "";
-
   displayedColumns: string[] = ['name', 'phone', 'status', 'source', 'currentpoints', 'lifetimepoints', 'lastvisit', 'membersince', 'istagged'];
   public dataSource = new MatTableDataSource<any>();
   public dataSourceForFilter = new MatTableDataSource<PeriodicElement>();
@@ -150,8 +150,11 @@ export class MemberProfileComponent {
   SelectedSearchText: any = "";
   highroller: boolean = false;
   freePlayer: boolean = false;
+  memberProfileID: any = 0;
+  activityHistory: any = [];
+  phoneNumber: any = '';
   constructor(private _memberservice: MemberService, private _Route: Router, private _commonService: CommonService,
-    public toastService: ToastService, private _snackBar: MatSnackBar,
+    public toastService: ToastService, private _snackBar: MatSnackBar, private _activityHistoryService: ActivityHistoryService,
     private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder,
     private _tagservice: TagDefinationService, private appService: AdminComponent,
     private _dateConverter: UtcConverterService, private cdr: ChangeDetectorRef) {
@@ -260,6 +263,8 @@ export class MemberProfileComponent {
     this.smsOptin = false;
     this.emailOptin = false;
     this.notificationOptin = false;
+    this.memberProfileID = 0;
+    this.phoneNumber = '';
   }
   ngOnInit() {
     this.dropdownSettings = {
@@ -332,6 +337,7 @@ export class MemberProfileComponent {
     console.log('data', data)
     let month = data[0].birthMonth != null && data[0].birthMonth != '' ?
       this.monthlist.filter(x => x.name.substring(0, 3).toLowerCase() == data[0].birthMonth.toLowerCase()) : [];
+    this.memberProfileID = data[0].id;
     await this.jobForm.setValue({
       id: data[0].id,
       phone: data[0].phone,
@@ -518,10 +524,9 @@ export class MemberProfileComponent {
       "BadgeId": this.selectedBadgeID,
       "TagId": tagInput != 0 ? tagInput[0].id : 0
     }
-    console.log(details);
     this._memberservice.GetMemberProfileByBusinessGroupId(details).pipe()
       .subscribe({
-        next: (data) => {
+        next: async (data) => {
           this.dataSource.data = data['table1'];
           this.totalData = parseInt(data['table2'][0].cnt);
           this.totalPages = Math.ceil(parseInt(this.totalData) / parseInt(this.pageSize));
@@ -729,9 +734,24 @@ export class MemberProfileComponent {
     this.common(0);
   }
   //#endregion
+
   formatPhoneNumber(num) {
     var s2 = ("" + num).replace(/\D/g, '');
     var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
     return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
+  }
+
+  getActivityHistoryByMemberID() {
+    this.activityHistory = [];
+    this._activityHistoryService.GetActivityByMemberId(this.memberProfileID).pipe()
+      .subscribe({
+        next: async (data) => {
+          this.activityHistory = data;
+          this.phoneNumber = data[0].phone;
+          console.log(this.activityHistory)
+        },
+        error: error => {
+        }
+      });
   }
 }

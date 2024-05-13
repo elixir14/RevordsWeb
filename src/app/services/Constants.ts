@@ -1,6 +1,6 @@
 import * as uuid from "uuid";
 export class AppSettings {
-    public static API_ENDPOINT = "https://dashboard.revords.com/liveapi";
+    public static API_ENDPOINT = "http://ho.hitechprojects.co.in:8101";
     public static DocAPI_ENDPOINT = "/wwwroot/Templates";
     public static Root_ENDPOINT = "/wwwroot";
     public static Approved = 3;

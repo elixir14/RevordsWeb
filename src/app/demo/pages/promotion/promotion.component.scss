@@ -2057,3 +2057,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 ::ng-deep .modal-content {
     padding: 3%;
 }
+
+.reddot {
+    height: 10px;
+    width: 10px;
+    background-color: #f03a3a;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: -1px;
+}
+.greendot {
+    height: 10px;
+    width: 10px;
+    background-color: #059c56;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: -1px;
+}
