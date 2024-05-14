@@ -308,6 +308,7 @@ export class AnnouncementComponent {
    */
   onChange(event: { target: { files: File[]; }; }) {
     this.file = event.target.files[0];
+    this.onUpload();
   }
   async GetMembersData() {
     this.membersData = [];

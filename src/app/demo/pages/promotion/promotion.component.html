@@ -58,7 +58,8 @@
                                                             date:'M/d'}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 d-flex" style="align-items: center;justify-content: center;">
+                                                    <div class="col-md-4 d-flex"
+                                                        style="align-items: center;justify-content: center;">
                                                         <span id='summaryLabel'
                                                             (click)="EditReplicate(p.id)">Replicate</span>
                                                     </div>
@@ -432,21 +433,30 @@
                                             <div class="row promotion mt-2" *ngIf='this.packageDetails.isMms == true'>
                                                 <div class="form-group mb-2">
                                                     <div class="mb-2">
-                                                        <b class="head">Pick image for good promotion (.png or
-                                                            .jpg)</b>
+                                                        <b class="head">Pick image for good promotion (.png or .jpg)</b>
                                                     </div>
-                                                    <div class="col-lg-12" style="display: flex;padding: 0px;">
-                                                        <div class="col-lg-8 p-0">
-                                                            <label for="files" class="dropbox">Upload Image (Upto 1
-                                                                MB)
+                                                    <div class="col-lg-12"
+                                                        style="display: flex;padding: 0px;align-items: center;">
+                                                        <div class="col-lg-8 p-0"
+                                                            *ngIf="uploadProgress == undefined && uploadProgress == null">
+                                                            <label for="files" class="dropbox">Select Image to upload
                                                             </label>
                                                             <input #fileUpload id="files" style="visibility:hidden;"
-                                                                class="form-control" text="Upload Image (Upto 1 MB)"
+                                                                class="form-control" text="Select Image to upload"
                                                                 type="file" (change)="onChange($event)" />
                                                         </div>
-                                                        <div class="col-lg-4 form-group" style="display: flex;">
-                                                            <div style="margin-top: 9px;
-                                                            margin-right: 10px;">
+                                                        <div class="col-lg-8 p-0 progress"
+                                                            *ngIf="uploadProgress != undefined && uploadProgress != null && uploadProgress != '100%'">
+                                                            <div class="progress-bar bluecolor" role="progressbar"
+                                                                [style.width]="uploadProgress"
+                                                                aria-valuenow="uploadProgress" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                                {{uploadProgress}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 form-group mb-0"
+                                                            style="display: flex;align-items: center;">
+                                                            <div style="margin-right: 10px;">
                                                                 <span class="bold" style="font-weight: bold;"
                                                                     *ngIf="isfileUploaded == false">
                                                                     {{fileName}}
@@ -457,14 +467,15 @@
                                                                     <span class="sr-only">Loading...</span>
                                                                 </div>
                                                             </div>
-                                                            <div>
-                                                                <button class="btn btn-success buttonColor"
+                                                            <div style="display: flex;align-items: center;">
+                                                                <!-- <button class="btn btn-success buttonColor"
                                                                     *ngIf="!uploadProgress" (click)="onUpload()">
                                                                     Upload
                                                                     <mat-icon class="filter-green"
                                                                         style="margin-bottom: -6px;margin-left: 6px;">
                                                                         cloud_upload
-                                                                    </mat-icon></button>
+                                                                    </mat-icon>
+                                                                </button> -->
                                                                 <mat-icon class="cancel-upload" (click)="cancelUpload()"
                                                                     *ngIf="uploadProgress" style="color: red;">
                                                                     delete_forever
@@ -473,13 +484,14 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="progress">
+                                                    <!-- <div class="progress">
                                                         <div class="progress-bar bluecolor" role="progressbar"
                                                             [style.width]="uploadProgress"
                                                             aria-valuenow="uploadProgress" aria-valuemin="0"
                                                             aria-valuemax="100">
-                                                            {{uploadProgress}}</div>
-                                                    </div>
+                                                            {{uploadProgress}}
+                                                        </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div class="row promotionwhite mt-2">

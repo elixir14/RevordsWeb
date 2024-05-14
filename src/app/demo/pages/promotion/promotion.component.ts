@@ -714,7 +714,7 @@ export class PromotionComponent {
     this.isfileUploaded = true;
     this.fileName = "";
     this.filePath = "";
-    this.uploadProgress = '0%';
+    this.uploadProgress = null;
     this.buttonname = "Cancel";
     this.file = null;
     this.selectedBusinessName = '';
@@ -1516,6 +1516,7 @@ export class PromotionComponent {
   }
   onChange(event) {
     this.file = event.target.files[0];
+    this.onUpload();
   }
   onUpload() {
     if (this.file) {
@@ -1557,7 +1558,6 @@ export class PromotionComponent {
     if (this.uploadSub != null) {
       this.uploadSub.unsubscribe();
     }
-    this.uploadProgress = "0%";
     this.isfileUploaded = false;
     this.fileName = "";
     this.reset();

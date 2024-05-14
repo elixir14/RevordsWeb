@@ -2067,6 +2067,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-right: 5px;
     margin-bottom: -1px;
 }
+
 .greendot {
     height: 10px;
     width: 10px;
@@ -2075,4 +2076,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: inline-block;
     margin-right: 5px;
     margin-bottom: -1px;
+}
+
+::ng-deep .mat-step-header[aria-selected="true"] {
+    background-color: rgba(0,0,0,.04);
+    border-radius: 32px;
+    // width: 100%;
+    font-weight: 10px;
+
+    & div.mat-step-label.mat-step-label-active.mat-step-label-selected {
+        color: black;
+    }
 }
