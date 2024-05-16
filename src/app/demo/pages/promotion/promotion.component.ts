@@ -18,6 +18,7 @@ import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import { MemberService } from 'src/app/services/MemberService';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-promotion',
@@ -271,6 +272,7 @@ export class PromotionComponent {
       this.businessLocationIDs += element.id + ',';
     });
   }
+
   onDateChange(): void {
     this.startDate = this.firstFormGroup.controls['offerStartDate'].value;
     this.endDate = this.firstFormGroup.controls['offerEndDate'].value;
@@ -354,13 +356,21 @@ export class PromotionComponent {
     this.emailCount = 0;
     this.smsCount = 0;
 
+    let date = this.firstFormGroup.controls['date'].value;
+    let time = this.firstFormGroup.controls['time'].value;
+
+    var sentDate = (date != "" && time != "") ?
+      formatDate(new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), time, 0, 0), 'yyyy-MM-dd', 'en-US')
+      : formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+
     let details = {
       "businessGroupId": this.businessGroupID.id,
       "businessLocationIDs": this.businessLocationIDs,
       "badgeIDs": '',
-      "tagIDs": ''
+      "tagIDs": '',
+      "sendDate": this.firstFormGroup.controls['isSendSoon'].value == 1 ? formatDate(new Date(), 'yyyy-MM-dd', 'en-US') : sentDate
     }
-
+    
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
@@ -482,12 +492,20 @@ export class PromotionComponent {
         tagIDs += element.id + ',';
     });
 
+    let date = this.firstFormGroup.controls['date'].value;
+    let time = this.firstFormGroup.controls['time'].value;
+    var sentDate = (date != "" && time != "") ?
+      formatDate(new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), time, 0, 0), 'yyyy-MM-dd', 'en-US')
+      : formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+
     let details = {
       "businessGroupId": this.businessGroupID.id,
       "businessLocationIDs": this.businessLocationIDs,
       "badgeIDs": badgeIDs,
-      "tagIDs": tagIDs
+      "tagIDs": tagIDs,
+      "sendDate": this.firstFormGroup.controls['isSendSoon'].value == 1 ? formatDate(new Date(), 'yyyy-MM-dd', 'en-US') : sentDate
     }
+
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
@@ -773,7 +791,6 @@ export class PromotionComponent {
     this._memberservice.GetLastSMSDetails().pipe()
       .subscribe({
         next: async (data) => {
-          console.log(data);
           this.LatestSMSstatus = "Last SMS Status : " + "Sent To : " + data.toNumber + " Sent on : " + data.created_at + " UTC";
           this.LatestSMSstatus2 = "delivery_status : " + data.delivery_status + " StatusCode : " + data.statusCode;
           this.SMSStatus = (data.delivery_status == "40002" || data.delivery_status == "40003") ? "delivery_Failed" : "delivered";
@@ -947,7 +964,7 @@ export class PromotionComponent {
             break;
           }
           else {
-            this.messageString1 += "1: " +  element.reward + " reward!";
+            this.messageString1 += "1: " + element.reward + " reward!";
           }
         } else {
           this.isValidPromoMSG1 = false;
@@ -1056,7 +1073,6 @@ export class PromotionComponent {
       for (let index = 0; index < this.allowedWords.length; index++) {
         const element = this.allowedWords[index];
         if (valueCheckspromotionalMessage1.includes(element.text.toLowerCase())) {
-          console.log('in')
           this.isValidPromoMSG1 = true;
           this.isValidPromoMSG1MSG = "Hey!!! A " + element.reward + "" + " Reward has been detected. "
           if (element.reward == 'bring a friend') {
@@ -1091,7 +1107,6 @@ export class PromotionComponent {
             let indexendNumber = checkamount.indexOf(' ');
             let actualAmount = checkamount.substring(0, (indexendNumber >= 0 ? indexendNumber : checkamount.length));
             let successfullyParsed = parseInt(actualAmount);
-            console.log(successfullyParsed)
             if (successfullyParsed) {
               let localstring = checkwordspromotionalMessage1.substring(indexstart, (checkwordspromotionalMessage1.length - indexstart));
               let indexend = localstring.indexOf(' ');
@@ -1099,7 +1114,6 @@ export class PromotionComponent {
               this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + " reward!";
             }
             else {
-              console.log('else')
               setstring = "dollar reward!";
               this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring;
             }
@@ -1247,6 +1261,7 @@ export class PromotionComponent {
         "filePath": AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName,
         "stateID": 3,
         "promotionReferenceID": 0,
+        // "messageBody": ,
         "promotionalDetails": this.GetPromotionDetails(),
         "spinWheelConfiguration": isSpinWheel1 == true ? this.GetSpinWheelDetails() : [],
         "locationwisePromotionRedemption": this.GetRedemptionDetails()
@@ -1284,6 +1299,7 @@ export class PromotionComponent {
         "filePath": AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName,
         "stateID": 3,
         "promotionReferenceID": 0,
+        // "messageBody": ,
         "promotionalDetails": this.GetPromotionDetails(),
         "spinWheelConfiguration": isSpinWheel2 == true ? this.GetSpinWheelDetails() : [],
         "locationwisePromotionRedemption": this.GetRedemptionDetails()
@@ -1499,6 +1515,7 @@ export class PromotionComponent {
     if (val != 0) {
       this.scheduleLaterTime = this.time.filter(x => x.value == val)[0].name;
     }
+    this.onMembersOfSelected();
   }
   onRedemptionOptionChanged() {
     let val = this.secondFormGroup.controls['RedemptionAt'].value != null ? this.secondFormGroup.controls['RedemptionAt'].value : [];
@@ -1524,7 +1541,6 @@ export class PromotionComponent {
       this.uploadSub = this._promotionService.uploadPromotionalfile(this.file).pipe()
         .subscribe({
           next: (event: any) => {
-            console.log("This is on upload event:- ", event);
             if (event.type == HttpEventType.UploadProgress) {
               this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
             }
@@ -1644,6 +1660,7 @@ export class PromotionComponent {
         element.disabled = false;
       });
     }
+    this.onMembersOfSelected();
   }
   common() {
     let businesslocationID = this.dashBoardFormControl.controls['businessID'].value;
@@ -1740,5 +1757,6 @@ export class PromotionComponent {
     if (val == 2) {
       this.maxDate = this.firstFormGroup.controls["offerStartDate"].value;
     }
+    this.onMembersOfSelected();
   }
 }

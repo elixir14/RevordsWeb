@@ -10,7 +10,6 @@ import { DefinationService } from 'src/app/services/DefinationService';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MemberService } from 'src/app/services/MemberService';
-import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { AppSettings } from 'src/app/services/Constants';
@@ -68,16 +67,13 @@ export class DefinationsettingComponent {
   businessGroupID: any;
   public toggle: boolean = false;
   selectedColor: any;
-  public cmykColor: Cmyk = new Cmyk(0, 0, 0, 0);
   BadgeId: any;
-  memberCount: any;  
+  memberCount: any;
   disableBtnPrevious: boolean = true;
   disableBtnNext: boolean = true;
 
   constructor(private _definationservice: DefinationService, public toastService: ToastService,
-    private _Route: Router, private toaster: ToastrService,
-    private _liveAnnouncer: LiveAnnouncer, private _memberservice: MemberService,
-    private cpService: ColorPickerService, private fb: FormBuilder) {
+    private fb: FormBuilder) {
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
     this.jobForm.controls['rewardName'].disable();
   }
@@ -159,23 +155,23 @@ export class DefinationsettingComponent {
           this.submitted = false;
         }
       });
-      this.jobForm = this.fb.group({
-        id: [''],
-        rewardName: [''],
-        background: [''],
-        badgedefinations: new FormArray([]),
-      });
+    this.jobForm = this.fb.group({
+      id: [''],
+      rewardName: [''],
+      background: [''],
+      badgedefinations: new FormArray([]),
+    });
   }
   getExportProgress(trxId) {
     this.loadingApply = true;
-     this._definationservice.UpdateSingleBadgeByID(trxId).subscribe(
-        _ => { },
-        _ => { },
-        () => {
-          this.loadingApply = false;
-          this.GetRewardsData(false);
-        }
-      );
+    this._definationservice.UpdateSingleBadgeByID(trxId).subscribe(
+      _ => { },
+      _ => { },
+      () => {
+        this.loadingApply = false;
+        this.GetRewardsData(false);
+      }
+    );
   }
   GetBadgeDefinationDetails() {
     let y: any = this.jobForm.controls['badgedefinations'];
@@ -206,10 +202,10 @@ export class DefinationsettingComponent {
 
     this.dataSourceMembers.data = [];
     this.dataSourceForPagination = [];
-    
+
     this.pageNumber = 0;
     this.totalPages = 0;
-    
+
     if (this.iseditmode) {
       this.iseditmode = false;
     }
@@ -289,7 +285,7 @@ export class DefinationsettingComponent {
 
   ngOnInit() {
     let bussiness = JSON.parse(localStorage.getItem('selectedBusiness'));
-    
+
     this.GetRewardsData(true);
   }
   Cancle() {
@@ -308,7 +304,7 @@ export class DefinationsettingComponent {
     this._definationservice.GetBadgeDefinationsByBusinessGroupID(this.businessGroupID.id).pipe()
       .subscribe({
         next: (data) => {
-          this.dataSource = data;  
+          this.dataSource = data;
         },
         error: error => {
         }

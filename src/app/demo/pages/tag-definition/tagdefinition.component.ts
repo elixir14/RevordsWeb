@@ -1,21 +1,16 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { RewardService } from 'src/app/services/RewardService';
 import { ToastrService } from 'ngx-toastr';
 import { ToastService } from 'src/app/services/ToastService';
 import { DefinationService } from 'src/app/services/DefinationService';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MemberService } from 'src/app/services/MemberService';
-import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Action } from 'rxjs/internal/scheduler/Action';
 import { TagDefinationService } from 'src/app/services/TagDefinitionService';
 import { AppSettings } from 'src/app/services/Constants';
-import { Observable, filter, interval, switchMap, take, takeWhile, timeout, timer } from 'rxjs';
 
 export interface PeriodicElement {
   name: string;
