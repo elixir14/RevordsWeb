@@ -310,7 +310,6 @@ export class PromotionComponent {
       });
   }
   async setBusiness() {
-
     let data = JSON.parse(localStorage.getItem('Business'));
     this.bussinessDataForStep3 = [];
     this.bussinessDataForRedemption = [];
@@ -1261,7 +1260,7 @@ export class PromotionComponent {
         "filePath": AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName,
         "stateID": 3,
         "promotionReferenceID": 0,
-        // "messageBody": ,
+        "messageBody": "",
         "promotionalDetails": this.GetPromotionDetails(),
         "spinWheelConfiguration": isSpinWheel1 == true ? this.GetSpinWheelDetails() : [],
         "locationwisePromotionRedemption": this.GetRedemptionDetails()
@@ -1299,7 +1298,7 @@ export class PromotionComponent {
         "filePath": AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName,
         "stateID": 3,
         "promotionReferenceID": 0,
-        // "messageBody": ,
+        "messageBody": "",
         "promotionalDetails": this.GetPromotionDetails(),
         "spinWheelConfiguration": isSpinWheel2 == true ? this.GetSpinWheelDetails() : [],
         "locationwisePromotionRedemption": this.GetRedemptionDetails()

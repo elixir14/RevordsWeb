@@ -165,6 +165,7 @@ export class TagDefinitionComponent {
       "lastModifiedBy": AppSettings.GetCreatedBy(),
       "lastModifiedDate": AppSettings.GetDate(),
       "businessGroupId": this.businessGroupID.id,
+      "typeID": 2,
       "tagDefinations": this.GetBadgeDefinationDetails()
     }
     if (id == 0) {
@@ -334,6 +335,7 @@ export class TagDefinitionComponent {
     this.submitted = false;
     this.GetRewardsData();
   }
+
   GetRewardsData() {
     this._tagDefinationService.GetTagDefinationsByBusinessGroupID(this.businessGroupID.id).pipe()
       .subscribe({

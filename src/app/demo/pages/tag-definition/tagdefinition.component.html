@@ -23,8 +23,7 @@
     </div>
   </div>
   <div class="row" *ngIf="!iseditmode">
-     <!-- new code -->
-
+    <!-- new code -->
     <div class="col-md-12 dataCard">
       <div class="col-md-4 card mb-3 p-0 m-2" *ngFor="let product of dataSource; let i = index">
         <div style="background: linear-gradient(179.5deg, #C0FFBF 3.3%, #0FADDE 96%); height: 180px; border-top-left-radius: 20px;
@@ -46,7 +45,8 @@
           <div class="memberships-icon-holder" mdbRipple rippleColor="light">
             {{product.count}}
           </div>
-          <p class="col-md-12" *ngFor="let productCountryInfo of product.child; let i = index" style="font-size: 12px; color:black">
+          <p class="col-md-12" *ngFor="let productCountryInfo of product.child; let i = index"
+            style="font-size: 12px; color:black">
             <span *ngIf="i == 0">Member with a </span>
             <span *ngIf="i > 0">And </span>
             <span>
@@ -63,19 +63,18 @@
             <span *ngIf="productCountryInfo.criteriaName == 'Earned Points'"> Points</span>
             <span *ngIf="productCountryInfo.criteriaName == 'Amount Spent'"> Amount</span>
           </p>
-
-          <div style="display: contents;" *ngIf="product.tagName !== 'Prospect'">
+          <div style="display: contents;" *ngIf="product.tagName !== 'Prospect' && product.typeID != 1">
             <div>
-              <i (click)="Edit(product)" class="fa fa-pencil editbutton" style="color:white; font-size: 18px; cursor: pointer;"></i>
+              <i (click)="Edit(product)" class="fa fa-pencil editbutton"
+                style="color:white; font-size: 18px; cursor: pointer;"></i>
               &nbsp;
-              <i class="fa fa-trash editbutton" (click)="clickMethod(product)" style="margin-top: 6px;color:white; font-size: 18px; cursor: pointer;"></i>
+              <i class="fa fa-trash editbutton" (click)="clickMethod(product)"
+                style="margin-top: 6px;color:white; font-size: 18px; cursor: pointer;"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-
 
     <div *ngIf="isLoading" class="d-flex justify-content-center">
       <div class="spinner-border" role="status">
@@ -98,8 +97,8 @@
                   <div class="labeldiv">Tag Name is special tag for a customer.
                   </div>
                   <div>
-                    <input type="text" formControlName="rewardName" class="form-control" *ngIf="iseditmode" [ngClass]="{ 'is-invalid': submitted && f['rewardName'].errors }"
-                    />
+                    <input type="text" formControlName="rewardName" class="form-control" *ngIf="iseditmode"
+                      [ngClass]="{ 'is-invalid': submitted && f['rewardName'].errors }" />
                     <div *ngIf="submitted && f['rewardName'].errors" class="invalid-feedback">
                       <div *ngIf="f['rewardName'].errors['required']">Tagname is required</div>
                     </div>
@@ -107,7 +106,8 @@
                 </div>
 
                 <div class="form-inline">
-                  <div class="labeldiv" style="width: 78%;">We can define conditions for tagging based on customer behaviour.
+                  <div class="labeldiv" style="width: 78%;">We can define conditions for tagging based on customer
+                    behaviour.
                   </div>
                   <!-- <span class="fa-stack fa-lg">
                     <i (click)="addDetailsFormGroup()" class="fa fa-plus-circle" style="margin-right: 12px;color:green;cursor: pointer;"></i>
@@ -124,7 +124,8 @@
                         <tr>
                           <td style="width: 5%;">
                             <span class="fa-stack fa-lg">
-                              <i (click)="DelDetailsFormGroup(skillForm);" class="fa fa-minus-circle" style="color:red;cursor: pointer;"></i>
+                              <i (click)="DelDetailsFormGroup(skillForm);" class="fa fa-minus-circle"
+                                style="color:red;cursor: pointer;"></i>
                             </span>
 
                           </td>
@@ -133,8 +134,10 @@
                           <td style="width: 15%;">
                             <span *ngIf="!iseditmode">{{skillForm.criteriaName}}</span>
                             <div class="form-group" *ngIf="iseditmode">
-                              <select class="form-control" formControlName="criteriaID" [ngClass]="{ 'is-invalid': submitted && skillForm.get('criteriaID').errors }">
-                                <option *ngFor="let web of criteriaList" [(selected)]="skillForm.criteriaID == web.id" [ngValue]="web.id">{{web.name}}</option>
+                              <select class="form-control" formControlName="criteriaID"
+                                [ngClass]="{ 'is-invalid': submitted && skillForm.get('criteriaID').errors }">
+                                <option *ngFor="let web of criteriaList" [(selected)]="skillForm.criteriaID == web.id"
+                                  [ngValue]="web.id">{{web.name}}</option>
                               </select>
                               <div *ngIf="submitted && skillForm.get('criteriaID').errors" class="invalid-feedback">
                                 <div *ngIf="skillForm.get('criteriaID').errors?.required">Criteria is required</div>
@@ -145,8 +148,10 @@
                             <span *ngIf="!iseditmode">
                               {{skillForm.conditionName}}</span>
                             <div class="form-group" *ngIf="iseditmode">
-                              <select class="form-control" formControlName="conditionID" [ngClass]="{ 'is-invalid': submitted && skillForm.get('conditionID').errors }">
-                                <option *ngFor="let web of conditionList" [(selected)]="skillForm.conditionID == web.id" [ngValue]="web.id">{{web.name}}</option>
+                              <select class="form-control" formControlName="conditionID"
+                                [ngClass]="{ 'is-invalid': submitted && skillForm.get('conditionID').errors }">
+                                <option *ngFor="let web of conditionList" [(selected)]="skillForm.conditionID == web.id"
+                                  [ngValue]="web.id">{{web.name}}</option>
                               </select>
                               <div *ngIf="submitted && skillForm.get('conditionID').errors" class="invalid-feedback">
                                 <div *ngIf="skillForm.get('conditionID').errors?.required">Required</div>
@@ -154,8 +159,8 @@
                             </div>
                           </td>
                           <td style="width: 10%;">
-                            <input type="text" formControlName="tagValue" class="form-control" *ngIf="iseditmode" [ngClass]="{ 'is-invalid': submitted && skillForm.get('tagValue').errors }"
-                            />
+                            <input type="text" formControlName="tagValue" class="form-control" *ngIf="iseditmode"
+                              [ngClass]="{ 'is-invalid': submitted && skillForm.get('tagValue').errors }" />
                             <div *ngIf="submitted && skillForm.get('tagValue').errors" class="invalid-feedback">
                               <div *ngIf="skillForm.get('tagValue').errors?.required">Required</div>
                             </div>
@@ -220,11 +225,12 @@
         </mat-tab>
         <mat-tab label="{{memberCount}} Members" *ngIf="TagId >0">
           <div>
-            <i (click)="GetMember()" class="fa fa-refresh" style="margin-right: 12px;color:green; font-size: 24px; cursor: pointer;"></i>
+            <i (click)="GetMember()" class="fa fa-refresh"
+              style="margin-right: 12px;color:green; font-size: 24px; cursor: pointer;"></i>
             <mat-table class="mat-elevation-z8" mat-table [dataSource]="dataSourceMembers">
               <ng-container matColumnDef="name">
-                <th style="width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by name">
+                <th style="width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
                   Name
                 </th>
                 <td mat-cell *matCellDef="let element" class="tabletd" style="width: 15%;">
@@ -232,7 +238,8 @@
                     <div>
                       <img src="../../../assets/img/empty-profile.png" />
                     </div>
-                    <div style="color: #203139;font-weight: 700;cursor: pointer; font-size:14px;padding-left: 5px;"> {{element.name}}
+                    <div style="color: #203139;font-weight: 700;cursor: pointer; font-size:14px;padding-left: 5px;">
+                      {{element.name}}
                       <div style="padding-top: 2px; display:flex;
                         background-color: #faf3f3;
                         border-radius: 4px;">
@@ -246,8 +253,8 @@
               </ng-container>
               <!-- Name Column -->
               <ng-container matColumnDef="phone">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by phone">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by phone">
                   Phone
                 </th>
                 <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%;"> {{element.phone}}
@@ -256,8 +263,8 @@
 
               <!-- Weight Column -->
               <ng-container matColumnDef="status">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by status">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
                   Status
                 </th>
                 <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element">
@@ -276,45 +283,47 @@
 
               <!-- Symbol Column -->
               <ng-container matColumnDef="source">
-                <th style="width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by source">
+                <th style="width: 15%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by source">
                   Source
                 </th>
                 <td style="width: 15%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.source}} </td>
               </ng-container>
               <ng-container matColumnDef="currentpoints">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by currentpoints">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by currentpoints">
                   Current Points
                 </th>
                 <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.currentpoints}}pt
                 </td>
               </ng-container>
               <ng-container matColumnDef="lifetimepoints">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by lifetimepoints">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by lifetimepoints">
                   Lifetime Points
                 </th>
                 <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.lifetimepoints}}pt
                 </td>
               </ng-container>
               <ng-container matColumnDef="lastvisit">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by lastvisit">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by lastvisit">
                   Last Visit
                 </th>
-                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.lastvisit | date:'MMM d,yyyy hh:mm'}} </td>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.lastvisit |
+                  date:'MMM d,yyyy hh:mm'}} </td>
               </ng-container>
               <ng-container matColumnDef="membersince">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by membersince">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by membersince">
                   Member Since
                 </th>
-                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.membersince | date: 'M/d/y' }} </td>
+                <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element"> {{element.membersince |
+                  date: 'M/d/y' }} </td>
               </ng-container>
               <ng-container matColumnDef="istagged">
-                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
-                  sortActionDescription="Sort by istagged">
+                <th style="width: 10%;" mat-header-cell class="custom-mat-header-styling tableHeaderCellDiv"
+                  *matHeaderCellDef mat-sort-header sortActionDescription="Sort by istagged">
                   Tagged?
                 </th>
                 <td style="width: 10%;" mat-cell class="tabletd" *matCellDef="let element">
