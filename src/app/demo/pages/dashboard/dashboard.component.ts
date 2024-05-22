@@ -184,6 +184,8 @@ export class DashboardComponent implements OnInit {
   dataSource: any;
   totalNewSignUpsThisMonth: number = 0;
   isAdministrator: boolean = false;
+  isSignOutRequired: boolean = false;
+
   constructor(private _dashBoardservice: DashboardService, private _commonService: CommonService,
     public toastService: ToastService, private router: Router, private modalService: NgbModal,
     private appService: AdminComponent, private _memberservice: MemberService,
@@ -766,6 +768,8 @@ export class DashboardComponent implements OnInit {
           });
           this.detailactiveFullMemberData = data;
           this.detailactiveMemberData = data;
+
+          this.isSignOutRequired = (data != null && data != '' && data != undefined && data.length > 0) ? data[0].isSignOutRequired : this.isSignOutRequired;
         },
         error: (error) => {
           console.log(error)

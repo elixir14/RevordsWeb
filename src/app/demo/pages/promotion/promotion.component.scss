@@ -2088,3 +2088,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         color: black;
     }
 }
+
+i.icon-fs-info {
+    width: 20px;
+    height: 20px;
+    background: url(../../../../assets/img/icon-info.png) no-repeat;
+    vertical-align: text-top;
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: -3px;
+}

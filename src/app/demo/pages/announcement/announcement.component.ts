@@ -13,6 +13,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MemberService } from 'src/app/services/MemberService';
 import { PromotionService } from 'src/app/services/PromotionService';
+import { BusinessGroupService } from 'src/app/services/BusinessGroupService';
 
 export class Tree {
   root: TreeNode;
@@ -147,6 +148,7 @@ export class AnnouncementComponent {
   ];
   scheduleLaterTime: string = '';
   isLoadingSaveData = false;
+  negativeFlagTooltip: any = '';
   /**
    * @param uploadService this is upload service for file upload
    * @param fb form builder
@@ -157,8 +159,8 @@ export class AnnouncementComponent {
    * @param sanitizer 
    */
   constructor(private uploadService: FileUploadService,
-    private fb: FormBuilder, private _announcementService: AnnouncementService,
-    public toastService: ToastService, private _defination: DefinationService, private _promotionService: PromotionService,
+    private fb: FormBuilder, private _announcementService: AnnouncementService, private _businessGroupService: BusinessGroupService,
+    public toastService: ToastService, private _promotionService: PromotionService,
     public dialog: MatDialog, public sanitizer: DomSanitizer, private _memberservice: MemberService) {
     this.business = JSON.parse(localStorage.getItem('Business'));
     this.packageDetails = JSON.parse(localStorage.getItem('PackageDetails'));
@@ -201,10 +203,23 @@ export class AnnouncementComponent {
   ngOnInit() {
     this.GetAnnouncementsData();
     this.setBusiness();
+    this.GetBusinessGroupByID();
     this.dropdownSettings = {
       idField: 'id',
       textField: 'businessName',
     }
+  }
+
+  GetBusinessGroupByID() {
+    this._businessGroupService.GetBusinessGroupByID(this.businessGroupID.id).pipe()
+      .subscribe({
+        next: (data) => {
+          this.negativeFlagTooltip = "All " + data.negativeFlagName + "'s are excluded from badges. Select " + data.negativeFlagName
+            + " to include.";
+        },
+        error: error => {
+        }
+      });
   }
 
   selectAllBusiness() {
@@ -426,7 +441,7 @@ export class AnnouncementComponent {
               this.uploadProgress = Math.round(100 * (event.loaded / event.total)).toString() + "%";
             }
             console.log(event.partialText);
-            if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded")  {
+            if (event.partialText != undefined && event.partialText.split('|')[0] == "file uploaded") {
               this.loadingLoading = false; // Flag variable
               this.isfileUploaded = true;
               this.annImage = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.file.name;
@@ -437,7 +452,7 @@ export class AnnouncementComponent {
               this.jobForm.controls['fileName'].setValue(this.fileName);
               this.jobForm.controls['ImageInput'].setValue(this.fileName);
               console.log(this.fileName);
-              
+
               this.filePath = AppSettings.API_ENDPOINT + AppSettings.Root_ENDPOINT + "/" + this.fileName;
             } else {
               this.loadingLoading = false;

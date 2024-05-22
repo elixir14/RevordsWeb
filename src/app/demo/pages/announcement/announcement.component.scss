@@ -274,3 +274,24 @@
   align-items: center;
   justify-content: center;
 }
+
+::ng-deep .mat-step-header[aria-selected="true"] {
+  background-color: rgba(0,0,0,.04);
+  border-radius: 32px;
+  // width: 100%;
+  font-weight: 10px;
+
+  & div.mat-step-label.mat-step-label-active.mat-step-label-selected {
+      color: black;
+  }
+}
+
+i.icon-fs-info {
+  width: 20px;
+  height: 20px;
+  background: url(../../../../assets/img/icon-info.png) no-repeat;
+  vertical-align: text-top;
+  display: inline-block;
+  margin-left: 5px;
+  margin-top: -3px;
+}

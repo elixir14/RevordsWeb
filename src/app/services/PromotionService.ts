@@ -83,6 +83,13 @@ export class PromotionService {
             }));
     }
 
+    public GetLastPromotionSentDateByBusinessGroupID(businessGroupID) {
+        return this._http.get<any>(this.apiUrl + "GetLastPromotionSentDateByBusinessGroupID/" + businessGroupID)
+            .pipe(map(member => {
+                return member;
+            }));
+    }
+
     public DeletePromotionByID(ID) {
         return this._http.delete<any>(this.apiUrl + ID)
             .pipe(map(member => {

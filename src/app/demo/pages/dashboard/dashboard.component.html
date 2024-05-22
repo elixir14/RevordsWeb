@@ -31,8 +31,7 @@
                 <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Live Review</h3>
               </div>
               <div class="col-md-4 d-flex pr-0" style="align-items: center;justify-content: end;">
-                <button class="btn btn-sm btn-success" (click)="!isLoadingMemberVisitCounts ? GetAllData() : justAlert"
-                  >
+                <button class="btn btn-sm btn-success" (click)="!isLoadingMemberVisitCounts ? GetAllData() : justAlert">
                   Refresh<i class="fa fa-refresh" aria-hidden="true" style="margin-left: 6px;font-size: 14px;"></i>
                 </button>
               </div>
@@ -507,7 +506,7 @@
     <table class="table table-hover table-striped bdr">
       <thead style="display: table;width: 100%;table-layout: fixed;">
         <tr style="text-align: center;">
-          <th colspan="6">
+          <th [attr.colspan]="isSignOutRequired ? '6' : '5'">
             {{businessLocationName}}
           </th>
         </tr>
@@ -517,7 +516,8 @@
           <th scope="col" style="text-align: center;vertical-align: middle;">Badge</th>
           <th scope="col" style="text-align: center;vertical-align: middle;">HighRoller</th>
           <th scope="col" style="text-align: center;vertical-align: middle;">FreePlayer</th>
-          <th scope="col" style="text-align: center;vertical-align: middle;">Since (hh:mm)</th>
+          <th *ngIf="isSignOutRequired == true" scope="col" style="text-align: center;vertical-align: middle;">Since
+            (hh:mm)</th>
         </tr>
       </thead>
       <tbody style="display: block;height: 250px;overflow-y: scroll;">
@@ -536,7 +536,7 @@
             <i *ngIf="item.isFreePlayer == 'Yes'" style="color:rgb(189, 48, 29)" class="fa fa-dollar"></i>
             <i *ngIf="item.isFreePlayer == 'Yes'" style="color:rgb(189, 48, 29)" class="fa fa-dollar"></i>
           </td>
-          <td style="text-align: center;">{{item.inTime}}</td>
+          <td *ngIf="isSignOutRequired == true" style="text-align: center;">{{item.inTime}}</td>
         </tr>
       </tbody>
     </table>

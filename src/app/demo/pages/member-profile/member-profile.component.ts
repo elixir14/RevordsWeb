@@ -17,6 +17,7 @@ import { AdminComponent } from 'src/app/theme/layout/admin/admin.component';
 import { UtcConverterService, UtcToLocalTimeFormat } from 'src/app/services/UtcConverterService';
 import { catchError, map, startWith, switchMap, pipe, of as observableOf } from 'rxjs';
 import { ActivityHistoryService } from 'src/app/services/ActivityHistoryService';
+import { BusinessGroupService } from 'src/app/services/BusinessGroupService';
 
 export interface PeriodicElement {
   name: string;
@@ -49,7 +50,10 @@ export class ExportData {
   'Lifettime Visits': string;
   'Time Spent': string;
   'Notes': string;
-  'Business Location Name': string
+  'Business Location Name': string;
+  'Sms Opt In': string;
+  'Email Opt In': string;
+  'Notification Opt In': string
 }
 
 @Component({
@@ -153,11 +157,13 @@ export class MemberProfileComponent {
   memberProfileID: any = 0;
   activityHistory: any = [];
   phoneNumber: any = '';
-  constructor(private _memberservice: MemberService, private _Route: Router, private _commonService: CommonService,
-    public toastService: ToastService, private _snackBar: MatSnackBar, private _activityHistoryService: ActivityHistoryService,
-    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder,
-    private _tagservice: TagDefinationService, private appService: AdminComponent,
-    private _dateConverter: UtcConverterService, private cdr: ChangeDetectorRef) {
+  positiveFlagName: any = '';
+  negativeFlagName: any = '';
+
+  constructor(private _memberservice: MemberService, private _businessGroupService: BusinessGroupService,
+    public toastService: ToastService, private _activityHistoryService: ActivityHistoryService,
+    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _tagservice: TagDefinationService,
+    private _dateConverter: UtcConverterService,) {
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
     this.jobForm.setValue({
       id: 0,
@@ -295,6 +301,7 @@ export class MemberProfileComponent {
     this.GetMembersData();
     this.dataSource.sort = this.sort;
     this.GetTagData();
+    this.GetBusinessGroupByID();
     this.bussinessData = JSON.parse(localStorage.getItem('Business'));
   }
   GetTagData() {
@@ -302,6 +309,17 @@ export class MemberProfileComponent {
       .subscribe({
         next: (data) => {
           this.tagList = data;
+        },
+        error: error => {
+        }
+      });
+  }
+  GetBusinessGroupByID() {
+    this._businessGroupService.GetBusinessGroupByID(this.businessGroupID.id).pipe()
+      .subscribe({
+        next: (data) => {
+          this.positiveFlagName = data.positiveFlagName;
+          this.negativeFlagName = data.negativeFlagName;
         },
         error: error => {
         }
@@ -613,8 +631,6 @@ export class MemberProfileComponent {
           let excelData = data1['table1'];
           let data = new Array<ExportData>();
 
-          console.log(excelData)
-
           excelData.forEach(x => {
             data.push({
               'Name': x['name'],
@@ -634,7 +650,10 @@ export class MemberProfileComponent {
               'Lifettime Visits': x['totalvisits'],
               'Time Spent': x['timeSpent'],
               'Notes': x['notes'],
-              'Business Location Name': x['businessLocationName']
+              'Business Location Name': x['businessLocationName'],
+              'Sms Opt In': x['smsOptin'],
+              'Email Opt In': x['emailOptin'],
+              'Notification Opt In': x['notificationOptIn']
             })
           })
 
