@@ -207,7 +207,6 @@ export class DashboardComponent implements OnInit {
     this.appService.refresh.subscribe(counter => {
       this.selectedbusinessGroup = JSON.parse(localStorage.getItem('BusinessGroup'));
       this.activeTabId = 1;
-      console.log('hello');
       this.selected = {
         startDate: dayjs().subtract(6, 'days'),
         endDate: dayjs()
@@ -286,15 +285,11 @@ export class DashboardComponent implements OnInit {
 
     await this._dashBoardservice.GetDayAndWeekInsightsByBusinessGroupId(businessGroupID, type).subscribe({
       next: async (data) => {
-
-        console.log(type)
-
         this.barchartDataDayWise = data['table1'];
         this.trafficInsightsCumulative = data['table2'];
         this.dataSource = data['table3'];
         this.dashboardData = data['table4'];
 
-        console.log(this.dashboardData)
         await this.ClearNumbers();
         this.dataSource.filter((t) => t.businesslocationid == -1).forEach(element => {
           this.totalmembers += element.membercount;
@@ -318,7 +313,6 @@ export class DashboardComponent implements OnInit {
           this.totalvisits += element.visitcount;
           this.thismonthvisit += element.thismonthvisitcount;
         });
-        console.log(this.dashboardData);
         this.dashboardData.forEach(element => {
           if (element.businesslocationid == -1) {
             this.goalValue = element.signupgoals;
@@ -389,9 +383,6 @@ export class DashboardComponent implements OnInit {
       next: (data) => {
         this.barchartData = data['table1'];
         this.CumulativeBarchartData = data['table2'];
-
-        console.log(this.barchartData)
-
         this.CumulativeBarchartData.forEach(element => {
           this.insights.push({
             date: element.date,
@@ -821,7 +812,6 @@ export class DashboardComponent implements OnInit {
       this.chartOptions2.xaxis.categories = [];
       for (let index = 0; index < this.selectedItems.length; index++) {
         if (index == 0) {
-          console.log(this.dataSource);
           this.filterdashData = this.dataSource.filter((t) => t.businesslocationid == this.selectedItems[index].id);
           this.dataSource.filter((t) => t.businesslocationid == this.selectedItems[index].id.toString()).forEach(element => {
             this.totalmembers += element.membercount;
@@ -845,8 +835,6 @@ export class DashboardComponent implements OnInit {
             this.totalvisits += element.visitcount > 0 ? element.visitcount : 0;
             this.thismonthvisit += element.thismonthvisitcount > 0 ? element.thismonthvisitcount : 0;
           });
-
-          console.log(this.barchartData)
 
           barFilter = this.barchartData.filter(x => x.businesslocationid == this.selectedItems[index].id);
           barFilter.forEach(element => {
@@ -936,10 +924,11 @@ export class DashboardComponent implements OnInit {
           this.activeTabToggle(index);
 
           let arr = this.barchartDataDayWise.filter(x => x.businesslocationid == this.selectedItems[index].id);
+          
           if (this.charttype == 2) {
             arr.forEach(element => {
-              this.insightsDayWise.filter(x => x.fromHour == element.dayName)[0].visitorCount += element.visitortodaytotal;
-              this.insightsDayWise.filter(x => x.fromHour == element.dayName)[0].averageCount += element.visitorAVGCount;
+              this.insightsDayWise.filter(x => x.fromHour == element.dayname)[0].visitorCount += element.visitortodaytotal;
+              this.insightsDayWise.filter(x => x.fromHour == element.dayname)[0].averageCount += element.visitorAVGCount;
             });
           }
           else {
@@ -959,9 +948,6 @@ export class DashboardComponent implements OnInit {
       this.BindDayWiseVisitCountChart();
     }
     else if (this.selectedItems.length == 0) {
-
-      console.log(this.filterdashData)
-
       this.filterdashData.filter(t => t.businesslocationid == -1).forEach(element => {
         this.bronzeVisitCount += element.bronzevisitcount;
         this.silverVisitCount += element.silvervisitcount;
@@ -1029,8 +1015,6 @@ export class DashboardComponent implements OnInit {
   }
 
   activeTabToggle(index) {
-    console.log(this.visitMemberData)
-
     if (this.activeTabId == 1) {
       this.activeMemberData.forEach(element => {
         if (element.businessLocationId == this.selectedItems[index].id) {
@@ -1199,7 +1183,6 @@ export class DashboardComponent implements OnInit {
           localStorage.setItem('BusinessGroup', JSON.stringify(data[0]));
           let userData = JSON.parse(localStorage.getItem('UserData'));
           this.isAdministrator = userData.isAdministrator;
-          console.log('group', this.selectedbusinessGroup)
         },
         error: error => { }
       });
@@ -1377,7 +1360,6 @@ export class DashboardComponent implements OnInit {
         yaxis: {
           labels: {
             formatter: function (val) {
-              console.log('he1')
               return val.toFixed(0);
             }
           },

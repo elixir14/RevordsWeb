@@ -1,17 +1,10 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { RewardService } from 'src/app/services/RewardService';
-import { ToastrService } from 'ngx-toastr';
 import { ToastService } from 'src/app/services/ToastService';
 import { DefinationService } from 'src/app/services/DefinationService';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MemberService } from 'src/app/services/MemberService';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Action } from 'rxjs/internal/scheduler/Action';
 import { AppSettings } from 'src/app/services/Constants';
 
 export interface PeriodicElement {
@@ -33,7 +26,6 @@ export interface PeriodicElement {
 })
 
 export class DefinationsettingComponent {
-
   isLoading = false;
   isLoadingMember = false;
   buttonname = "Edit Definations";

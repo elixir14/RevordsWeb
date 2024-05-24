@@ -500,6 +500,7 @@ export class MemberProfileComponent {
         "isHighroller": this.jobForm.controls['isHighroller'].value != null && this.jobForm.controls['isHighroller'].value != "" ? this.jobForm.controls['isHighroller'].value : false,
         "isFreeplayer": this.jobForm.controls['isFreeplayer'].value != null && this.jobForm.controls['isFreeplayer'].value != "" ? this.jobForm.controls['isFreeplayer'].value : false,
       }
+      console.log(memberDetails)
       this._memberservice.PutMemberProfileInCustomerScreen(memberDetails.id, memberDetails)
         .subscribe({
           next: (data) => {
@@ -624,10 +625,10 @@ export class MemberProfileComponent {
       "TagId": tagInput != 0 ? tagInput[0].id : 0
     }
 
-    console.log(details);
     this._memberservice.GetMemberProfileByBusinessGroupId(details).pipe()
       .subscribe({
         next: (data1) => {
+          console.log(data1)
           let excelData = data1['table1'];
           let data = new Array<ExportData>();
 
@@ -650,7 +651,7 @@ export class MemberProfileComponent {
               'Lifettime Visits': x['totalvisits'],
               'Time Spent': x['timeSpent'],
               'Notes': x['notes'],
-              'Business Location Name': x['businessLocationName'],
+              'Business Location Name': x['businessName'],
               'Sms Opt In': x['smsOptin'],
               'Email Opt In': x['emailOptin'],
               'Notification Opt In': x['notificationOptIn']
@@ -714,9 +715,12 @@ export class MemberProfileComponent {
           table.deleteRow(2);
           table.deleteRow(1);
           table.deleteRow(0);
+
+          this.isLoading = false;
         },
         error: error => {
           console.log(error);
+          this.isLoading = false;
         }
       });
   }

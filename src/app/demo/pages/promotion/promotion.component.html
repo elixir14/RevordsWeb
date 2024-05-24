@@ -485,7 +485,7 @@
                                                     </div>
 
                                                     <div class="col-lg-12 p-0">
-                                                        <span style="color: red;"><b>Note: </b></span>
+                                                        <span><b>Note: </b></span>
                                                         <span style="font-size: 12px;">
                                                             It is your legal responsibility to upload SHAFT compliant
                                                             image.
@@ -688,25 +688,7 @@
                                                                                                                             class="es-m-txt-c es-p5t es-p5b">
                                                                                                                             <p
                                                                                                                                 style="font-size: 20px;color: #666666;line-height: 40px">
-                                                                                                                                {{this.firstFormGroup.controls['promotionalMessage1'].value.toLowerCase()
-                                                                                                                                ==
-                                                                                                                                'spin
-                                                                                                                                wheel
-                                                                                                                                available
-                                                                                                                                at
-                                                                                                                                store'
-                                                                                                                                ?
-                                                                                                                                'Spin
-                                                                                                                                the
-                                                                                                                                wheel
-                                                                                                                                at
-                                                                                                                                kiosk
-                                                                                                                                and
-                                                                                                                                get
-                                                                                                                                exciting
-                                                                                                                                prizes'
-                                                                                                                                :
-                                                                                                                                this.firstFormGroup.controls['promotionalMessage1'].value}}
+                                                                                                                                {{this.firstFormGroup.controls['promotionalMessage1'].value}}
                                                                                                                             </p>
                                                                                                                         </td>
                                                                                                                     </tr>
@@ -720,25 +702,7 @@
                                                                                                                                 <strong>Deal
                                                                                                                                     1:
                                                                                                                                 </strong>
-                                                                                                                                {{this.firstFormGroup.controls['promotionalMessage1'].value.toLowerCase()
-                                                                                                                                ==
-                                                                                                                                'spin
-                                                                                                                                wheel
-                                                                                                                                available
-                                                                                                                                at
-                                                                                                                                store'
-                                                                                                                                ?
-                                                                                                                                'Spin
-                                                                                                                                the
-                                                                                                                                wheel
-                                                                                                                                at
-                                                                                                                                kiosk
-                                                                                                                                and
-                                                                                                                                get
-                                                                                                                                exciting
-                                                                                                                                prizes'
-                                                                                                                                :
-                                                                                                                                this.firstFormGroup.controls['promotionalMessage1'].value}}
+                                                                                                                                {{this.firstFormGroup.controls['promotionalMessage1'].value}}
                                                                                                                             </p>
                                                                                                                         </td>
                                                                                                                     </tr>
@@ -762,25 +726,7 @@
                                                                                                                                 <strong>Deal
                                                                                                                                     2:
                                                                                                                                 </strong>
-                                                                                                                                {{this.firstFormGroup.controls['promotionalMessage2'].value.toLowerCase()
-                                                                                                                                ==
-                                                                                                                                'spin
-                                                                                                                                wheel
-                                                                                                                                available
-                                                                                                                                at
-                                                                                                                                store'
-                                                                                                                                ?
-                                                                                                                                'Spin
-                                                                                                                                the
-                                                                                                                                wheel
-                                                                                                                                at
-                                                                                                                                kiosk
-                                                                                                                                and
-                                                                                                                                get
-                                                                                                                                exciting
-                                                                                                                                prizes'
-                                                                                                                                :
-                                                                                                                                this.firstFormGroup.controls['promotionalMessage2'].value}}
+                                                                                                                                {{this.firstFormGroup.controls['promotionalMessage2'].value}}
                                                                                                                             </p>
                                                                                                                         </td>
                                                                                                                     </tr>
@@ -1572,7 +1518,7 @@
                                                 experiencing displeasure,
                                                 those who have received that SMS promotion will not receive any
                                                 new SMS promotion
-                                                until {{lastSmsSentDate | date:'M/d'}}. All members opted in via app or
+                                                until {{smsTillDate | date:'M/d'}}. All members opted in via app or
                                                 email will still
                                                 receive this promotion.
                                             </p>
