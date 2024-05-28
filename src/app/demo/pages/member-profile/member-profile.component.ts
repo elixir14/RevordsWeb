@@ -527,7 +527,7 @@ export class MemberProfileComponent {
     this.SelectedTagName = tagInput;
     this.SelectedSearchText = searchInput;
     let businessId = "";
-    if (businessInput != null && businessInput != undefined && businessInput != '' && businessInput.length) {
+    if (businessInput != null && businessInput != undefined && businessInput != '' && businessInput.length > 0) {
       for (let index = 0; index < businessInput.length; index++) {
         businessId += businessInput[index].id + ','
       }
@@ -569,18 +569,34 @@ export class MemberProfileComponent {
             this.platinum = 0;
 
             this.filtereddata = data['table3'];
-            this.filtereddata.forEach(element => {
-              this.totalMembers += element.memberCount;
-              if (element.badgeID == 1) {
-                this.bronze += element.memberCount;
-              } else if (element.badgeID == 2) {
-                this.silver += element.memberCount;
-              } else if (element.badgeID == 3) {
-                this.gold += element.memberCount;
-              } else if (element.badgeID == 4) {
-                this.platinum += element.memberCount;
-              }
-            });
+            if (businessInput == null || businessInput == undefined && businessInput == '' || businessInput.length == 0) {
+              this.filtereddata.filter(x => x.businessLocationID == -1).forEach(element => {
+                this.totalMembers += element.memberCount;
+                if (element.badgeID == 1) {
+                  this.bronze += element.memberCount;
+                } else if (element.badgeID == 2) {
+                  this.silver += element.memberCount;
+                } else if (element.badgeID == 3) {
+                  this.gold += element.memberCount;
+                } else if (element.badgeID == 4) {
+                  this.platinum += element.memberCount;
+                }
+              });
+            }
+            else {
+              this.filtereddata.filter(x => x.businessLocationID != -1).forEach(element => {
+                this.totalMembers += element.memberCount;
+                if (element.badgeID == 1) {
+                  this.bronze += element.memberCount;
+                } else if (element.badgeID == 2) {
+                  this.silver += element.memberCount;
+                } else if (element.badgeID == 3) {
+                  this.gold += element.memberCount;
+                } else if (element.badgeID == 4) {
+                  this.platinum += element.memberCount;
+                }
+              });
+            }
           }
           this.tooltiptotalmembers = "Total Customers signed up including all active/inactive customers. press number for filter.";
           this.tooltipbronzemembers = "Customers who visited for the first time in the past 30 days.";

@@ -179,6 +179,12 @@ export class TagDefinitionComponent {
             this.getExportProgress(data)
             // this.jobForm.reset();
             this.loadingApply = true;
+
+            this.jobForm = this.fb.group({
+              id: [''],
+              rewardName: ['', Validators.required],
+              tagdefinations: new FormArray([])
+            });
           },
           error: error => {
             this.isLoading = false;
@@ -195,6 +201,12 @@ export class TagDefinitionComponent {
             this.GetRewardsData();
             this.getExportProgress(data)
             // this.jobForm.reset();
+
+            this.jobForm = this.fb.group({
+              id: [''],
+              rewardName: ['', Validators.required],
+              tagdefinations: new FormArray([])
+            });
           },
           error: error => {
             this.isLoading = false;
@@ -202,12 +214,6 @@ export class TagDefinitionComponent {
           }
         });
     }
-
-    this.jobForm = this.fb.group({
-      id: [''],
-      rewardName: ['', Validators.required],
-      tagdefinations: new FormArray([])
-    });
   }
   getExportProgress(trxId) {
     this.loadingApply = true;

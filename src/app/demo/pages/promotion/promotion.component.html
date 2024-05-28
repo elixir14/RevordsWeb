@@ -21,14 +21,14 @@
                 </form>
             </div>
             <div class="col-md-2 p-0 flexRight">
-                <button class="btn btn-success text-center" (click)="CreatePromotion()" *ngIf="!iseditmode">
+                <button class="btn btn-success text-center" (click)="CreatePromotion()" *ngIf="!iseditmode" [disabled]="isLoading">
                     <img alt="phonevector" class="filter-green"
                         [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-edit' : !isLoading && !iseditmode, 'fa-times' : !isLoading && iseditmode}"
                         src="../../../../assets/promotion/Create Promotion.svg">
-                    {{buttonname}}
+                    Create Promotion
                 </button>
-                <button class="btn btn-success text-center brownColor" (click)="CreatePromotion()" *ngIf="iseditmode">
-                    {{buttonname}}
+                <button class="btn btn-success text-center brownColor" (click)="CreatePromotion()" *ngIf="iseditmode" [disabled]="isLoading">
+                    Cancel
                     <img alt="phonevector" class="filter-green"
                         [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-edit' : !isLoading && !iseditmode, 'fa-times' : !isLoading && iseditmode}"
                         src="../../../../assets/img/icons/Cancel.svg">
@@ -2374,11 +2374,6 @@
     <div class="row">
         <div class="col-md-12" style="display: inline-flex;align-items: center;justify-content: center;">
             <div class="col-md-3"></div>
-            <!-- <div class="col-md-2"> -->
-            <!-- <button class="btn btn-success text-center" (click)="DraftSave()">
-                    Yes
-                </button> -->
-            <!-- </div> -->
             <div class="col-md-7">
                 <button class="btn btn-dark text-center" (click)="closePopup()">
                     Discard Changes

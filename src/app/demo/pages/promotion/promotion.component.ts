@@ -32,7 +32,6 @@ export class PromotionComponent {
   messageString = ("\n" + "Valid: " + "-" + "\n" + "Redeem at : " + "\n" + "Reply STOP to opt out" + "\n"
     + "Download Revords.com/app to save your reward");
   submitted = false;
-  buttonname = "";
   businessGroupID: any;
   businessGroupName: any;
   businessID: string;
@@ -228,7 +227,6 @@ export class PromotionComponent {
   notificationCount: number = 0;
   emailCount: number = 0;
   smsCount: number = 0;
-  draftPromo: any = [];
   filtereddata: any = [];
   isSpinRequired: any;
   allowedWords = [{ text: 'friend', reward: 'bring a friend' }, { text: 'beer', reward: 'beverages' }, { text: 'wine', reward: 'beverages' },
@@ -331,7 +329,6 @@ export class PromotionComponent {
     this.bussinessDataForStep3 = this.bussinessDataForRedemption;
   }
   ngOnInit() {
-    this.GetDraftPromotionByBusinessGroupID();
     this.GetPromotions();
     this.GetMembersData();
     this.setSpinWheelData();
@@ -362,6 +359,7 @@ export class PromotionComponent {
   }
 
   async GetMembersData() {
+    this.isLoading = true;
     this.membersData = [];
     this.badgeDataForStep3 = [];
     this.tagDataForStep3 = [];
@@ -407,9 +405,11 @@ export class PromotionComponent {
           this.smsCount = summary[0].smsCount;
 
           await this.setBusiness();
+          this.isLoading = false;
         },
         error: error => {
           console.log(error);
+          this.isLoading = false;
         }
       });
   }
@@ -689,6 +689,8 @@ export class PromotionComponent {
           this.subjectCharacterCount2 = 50 - this.firstFormGroup.controls['promotionalMessage2'].value.length;
           this.descriptionCharacterCount = length - this.firstFormGroup.controls['occasion'].value.length;
 
+          this.allowSpinwheel();
+
           this.secondFormGroup = await this._formBuilder.group({
             RedemptionAt: [data.redemptionOptionID, Validators.required],
             membersOf: ['', Validators.required],
@@ -711,7 +713,6 @@ export class PromotionComponent {
             this.uploadProgress = null;
           }
           this.iseditmode = true;
-          this.buttonname = "Cancel";
           this.isLoadingAnnData = false;
         },
         error: error => {
@@ -753,7 +754,6 @@ export class PromotionComponent {
     this.fileName = "";
     this.filePath = "";
     this.uploadProgress = null;
-    this.buttonname = "Cancel";
     this.file = null;
     this.selectedBusinessName = '';
     this.sendToCustomers = '';
@@ -793,38 +793,6 @@ export class PromotionComponent {
       });
   }
 
-  async GetDraftPromotionByBusinessGroupID() {
-    this._promotionService.GetDraftPromotionByBusinessGroupID(this.businessGroupID.id).pipe()
-      .subscribe({
-        next: async (data) => {
-          this.draftPromo = data;
-          if (this.draftPromo != '' && this.draftPromo != null && this.draftPromo != undefined && this.draftPromo.length > 0) {
-            this.buttonname = "Resume Editing";
-          }
-          else {
-            this.buttonname = "Create Promotion";
-          }
-        },
-        error: error => {
-        }
-      });
-  }
-  // async GetLastSMSDetails() {
-  //   this._memberservice.GetLastSMSDetails().pipe()
-  //     .subscribe({
-  //       next: async (data) => {
-  //         this.LatestSMSstatus = "Last SMS Status : " + "Sent To : " + data.toNumber + " Sent on : " + data.created_at + " UTC";
-  //         this.LatestSMSstatus2 = "delivery_status : " + data.delivery_status + " StatusCode : " + data.statusCode;
-  //         this.SMSStatus = (data.delivery_status == "40002" || data.delivery_status == "40003") ? "delivery_Failed" : "delivered";
-  //       },
-  //       error: error => {
-  //         this.LatestSMSstatus = "";
-  //         this.LatestSMSstatus2 = "";
-  //         this.SMSStatus = "";
-  //       }
-  //     });
-  // }
-
   GetLastSMSSentDate() {
     this._promotionService.GetLastPromotionSentDateByBusinessGroupID(this.businessGroupID.id).pipe()
       .subscribe({
@@ -848,7 +816,6 @@ export class PromotionComponent {
         return;
       }
 
-      await this.GetDraftPromotionByBusinessGroupID();
       this.iseditmode = false;
       this.submitted = false;
       await this.ClearControlandView();
@@ -862,14 +829,9 @@ export class PromotionComponent {
       this.firstFormGroup.controls['offerStartDate'].setValue(this.startDate);
       await this.setSpinWheelData();
       await this.setBusiness();
-      this.GetMembersData();
+      await this.GetMembersData();
       this.iseditmode = true;
       this.submitted = false;
-      this.buttonname = "Cancel";
-
-      if (this.draftPromo != '' && this.draftPromo != null && this.draftPromo != undefined && this.draftPromo.length > 0) {
-        this.EditReplicate(this.draftPromo[0].id);
-      }
     }
   }
 
@@ -1322,18 +1284,6 @@ export class PromotionComponent {
     this.isLoading = true;
     this.isLoadingSaveData = true;
 
-    if (this.draftPromo != '' && this.draftPromo != null && this.draftPromo != undefined && this.draftPromo.length > 0) {
-      this._promotionService.DeletePromotionByID(this.draftPromo[0].id)
-        .subscribe({
-          next: async (data) => {
-            this.draftPromo = [];
-          },
-          error: error => {
-            console.log(error);
-          }
-        });
-    }
-
     let model = this.createModel();
     console.log(model)
     this._promotionService.MultiPromotions(model)
@@ -1571,7 +1521,6 @@ export class PromotionComponent {
       membersOf: ['', Validators.required],
       sendToCustomers: ['', Validators.required]
     });
-    this.buttonname = "Create Promotion";
     this.file = null;
     this.isfileUploaded = true;
     this.isAllBadgeChecked = false;
@@ -1823,52 +1772,9 @@ export class PromotionComponent {
     this.GetPromotions();
     this.displayData = this.promotions.sort((a, b) => b.id - a.id).slice(0, this.pagesize);
   }
-  DraftSave() {
-    if (this.draftPromo != '' && this.draftPromo != null && this.draftPromo != undefined && this.draftPromo.length > 0) {
-      return;
-    }
 
-    this.submitted = true;
-    this.isLoading = true;
-    this.isLoadingSaveData = true;
-    let model = this.createModel();
-    model[0].stateID = 2;
-    if (model.length > 1) {
-      model[1].stateID = 2;
-    }
-    // 
-    this.modalService.dismissAll();
-    this._promotionService.MultiPromotions(model)
-      .subscribe({
-        next: (data) => {
-          this.isLoading = false;
-          this.isLoadingSaveData = false;
-          this.iseditmode = false;
-          this.submitted = false;
-          this.ClearControlandView();
-          this.buttonname = "Resume Editing";
-        },
-        error: error => {
-          this.isLoadingSaveData = false;
-          this.isLoading = false;
-          this.submitted = false;
-        }
-      });
-  }
   async closePopup() {
     this.modalService.dismissAll();
-    if (this.draftPromo != '' && this.draftPromo != null && this.draftPromo != undefined && this.draftPromo.length > 0) {
-      this._promotionService.DeletePromotionByID(this.draftPromo[0].id)
-        .subscribe({
-          next: async (data) => {
-            this.draftPromo = [];
-          },
-          error: error => {
-
-          }
-        });
-    }
-    this.buttonname = "Create Promotion";
     this.iseditmode = false;
     this.submitted = false;
     await this.ClearControlandView();
