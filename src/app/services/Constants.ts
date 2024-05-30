@@ -1,4 +1,5 @@
 import * as uuid from "uuid";
+
 export class AppSettings {
     public static API_ENDPOINT = "https://dashboard.revords.com/liveapi";
     public static DocAPI_ENDPOINT = "/wwwroot/Templates";
