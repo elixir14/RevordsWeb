@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit {
   selectedbusinessGroup: any;
   bussinessData: any = [];
   businessGroupData: any = [];
-  goalData: any = [];
+  goalData: any;
   allSelected = false;
   selected: { startDate: any, endDate: any };
   dropdownList = [];
@@ -313,6 +313,7 @@ export class DashboardComponent implements OnInit {
           this.totalvisits += element.visitcount;
           this.thismonthvisit += element.thismonthvisitcount;
         });
+
         this.dashboardData.forEach(element => {
           if (element.businesslocationid == -1) {
             this.goalValue = element.signupgoals;
@@ -928,13 +929,13 @@ export class DashboardComponent implements OnInit {
           if (this.charttype == 2) {
             arr.forEach(element => {
               this.insightsDayWise.filter(x => x.fromHour == element.dayname)[0].visitorCount += element.visitortodaytotal;
-              this.insightsDayWise.filter(x => x.fromHour == element.dayname)[0].averageCount += element.visitorAVGCount;
+              this.insightsDayWise.filter(x => x.fromHour == element.dayname)[0].averageCount += element.visitoravgcount;
             });
           }
           else {
             arr.forEach(element => {
-              this.insightsDayWise.filter(x => x.fromHour == element.fromHour)[0].visitorCount += element.visitortodaytotal;
-              this.insightsDayWise.filter(x => x.fromHour == element.fromHour)[0].averageCount += element.visitorAVGCount;
+              this.insightsDayWise.filter(x => x.fromHour == element.fromhour)[0].visitorCount += element.visitortodaytotal;
+              this.insightsDayWise.filter(x => x.fromHour == element.fromhour)[0].averageCount += element.visitoravgcount;
             });
           }
         }

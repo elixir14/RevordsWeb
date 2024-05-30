@@ -986,10 +986,10 @@ export class PromotionComponent {
             let x = checkwordspromotionalMessage1;
             let setstring = this.extractIntegersFromString(x).toString();
             if (x.includes('$')) {
-              this.messageString = this.businessGroupID.businessGroupName + " sent you a $" + setstring + ' ' + element.reward + " reward!";
+              this.messageString += "\n 1: $" + setstring + ' ' + element.reward + " reward!";
             }
             else if (x.includes('%')) {
-              this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + '% ' + element.reward + " reward!";
+              this.messageString += "\n 1: " + setstring + '% ' + element.reward + " reward!";
             }
             break;
           }
@@ -1088,14 +1088,14 @@ export class PromotionComponent {
               this.messageString += ("\n" + setstring);
             }
             else {
-              let checkamount = checkwordspromotionalMessage2.substring((indexstart + 1), (checkwordspromotionalMessage2.length - (indexstart + 1)));
+              let checkamount = checkwordspromotionalMessage2.substring(0, (indexstart + 1));
               let indexendNumber = checkamount.indexOf(' ');
-              let actualAmount = checkamount.substring(0, (indexendNumber >= 0 ? indexendNumber : checkamount.length));
+              let actualAmount = checkamount.substring((indexendNumber >= 0 ? indexendNumber : 0), (checkamount.length));
               let successfullyParsed = parseInt(actualAmount);
               if (successfullyParsed) {
-                let localstring = checkwordspromotionalMessage2.substring(indexstart, (checkwordspromotionalMessage2.length - indexstart));
+                let localstring = checkwordspromotionalMessage2.substring(0, (indexstart + 1));
                 let indexend = localstring.indexOf(' ');
-                setstring = localstring.substring(0, (indexend >= 0 ? indexend : localstring.length));
+                setstring = localstring.substring((indexend >= 0 ? indexend : 0), localstring.length);
                 this.messageString += ("\n" + "2: " + setstring + " " + element.reward + " reward!");
               }
               else {
@@ -1110,13 +1110,13 @@ export class PromotionComponent {
             break;
           }
           else if (element.reward == 'off') {
-            let x = checkwordspromotionalMessage1;
+            let x = checkwordspromotionalMessage2;
             let setstring = this.extractIntegersFromString(x).toString();
             if (x.includes('$')) {
-              this.messageString = this.businessGroupID.businessGroupName + " sent you a $" + setstring + ' ' + element.reward + " reward!";
+              this.messageString += "\n2: $" + setstring + ' ' + element.reward + " reward!";
             }
             else if (x.includes('%')) {
-              this.messageString = this.businessGroupID.businessGroupName + " sent you a " + setstring + '% ' + element.reward + " reward!";
+              this.messageString += "\n2: " + setstring + '% ' + element.reward + " reward!";
             }
             break;
           }
