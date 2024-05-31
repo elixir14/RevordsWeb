@@ -525,7 +525,7 @@
             Name
           </th>
           <td style="width: 15%" mat-cell *matCellDef="let element" class="tabletd">
-            <div class="row" style="display: flex; align-items: center; padding-left: 10%">
+            <div class="row" style="display: flex; align-items: center; padding-left: 10%;overflow-wrap: break-word;">
               <div class="col-md-4 pr-0">
                 <img src="../../../assets/img/empty-profile.png" style="width: 100%;" />
               </div>
@@ -590,7 +590,7 @@
             sortActionDescription="Sort by source">
             Source
           </th>
-          <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%"> {{ element.source }} </td>
+          <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%;"> {{ element.source }} </td>
         </ng-container>
 
         <ng-container matColumnDef="currentpoints">
@@ -636,12 +636,12 @@
         </ng-container>
 
         <ng-container matColumnDef="istagged">
-          <th style="text-align: center; width: 15%" mat-header-cell
+          <th style="text-align: center; width: 10%" mat-header-cell
             class="custom-mat-header-styling tableHeaderCellDiv" *matHeaderCellDef mat-sort-header
             sortActionDescription="Sort by tagname">
             Tag
           </th>
-          <td mat-cell class="tabletd" *matCellDef="let element" style="width: 15%; text-align: center">
+          <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%; text-align: center">
             <div style="display: flex; align-items: center; justify-content: center">
               <div *ngIf="element.tagname" class="badge badge-primary" style="background-color: #7da3ba"> #{{
                 element.tagname }}</div>

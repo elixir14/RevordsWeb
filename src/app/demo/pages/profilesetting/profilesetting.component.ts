@@ -4,7 +4,6 @@ import { StateService } from '../../../services/StateService';
 import { BusinessLabelService } from '../../../services/businessLabelService';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { FileUploadService } from '../../../services/fileuploadservie';
 import { HttpEventType } from '@angular/common/http';
 import { AppSettings } from '../../../services/Constants';
 import { ToastService } from '../../../services/ToastService';
@@ -39,9 +38,11 @@ export class ProfilesettingComponent {
   labels: any;
   iseditmode: any = false;
   isAgeRestriction: Boolean = false;
+  isSponsored: Boolean = false;
   ChkMakeDefaultTime = false;
   dropdownSettingsSingleState: IDropdownSettings = {};
   statesData: any = [];
+  customerID: any = '';
 
   @ViewChild('search') searchElementRef: ElementRef;
 
@@ -55,7 +56,6 @@ export class ProfilesettingComponent {
   fileNameBusinessLogo: any = null;
   filePathBusinessLogo: any = null;
   //#endregion
-
 
   //#region Business Display Image
   fileBusinessDisplayImage: File;
@@ -171,7 +171,6 @@ export class ProfilesettingComponent {
     if (this.fileBusinessLogo) {
       this.loadingBusinessLogo = true;
       this.uploadSubBusinessLogo = this.uploadService.uploadFile(this.fileBusinessLogo).subscribe((event: any) => {
-        console.log(event);
         if (event.type == HttpEventType.UploadProgress) {
           this.uploadProgressBusinessLogo = Math.round(100 * (event.loaded / event.total)).toString() + "%";
         }
@@ -430,7 +429,6 @@ export class ProfilesettingComponent {
   }
   //#endregion
 
-
   getStates() {
     this.stateService.GetStates().subscribe({
       next: (data: any) => {
@@ -446,12 +444,13 @@ export class ProfilesettingComponent {
     this.iseditmode = false;
     this.businessID = 0;
     this.isAgeRestriction = false;
+    this.isSponsored = false;
+    this.customerID = '';
   }
 
   GetBusinessProfilesByGroupID() {
     this.profileSettingService.GetBusinessProfilesByGroupID(this.businessGroupID.id).pipe().subscribe((data) => {
       this.dataSource = data;
-      console.log(this.dataSource);
     })
   }
 
@@ -462,6 +461,9 @@ export class ProfilesettingComponent {
         this.latitude = data.latitude;
         this.longitude = data.longitude;
         this.industry = data.industry;
+        this.isAgeRestriction = data.isAgeRestriction;
+        this.isSponsored = data.isSponsored;
+        this.customerID = data.customerID;
 
         this.ProfileFormGroup.controls['businessName'].setValue(data.legalName);
         this.ProfileFormGroup.controls['shortName'].setValue(data.businessName);
@@ -707,7 +709,6 @@ export class ProfilesettingComponent {
   GetStatesByCountryID() {
     this.stateService.GetStatesByCountryID(this.countryID).pipe().subscribe((data) => {
       this.states = data;
-      console.log(this.states);
     })
   }
 
@@ -785,10 +786,7 @@ export class ProfilesettingComponent {
 
   Submit() {
     this.submitted = true;
-    console.log(this.ProfileFormGroup.invalid);
-    // console.log(this.ProfileFormGroup.valid);
     if (this.ProfileFormGroup.invalid) {
-      console.log(this.ProfileFormGroup.controls)
       return;
     }
 
@@ -796,8 +794,8 @@ export class ProfilesettingComponent {
       this.labelsReq = true;
       return;
     }
-    console.log("out")
     this.isLoading = true;
+
     let details = {
       "uniqueId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "id": this.businessLocationID,
@@ -833,10 +831,10 @@ export class ProfilesettingComponent {
       "galleryImagePath2": this.fileNameBusinessImage2,
       "galleryImagePath3": this.fileNameBusinessImage3,
       "galleryImagePath4": this.fileNameBusinessImage4,
-      "isAgeRestriction": this.isAgeRestriction
+      "isAgeRestriction": this.isAgeRestriction,
+      "isSponsored": this.isSponsored,
+      "customerID": this.customerID
     }
-
-    console.log(details)
 
     this.profileSettingService.PutBusinessProfile(details.id, details)
       .subscribe({
@@ -845,6 +843,8 @@ export class ProfilesettingComponent {
           this.submitted = false;
           this.iseditmode = false;
           this.isAgeRestriction = false;
+          this.isSponsored = false;
+          this.customerID = '';
           this.ProfileFormGroup.reset();
           this.GetBusinessProfilesByGroupID();
         },
