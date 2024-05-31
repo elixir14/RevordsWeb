@@ -3,7 +3,7 @@ table {
 }
 
 .tableHeaderCellDiv {
-  resize: horizontal;
+  resize: none;
   overflow: hidden;
   border: lightgray;
   vertical-align: middle;
@@ -596,4 +596,12 @@ element.style {
 ::-webkit-scrollbar {
   width: 3px;
   height: 8px;
+}
+
+// ::ng-deep .tableHeaderCellDiv {
+//   resize: none !important;
+// }
+
+mat-table {
+  display: table;
 }

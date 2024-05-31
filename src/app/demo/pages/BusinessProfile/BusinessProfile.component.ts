@@ -179,7 +179,7 @@ export class BusinessProfileComponent {
         this.ProfileFormGroup.controls['businessName'].enable();
         this.ProfileFormGroup.controls['shortName'].enable();
         this.id = 0;
-        this.uniqueId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        this.uniqueId = '';
         this.latitude = '';
         this.longitude = '';
         this.logoPath = '';
