@@ -21,13 +21,15 @@
                 </form>
             </div>
             <div class="col-md-2 p-0 flexRight">
-                <button class="btn btn-success text-center" (click)="CreatePromotion()" *ngIf="!iseditmode" [disabled]="isLoading">
+                <button class="btn btn-success text-center" (click)="CreatePromotion()" *ngIf="!iseditmode"
+                    [disabled]="isLoading">
                     <img alt="phonevector" class="filter-green"
                         [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-edit' : !isLoading && !iseditmode, 'fa-times' : !isLoading && iseditmode}"
                         src="../../../../assets/promotion/Create Promotion.svg">
                     Create Promotion
                 </button>
-                <button class="btn btn-success text-center brownColor" (click)="CreatePromotion()" *ngIf="iseditmode" [disabled]="isLoading">
+                <button class="btn btn-success text-center brownColor" (click)="CreatePromotion()" *ngIf="iseditmode"
+                    [disabled]="isLoading">
                     Cancel
                     <img alt="phonevector" class="filter-green"
                         [ngClass]="{'fa-spin fa-spinner': isLoading, 'fa-edit' : !isLoading && !iseditmode, 'fa-times' : !isLoading && iseditmode}"
@@ -1487,8 +1489,6 @@
                                                 <img src="../../../../assets/promotion/Total Tags.svg">
                                                 <span class="ml-2">
                                                     <b>Total Tags</b>
-                                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="negativeFlagTooltip">
-                                                    </i>
                                                 </span>
                                             </div>
                                             <div>
@@ -1499,6 +1499,10 @@
                                                         [checked]="b.checked" (click)="onTagSelected(b.id)">
                                                         {{b.tagName}} <span class="itemSpan">(Up to {{b.counts}}
                                                             Customers)</span>
+                                                        <i class="icon-fs-info ng-scope"
+                                                            [ngbTooltip]="negativeFlagTooltip"
+                                                            *ngIf="b.isNegativeFlag == true">
+                                                        </i>
                                                     </mat-checkbox>
                                                 </div>
                                             </div>
@@ -1509,18 +1513,11 @@
                                 <div class="row" style="margin-top:5px;">
                                 </div>
 
-                                <div class="row d-flex" *ngIf="lastSmsSentDate != null">
+                                <div class="row d-flex" *ngIf="lastSmsSentNotes != ''">
                                     <div class="row d-flex">
                                         <div class="col-md-5 tagsDiv" style="background: #f4f8fb;">
                                             <p>
-                                                The Last Promotion was sent on {{lastSmsSentDate | date:'M/d'}}. To
-                                                prevent members from
-                                                experiencing displeasure,
-                                                those who have received that SMS promotion will not receive any
-                                                new SMS promotion
-                                                until {{smsTillDate | date:'M/d'}}. All members opted in via app or
-                                                email will still
-                                                receive this promotion.
+                                                {{lastSmsSentNotes}}
                                             </p>
                                         </div>
                                     </div>

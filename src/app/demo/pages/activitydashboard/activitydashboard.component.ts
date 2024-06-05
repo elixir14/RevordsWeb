@@ -105,9 +105,8 @@ export class ActivitydashboardComponent {
   label: any;
   selectedRange: any;
 
-  constructor(public _activityTypeService: ActivityTypeService, private _activityHistoryService: ActivityHistoryService, private _commonService: CommonService,
-    private _Route: Router, public toastService: ToastService, private _snackBar: MatSnackBar,
-    private _liveAnnouncer: LiveAnnouncer, private _dateConverter: UtcConverterService) {
+  constructor(public _activityTypeService: ActivityTypeService, private _activityHistoryService: ActivityHistoryService,
+    public toastService: ToastService, private _liveAnnouncer: LiveAnnouncer, private _dateConverter: UtcConverterService) {
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
     this.ActivityDashboardGroup = new FormGroup({
       activity: new FormControl(),
@@ -271,16 +270,19 @@ export class ActivitydashboardComponent {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+
   DatetimeFormat(date: any): any {
     return date != "" && date != null ? new Date(date).toLocaleDateString("en-US") + " " +
       (new Date(date).getHours() > 9 ? new Date(date).getHours() : "0" + new Date(date).getHours()) + ":" +
       (new Date(date).getMinutes() > 9 ? new Date(date).getMinutes() : "0" + new Date(date).getMinutes()) : "";
   }
+
   formatPhoneNumber(num) {
     var s2 = ("" + num).replace(/\D/g, '');
     var m = s2.match(/^(\d{3})(\d{3})(\d{4})$/);
     return (!m) ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
   }
+  
   exportexcel(): void {
     let excelData = this.dataSource.data;
     let datadump: Activityhistory[] = [];

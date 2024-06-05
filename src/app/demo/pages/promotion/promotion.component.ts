@@ -98,7 +98,7 @@ export class PromotionComponent {
   bussinessDataForSentPromo: { id: any, businessName: string, checked: boolean }[] = [];
   bussinessDataForStep3: { id: any, businessName: string, checked: boolean, memberCount: number }[] = [];
   badgeDataForStep3: { id: any, badgeName: string, counts: string, checked: boolean }[] = [];
-  tagDataForStep3: { id: any, tagName: string, counts: string, checked: boolean }[] = [];
+  tagDataForStep3: { id: any, tagName: string, counts: string, checked: boolean, isNegativeFlag: boolean }[] = [];
   isAllChecked: Boolean = false;
   isAllBadgeChecked: Boolean = false;
   isAllTagChecked: Boolean = false;
@@ -235,8 +235,7 @@ export class PromotionComponent {
   { text: '$', reward: 'dollar' }, { text: 'buy one get', reward: 'BOGO' }, { text: 'bogo', reward: 'BOGO' },
   { text: 'free', reward: 'free item' }, { text: 'spin the wheel', reward: 'Spin wheel' }]
   negativeFlagTooltip: any = '';
-  lastSmsSentDate: any = null;
-  smsTillDate: any = null;
+  lastSmsSentNotes: any = '';
   @ViewChild('select') select: MatSelect;
   @ViewChild('editor') editor;
   // @ViewChild('exampleModal') modal: ElementRef;
@@ -317,13 +316,14 @@ export class PromotionComponent {
       businessName: "Any Location",
       checked: false,
       memberCount: 0
-    })
+    });
     data.forEach(element => {
       this.bussinessDataForRedemption.push({
         id: element.id,
         businessName: element.businessName,
         checked: false,
-        memberCount: this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ? (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
+        memberCount: this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ?
+          (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
       });
     });
     this.bussinessDataForStep3 = this.bussinessDataForRedemption;
@@ -333,7 +333,6 @@ export class PromotionComponent {
     this.GetMembersData();
     this.setSpinWheelData();
     // this.GetLastSMSDetails();
-    this.GetLastSMSSentDate();
     this.GetBusinessGroupByID();
     this.dropdownSettings = {
       idField: 'id',
@@ -389,13 +388,15 @@ export class PromotionComponent {
           let tagData = data['table2'];
           this.membersData = data['table3'];
           let summary = data['table4'];
+          this.lastSmsSentNotes = data['table5'][0].notes;
+
           badgeData.forEach(element => {
             let x = { "id": element.id, "badgeName": element.name, "counts": element.count.toString(), "checked": false };
             this.badgeDataForStep3.push(x);
           });
 
           tagData.forEach(element => {
-            let x = { "id": element.id, "tagName": element.name, "counts": element.count.toString(), "checked": false };
+            let x = { "id": element.id, "tagName": element.name, "counts": element.count.toString(), "checked": false, "isNegativeFlag": element.isNegativeFlag };
             this.tagDataForStep3.push(x);
           });
 
@@ -481,7 +482,8 @@ export class PromotionComponent {
     this.BusinessNameForSummary();
   }
 
-  onMembersOfSelected() {
+  async onMembersOfSelected() {
+    this.membersData = [];
     this.businessLocationIDs = '';
     let badgeIDs: string = '';
     let tagIDs: string = '';
@@ -507,6 +509,7 @@ export class PromotionComponent {
 
     let date = this.firstFormGroup.controls['date'].value;
     let time = this.firstFormGroup.controls['time'].value;
+
     var sentDate = (date != "" && time != "") ?
       formatDate(new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), time, 0, 0), 'yyyy-MM-dd', 'en-US')
       : formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
@@ -526,7 +529,9 @@ export class PromotionComponent {
         next: async (data) => {
           let badgeData = data['table1'];
           let tagData = data['table2'];
+          this.membersData = data['table3'];
           let summary = data['table4'];
+          this.lastSmsSentNotes = data['table5'][0].notes;
 
           this.badgeDataForStep3.forEach(element => {
             element.counts = badgeData.filter(x => x.id == element.id)[0].count;
@@ -539,6 +544,16 @@ export class PromotionComponent {
           this.notificationCount = summary[0].notificationCount;
           this.emailCount = summary[0].emailCount;
           this.smsCount = summary[0].smsCount;
+
+          let business = JSON.parse(localStorage.getItem('Business'));
+          this.bussinessDataForStep3 = [];
+          business.forEach(element => {
+            this.bussinessDataForRedemption.filter(x => x.id == element.id)[0].memberCount =
+              this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ?
+                (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
+
+          });
+          this.bussinessDataForStep3 = this.bussinessDataForRedemption;
         },
         error: error => {
           console.log(error);
@@ -789,19 +804,6 @@ export class PromotionComponent {
         },
         error: error => {
           this.isLoadingAnnData = false;
-        }
-      });
-  }
-
-  GetLastSMSSentDate() {
-    this._promotionService.GetLastPromotionSentDateByBusinessGroupID(this.businessGroupID.id).pipe()
-      .subscribe({
-        next: async (data) => {
-          this.lastSmsSentDate = data.item1;
-          this.smsTillDate = data.item2;
-        },
-        error: error => {
-          console.log(error);
         }
       });
   }
