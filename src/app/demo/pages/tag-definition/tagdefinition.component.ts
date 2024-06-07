@@ -1,13 +1,8 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { ToastService } from 'src/app/services/ToastService';
-import { DefinationService } from 'src/app/services/DefinationService';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MemberService } from 'src/app/services/MemberService';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TagDefinationService } from 'src/app/services/TagDefinitionService';
 import { AppSettings } from 'src/app/services/Constants';
@@ -66,15 +61,11 @@ export class TagDefinitionComponent {
   memberCount: any;
   loadingApply = false;
   timesCalledFakeCheck = 0;
-  constructor(private _definationservice: DefinationService, public toastService: ToastService,
-    private _Route: Router, private toaster: ToastrService,
-    private _liveAnnouncer: LiveAnnouncer, private _memberservice: MemberService,
-    private fb: FormBuilder, private _tagDefinationService: TagDefinationService) {
-
-
-  }
+  constructor(public toastService: ToastService, private fb: FormBuilder, private _tagDefinationService: TagDefinationService) { }
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('paginatorPageSize') paginatorPageSize: MatPaginator;
+
   AddNew() {
     this.iseditmode = true;
     this.submitted = false;
@@ -110,7 +101,7 @@ export class TagDefinitionComponent {
       rewardName: ['', Validators.required],
       tagdefinations: new FormArray([])
     });
-    this.TagId=0;
+    this.TagId = 0;
     this.disableBtnNext = true;
     this.disableBtnPrevious = true;
   }
@@ -133,8 +124,6 @@ export class TagDefinitionComponent {
   }
 
   DelDetailsFormGroup(id) {
-    let action: any;
-    let x: any = this.jobForm.get('tagdefinations');
     const control = <FormArray>this.jobForm.controls['tagdefinations'];
     const index = control.value.findIndex(image => image.id === id.value.id)
     if (index !== -1) control.removeAt(index);
@@ -142,11 +131,12 @@ export class TagDefinitionComponent {
 
   ngAfterViewInit() {
     this.isDataLoaded = true;
-    this.dataSourceMembers.paginator = this.paginator;
   }
+
   Refresh() {
     this.GetRewardsData();
   }
+
   Submit() {
     this.submitted = true;
     if (this.jobForm.invalid) {
@@ -177,7 +167,6 @@ export class TagDefinitionComponent {
             this.submitted = false;
             this.GetRewardsData();
             this.getExportProgress(data)
-            // this.jobForm.reset();
             this.loadingApply = true;
 
             this.jobForm = this.fb.group({
@@ -200,7 +189,6 @@ export class TagDefinitionComponent {
             this.submitted = false;
             this.GetRewardsData();
             this.getExportProgress(data)
-            // this.jobForm.reset();
 
             this.jobForm = this.fb.group({
               id: [''],
@@ -217,19 +205,20 @@ export class TagDefinitionComponent {
   }
   getExportProgress(trxId) {
     this.loadingApply = true;
-     this._tagDefinationService.UpdateSingleTagByID(trxId).subscribe(
-        _ => { },
-        _ => { },
-        () => {
-          this.loadingApply = false;
-          this.GetRewardsData();
-        }
-      );
+    this._tagDefinationService.UpdateSingleTagByID(trxId).subscribe(
+      _ => { },
+      _ => { },
+      () => {
+        this.loadingApply = false;
+        this.GetRewardsData();
+      }
+    );
   }
-  isStatusCompleted(status){
 
+  isStatusCompleted(status) {
     return status;
   }
+
   GetBadgeDefinationDetails() {
     let y: any = this.jobForm.controls['tagdefinations'];
     let details = [];
@@ -327,6 +316,8 @@ export class TagDefinitionComponent {
       .subscribe({
         next: (data) => {
           this.dataSourceMembers.data = data;
+          this.dataSourceMembers.sort = this.sort;
+          this.dataSourceMembers.paginator = this.paginator;
           this.isLoadingMember = false;
         },
         error: error => {
@@ -337,7 +328,6 @@ export class TagDefinitionComponent {
 
   ngOnInit() {
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
-    this.dataSourceMembers.paginator = this.paginator;
     this.submitted = false;
     this.GetRewardsData();
   }
@@ -349,7 +339,7 @@ export class TagDefinitionComponent {
           this.dataSource = data;
         },
         error: error => {
-          
+
         }
       });
   }

@@ -336,7 +336,7 @@
               <tr mat-header-row class="tableHeaderCellDiv" *matHeaderRowDef="displayedColumnsMembers"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumnsMembers; "></tr>
             </mat-table>
-            <mat-paginator [pageSizeOptions]="[5]" #paginator style-paginator showFirstLastButtons></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[50]" style-paginator showFirstLastButtons></mat-paginator>
             <!-- <div class="col-lg-12 divmore">
               <button type="button" mat-raised-button color="basic" class="more" [disabled]='disableBtnPrevious' (click)="showPrevious()">Previous</button>
               <span style="padding: 10px;vertical-align: middle;font-weight: 700;">Page {{pageNumber}} of

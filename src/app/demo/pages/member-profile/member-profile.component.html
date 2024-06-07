@@ -525,9 +525,9 @@
             Name
           </th>
           <td style="width: 15%" mat-cell *matCellDef="let element" class="tabletd">
-            <div class="row" style="display: flex; align-items: center; padding-left: 10%;overflow-wrap: break-word;">
+            <div class="row" style="display: flex; align-items: center; padding-left: 10%;overflow-wrap: anywhere;">
               <div class="col-md-4 pr-0">
-                <img src="../../../assets/img/empty-profile.png" style="width: 100%;" />
+                <img src="../../../assets/img/empty-profile.png" style="width: 100%;"  />
               </div>
               <div class="col-md-8 pl-0">
                 <div class="col-md-12"
@@ -590,7 +590,7 @@
             sortActionDescription="Sort by source">
             Source
           </th>
-          <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%;"> {{ element.source }} </td>
+          <td mat-cell class="tabletd" *matCellDef="let element" style="width: 10%;overflow-wrap: anywhere;"> {{ element.source }} </td>
         </ng-container>
 
         <ng-container matColumnDef="currentpoints">

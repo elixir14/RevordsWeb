@@ -194,7 +194,6 @@ table {
 
 .disableicon {
   height: 18px;
-  //filter: grayscale(100%) brightness(135%) contrast(120%);
   display: none;
 }
 
@@ -293,7 +292,6 @@ table {
   font-size: 18px;
   color: #898383;
   padding: 12px;
-  //border: none;
   resize: none;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -312,7 +310,6 @@ table {
 }
 
 .member-modal .modal-header .group {
-  //width: 73px;
   text-align: center;
   font-weight: bold;
   font-size: 12px;
@@ -352,13 +349,11 @@ table {
 }
 
 .member-modal .member-modal-row input {
-  // height: 45px;
   padding: 5px 15px;
   text-align: left;
   margin: 0 0 20px 0;
   width: 100%;
   font-size: 18px;
-  //border: none;
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -387,7 +382,6 @@ element.style {
 .chip {
   display: inline-flex;
   flex-direction: row;
-  // background-color: #e5e5e5;
   border: none;
   cursor: default;
   height: 36px;
@@ -476,14 +470,11 @@ element.style {
   font-weight: bold;
   text-shadow: none;
   text-align: center;
-  // cursor: pointer;
 }
 
 .divmore {
   display: flex;
   justify-content: center;
-  //margin-bottom: 10px;
-  //padding-bottom: 10px;
   padding-top: 10px;
   background-color: white;
   width: 100%;
@@ -500,8 +491,6 @@ element.style {
 
 .avtar-new {
   background-color: #e0777726;
-  // width:50px;
-  // height: 50px;
 }
 
 .hederbox-font {
@@ -550,7 +539,6 @@ element.style {
 
 .header-text {
   color: black;
-  //font-weight: 500;
   font-size: 15px;
 }
 
@@ -604,4 +592,12 @@ element.style {
 
 mat-table {
   display: table;
+}
+
+::ng-deep .mat-mdc-table .mdc-data-table__header-row {
+  width: 100% !important;
+}
+
+::ng-deep .mat-mdc-table .mdc-data-table__row {
+  width: 100% !important;
 }
