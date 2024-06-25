@@ -21,14 +21,13 @@ jobs:
           
       # 2. Checkout Repository
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: main
       
       # 3. Setup Node
       - name: Setup Node 
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           
