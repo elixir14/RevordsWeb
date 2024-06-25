@@ -27,7 +27,7 @@ jobs:
       
       # 3. Setup Node
       - name: Setup Node 
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2-beta
         with:
           node-version: '18'
           
@@ -44,7 +44,7 @@ jobs:
       - name: Build Angular Application
         run: |
           ls
-          npm install -g @angular/cli
+          # npm install -g @angular/cli
           npm install --legacy-peer-deps
           ng build
           
