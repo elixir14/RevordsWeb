@@ -1,0 +1,154 @@
+<div>
+    <div class="row">
+        <div class="col-md-12 d-flex">
+            <div class="col-md-6">
+                <h2 style="color: #263a57; font-size: 25px; font-weight: 500;">Revenue Analysis</h2>
+            </div>
+            <div class="col-md-3">
+                <ng-select [items]="bussinessData" bindLabel="businessName" placeholder="Select business location"
+                    (change)="businessChange($event)" (clear)="resetCalculationsYearWise();">
+                </ng-select>
+            </div>
+            <div class="col-md-3">
+                <div style="display: flex;">
+                    <div style="width: 70%;">
+                        <ng-select [items]="miles" bindLabel="name" placeholder="Select miles"
+                            (change)="milesChange($event)" (clear)="resetCalculationsYearWise();">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 1%;">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center" style="height: 39px;">
+                            <div class="col-md-6" style="padding-left: 0px;display: flex;align-items: center;">
+                                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Top 10 + Self Amount played</h3>
+                            </div>
+                            <div class="col-md-3" style="text-align: start;">
+                                <ng-select [items]="months" bindLabel="name" placeholder="Select month"
+                                    (change)="monthChange($event)"  (clear)="resetCalculationsMonthWise();">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-3" style="text-align: start;">
+                                <ng-select [items]="years" bindLabel="name" placeholder="Select year"
+                                    (change)="yearChange($event)" (clear)="resetCalculationsMonthWise();">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="daywiseChart" style="background-color: #f2fffa;border-radius:8px;height: 455px;">
+                        <apx-chart *ngIf="!isLoadingDayWiseChart" [series]="chartOptions2.series"
+                            [chart]="chartOptions2.chart" [title]="chartOptions2.title" [legend]="chartOptions2.legend"
+                            [dataLabels]="chartOptions2.dataLabels" [plotOptions]="chartOptions2.plotOptions"
+                            [grid]="chartOptions2.grid" [fill]="chartOptions2.fill" [stroke]="chartOptions2.stroke"
+                            [tooltip]="chartOptions2.tooltip" [xaxis]="chartOptions2.xaxis"
+                            [yaxis]="chartOptions2.yaxis"></apx-chart>
+                        <ngx-skeleton-loader *ngIf="isLoadingDayWiseChart" appearance="vertical-line"
+                            animation="progress-light" count="10" animation="progress" appearance="''"
+                            [theme]="{'background-color': '#ebeced',height: '30px','border-radius': 0}">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <div *ngIf="isLoadingDayWiseChart"
+                        class="d-flex mx-2 my-2 justify-content-center align-items-center"
+                        style="height: 100%; top: 0%;left: 50%;position: absolute;">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center" style="height: 39px;">
+                            <div class="col-md-12" style="padding-left: 0px;display: flex;align-items: center;">
+                                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Top 10 + Self Net Terminal Income
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="daywiseChart" style="background-color: #f2fffa;border-radius:8px;height: 455px;">
+                        <apx-chart *ngIf="!isLoadingDayWiseChart" [series]="chartOptions3.series"
+                            [chart]="chartOptions3.chart" [title]="chartOptions3.title" [legend]="chartOptions3.legend"
+                            [dataLabels]="chartOptions2.dataLabels" [plotOptions]="chartOptions3.plotOptions"
+                            [grid]="chartOptions3.grid" [fill]="chartOptions3.fill" [stroke]="chartOptions3.stroke"
+                            [tooltip]="chartOptions3.tooltip" [xaxis]="chartOptions3.xaxis"
+                            [yaxis]="chartOptions3.yaxis"></apx-chart>
+                        <ngx-skeleton-loader *ngIf="isLoadingDayWiseChart" appearance="vertical-line"
+                            animation="progress-light" count="10" animation="progress" appearance="''"
+                            [theme]="{'background-color': '#ebeced',height: '30px','border-radius': 0}">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <div *ngIf="isLoadingDayWiseChart"
+                        class="d-flex mx-2 my-2 justify-content-center align-items-center"
+                        style="height: 100%; top: 0%;left: 50%;position: absolute;">
+                        <div class="spinner-border" role="status"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center" style="height: 39px;">
+                            <div class="col-md-12" style="padding-left: 0px;display: flex;align-items: center;">
+                                <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Top 5 + Self Amount played
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="chart">
+                            <apx-chart *ngIf="!isLoadingYearWiseChart" [series]="chartOptions4.series"
+                                [chart]="chartOptions4.chart" [xaxis]="chartOptions4.xaxis"
+                                [dataLabels]="chartOptions4.dataLabels" [grid]="chartOptions4.grid"
+                                [stroke]="chartOptions4.stroke" [title]="chartOptions4.title"
+                                [markers]="chartOptions4.markers" [yaxis]="chartOptions4.yaxis"
+                                [fill]="chartOptions4.fill"></apx-chart>
+                            <ngx-skeleton-loader *ngIf="isLoadingYearWiseChart" appearance="vertical-line"
+                                animation="progress-light" count="10" animation="progress" appearance="''"
+                                [theme]="{'background-color': '#ebeced',height: '30px','border-radius': 0}">
+                            </ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-md-12 text-center" style="height: 39px;">
+                                <div class="col-md-12" style="padding-left: 0px;display: flex;align-items: center;">
+                                    <h3 style="margin-bottom: 0px;font-size: 1.10rem;">Top 5 + Self Net Terminal Income
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="chart">
+                            <apx-chart *ngIf="!isLoadingYearWiseChart" [series]="chartOptions5.series"
+                                [chart]="chartOptions5.chart" [xaxis]="chartOptions5.xaxis"
+                                [dataLabels]="chartOptions5.dataLabels" [grid]="chartOptions5.grid"
+                                [stroke]="chartOptions5.stroke" [title]="chartOptions5.title"
+                                [markers]="chartOptions5.markers" [yaxis]="chartOptions5.yaxis"
+                                [fill]="chartOptions5.fill"></apx-chart>
+                            <ngx-skeleton-loader *ngIf="isLoadingYearWiseChart" appearance="vertical-line"
+                                animation="progress-light" count="10" animation="progress" appearance="''"
+                                [theme]="{'background-color': '#ebeced',height: '30px','border-radius': 0}">
+                            </ngx-skeleton-loader>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

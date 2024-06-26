@@ -15,7 +15,7 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-   {
+  {
     path: 'applinks',
     redirectTo: 'applinks',
     pathMatch: 'full'
@@ -144,6 +144,11 @@ const routes: Routes = [
         path: 'BusinessProfile',
         loadChildren: () =>
           import('./demo/pages/BusinessProfile/BusinessProfile.module').then((m) => m.BusinessProfileModule)
+      },
+      {
+        path: 'revenueanalysis',
+        loadChildren: () =>
+          import('./demo/pages/revenueanalysis/revenueanalysis.module').then((m) => m.RevenueanalysisModule)
       },
       {
         path: 'admin-panel',

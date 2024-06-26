@@ -7,13 +7,13 @@ import { FormBuilder, Validators, AbstractControl, FormGroup, FormControl } from
 import { AnnouncementService } from '../../../services/AnnouncementService';
 import { ToastService } from '../../../services/ToastService';
 import { AppSettings } from '../../../services/Constants';
-import { DefinationService } from '../../../services/DefinationService';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MemberService } from 'src/app/services/MemberService';
 import { PromotionService } from 'src/app/services/PromotionService';
 import { BusinessGroupService } from 'src/app/services/BusinessGroupService';
+import { formatDate } from '@angular/common';
 
 export class Tree {
   root: TreeNode;
@@ -102,7 +102,7 @@ export class AnnouncementComponent {
   bussinessDataForRedemption: { id: any, businessName: string, checked: boolean, memberCount: number }[] = [];
   bussinessDataForStep3: { id: any, businessName: string, checked: boolean }[] = [];
   badgeDataForStep3: { id: number, badgeName: string, counts: number, checked: boolean }[] = [];
-  tagDataForStep3: { id: number, tagName: string, counts: number, checked: boolean }[] = [];
+  tagDataForStep3: { id: number, tagName: string, counts: number, checked: boolean, isNegativeFlag: boolean }[] = [];
   isAllBadgeChecked: Boolean = false;
   isAllTagChecked: Boolean = false;
   dashBoardFormControl = new FormGroup({
@@ -166,11 +166,16 @@ export class AnnouncementComponent {
     this.packageDetails = JSON.parse(localStorage.getItem('PackageDetails'));
     this.businessGroupID = JSON.parse(localStorage.getItem('BusinessGroup'));
 
-    if (this.business != '' && this.business != null && this.business != undefined) {
-      if (this.business.length > 0) {
-        this.setBusiness();
-      }
-    }
+    this.business.forEach(element => {
+      this.location += element.id + ',';
+      this.businessLocationIDs += element.id + ',';
+    });
+
+    // if (this.business != '' && this.business != null && this.business != undefined) {
+    //   if (this.business.length > 0) {
+    //     this.setBusiness();
+    //   }
+    // }
     this.isfileUploaded = false;
     this.dropdownSettings = {
       idField: 'id',
@@ -192,7 +197,7 @@ export class AnnouncementComponent {
     }
 
     this.isAllChecked = (this.bussinessDataForStep3.filter(x => x.id != -1).length) ==
-      (this.bussinessDataForStep3.filter(x => x.checked == true).length) ? true : false;
+      (this.bussinessDataForStep3.filter(x => x.id != -1 && x.checked == true).length) ? true : false;
 
     this.onMembersOfSelected();
     this.BusinessNameForSummary();
@@ -202,7 +207,7 @@ export class AnnouncementComponent {
   }
   ngOnInit() {
     this.GetAnnouncementsData();
-    this.setBusiness();
+    this.GetMembersData();
     this.GetBusinessGroupByID();
     this.dropdownSettings = {
       idField: 'id',
@@ -266,7 +271,7 @@ export class AnnouncementComponent {
       this.selectedBusinessName = 'All';
     }
     else {
-      this.bussinessDataForStep3.forEach(element => {
+      this.bussinessDataForStep3.filter(x => x.id != -1).forEach(element => {
         if (element.checked) {
           this.selectedBusinessName += element.businessName + ', '
         }
@@ -334,11 +339,18 @@ export class AnnouncementComponent {
     this.emailCount = 0;
     this.smsCount = 0;
 
+    let date = this.jobForm.controls['date'].value;
+    let time = this.jobForm.controls['time'].value;
+    var sentDate = (date != "" && time != "") ?
+      formatDate(new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), time, 0, 0), 'yyyy-MM-dd', 'en-US')
+      : formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+
     let details = {
       "businessGroupId": this.businessGroupID.id,
       "businessLocationIDs": this.businessLocationIDs,
       "badgeIDs": '',
-      "tagIDs": ''
+      "tagIDs": '',
+      "sendDate": this.jobForm.controls['isSendImmediately'].value == 'true' ? formatDate(new Date(), 'yyyy-MM-dd', 'en-US') : sentDate
     }
 
     this._memberservice.GetMembersDataForPromotion(details).pipe()
@@ -355,7 +367,7 @@ export class AnnouncementComponent {
           });
 
           tagData.forEach(element => {
-            let x = { "id": element.id, "tagName": element.name, "counts": element.count.toString(), "checked": false };
+            let x = { "id": element.id, "tagName": element.name, "counts": element.count.toString(), "checked": false, "isNegativeFlag": element.isNegativeFlag };
             this.tagDataForStep3.push(x);
           });
 
@@ -372,6 +384,7 @@ export class AnnouncementComponent {
       });
   }
   onMembersOfSelected() {
+    this.membersData = [];
     this.businessLocationIDs = '';
     let badgeIDs: string = '';
     let tagIDs: string = '';
@@ -395,19 +408,26 @@ export class AnnouncementComponent {
         tagIDs += element.id + ',';
     });
 
+    let date = this.jobForm.controls['date'].value;
+    let time = this.jobForm.controls['time'].value;
+    var sentDate = (date != "" && time != "") ?
+      formatDate(new Date(new Date(date).getFullYear(), new Date(date).getMonth(), new Date(date).getDate(), time, 0, 0), 'yyyy-MM-dd', 'en-US')
+      : formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+
     let details = {
       "businessGroupId": this.businessGroupID.id,
       "businessLocationIDs": this.businessLocationIDs,
       "badgeIDs": badgeIDs,
-      "tagIDs": tagIDs
+      "tagIDs": tagIDs,
+      "sendDate": this.jobForm.controls['isSendImmediately'].value == 'true' ? formatDate(new Date(), 'yyyy-MM-dd', 'en-US') : sentDate
     }
 
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
-          console.log(data);
           let badgeData = data['table1'];
           let tagData = data['table2'];
+          this.membersData = data['table3'];
           let summary = data['table4'];
 
           this.badgeDataForStep3.forEach(element => {
@@ -421,6 +441,15 @@ export class AnnouncementComponent {
           this.notificationCount = summary[0].notificationCount;
           this.emailCount = summary[0].emailCount;
           this.smsCount = summary[0].smsCount;
+
+          let business = JSON.parse(localStorage.getItem('Business'));
+          this.bussinessDataForStep3 = [];
+          business.forEach(element => {
+            this.bussinessDataForRedemption.filter(x => x.id == element.id)[0].memberCount =
+              this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ?
+                (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
+          });
+          this.bussinessDataForStep3 = this.bussinessDataForRedemption;
         },
         error: error => {
           console.log(error);
@@ -874,7 +903,7 @@ export class AnnouncementComponent {
   BadgeTagForSummary() {
     this.sendToCustomers = '';
     if (this.isAllBadgeChecked) {
-      this.sendToCustomers = 'All Badges,';
+      this.sendToCustomers = 'All Badges, ';
     }
     else {
       this.badgeDataForStep3.forEach(element => {
@@ -907,15 +936,16 @@ export class AnnouncementComponent {
       businessName: "Any Location",
       checked: false,
       memberCount: 0
-    })
+    });
+
     data.forEach(element => {
       this.location += element.id + ',';
       this.bussinessDataForRedemption.push({
         id: element.id,
         businessName: element.businessName,
         checked: false,
-        memberCount: (this.membersData != undefined && this.membersData != null && this.membersData != '') ?
-          this.membersData.filter(x => x.id == element.id)[0].count : 0
+        memberCount: this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ?
+          (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
       })
     });
     this.bussinessDataForStep3 = this.bussinessDataForRedemption;

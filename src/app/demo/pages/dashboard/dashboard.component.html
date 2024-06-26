@@ -24,7 +24,7 @@
   <div class="row">
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body" style="padding: 25px 0% !important;">
+        <div class="card-body">
           <div class="row">
             <div class="col-md-12 d-flex">
               <div class="col-md-7 d-flex pr-0" style="align-items: center;justify-content: end;">
@@ -58,15 +58,15 @@
               <div class="col-md-1"></div>
             </div>
           </div>
-          <div class="row" class="text-center" style="height: 400px;" *ngIf="chartOptions1Value.length != 0">
+          <div class="row" class="text-center" style="height: 24.4rem;" *ngIf="chartOptions1Value.length != 0">
             <apx-chart *ngIf="!isLoadingDonutChart" [series]="chartOptions1.series" [chart]="chartOptions1.chart"
               [dataLabels]="chartOptions1.dataLabels" [legend]="chartOptions1.legend" [labels]="chartOptions1.labels"
               [fill]="chartOptions1.fill" [title]="chartOptions1.title" [plotOptions]="chartOptions1.plotOptions"
               [toolip]="chartOptions1.tooltip" [responsive]="chartOptions1.responsive"></apx-chart>
           </div>
-          <div class="row" class="text-center" style="height: 400px;"
+          <div class="row" class="text-center" style="height: 24.4rem;"
             *ngIf="!isLoadingDonutChart && chartOptions1Value.length == 0">
-            <img src="../../../../assets/img/noData.png" width="60%" height="60%">
+            <img src="../../../../assets/img/noData.png" height="60%">
           </div>
           <div class="row" *ngIf="isLoadingDonutChart" style="top: 20%;left: 0%;">
             <ngx-skeleton-loader appearance="vertical-line" animation="progress-light" count="9" animation="progress"
@@ -104,7 +104,7 @@
             </div>
           </div>
 
-          <div id="daywiseChart" style="background-color: #f2fffa;border-radius:8px;height: 428px;">
+          <div id="daywiseChart" style="background-color: #f2fffa;border-radius:8px;">
             <apx-chart *ngIf="!isLoadingDayWiseChart" [series]="chartOptions2.series" [chart]="chartOptions2.chart"
               [title]="chartOptions2.title" [legend]="chartOptions2.legend" [dataLabels]="chartOptions2.dataLabels"
               [plotOptions]="chartOptions2.plotOptions" [grid]="chartOptions2.grid" [fill]="chartOptions2.fill"

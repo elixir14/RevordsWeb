@@ -239,14 +239,14 @@
 
             <div class="row" style="margin-bottom: 8px">
               <div class="col d-flex align-items-center">
-                <label for="highroller" class="col-form-label mr-1">{{positiveFlagName}} :</label> &nbsp;
+                <label for="highroller" class="col-form-label mr-1">{{positiveFlagName}}:</label> &nbsp;
                 <input type="checkbox" id="highroller" (change)="handleHighRollerChange($event)"
-                  formControlName="isHighroller" style="height: 16px" />
+                  formControlName="isHighroller" style="height: 16px" class="mt-1" />
               </div>
               <div class="col d-flex align-items-center">
-                <label for="freeplayer" class="col-form-label mr-1">{{negativeFlagName}} :</label> &nbsp;
+                <label for="freeplayer" class="col-form-label mr-1">{{negativeFlagName}}:</label> &nbsp;
                 <input type="checkbox" id="freeplayer" formControlName="isFreeplayer"
-                  (change)="handleFreePlayerChange($event)" style="height: 16px" />
+                  (change)="handleFreePlayerChange($event)" style="height: 16px" class="mt-1" />
               </div>
             </div>
           </div>
@@ -420,24 +420,24 @@
           </div>
           <div class="row member-modal-row" style="padding-top: 8px; padding-bottom: 8px">
             <div class="col-md-6 d-flex align-items-center">
-              <div class="col-md-6 pr-0 pl-0">
-                <label for="highroller" class="col-form-label">{{positiveFlagName}} :</label>
+              <div class="col-md-5 pr-0">
+                <label for="highroller" class="col-form-label">{{positiveFlagName}}:</label>
               </div>
-              <div class="col-md-2 pl-0 mt-1">
+              <div class="col-md-2 pl-0 mt-2">
                 <input type="checkbox" id="highroller" (change)="handleHighRollerChange($event)"
                   formControlName="isHighroller" style="height: 16px; margin: 0; padding: 0" />
               </div>
-              <div class="col-md-4"></div>
+              <div class="col-md-5"></div>
             </div>
             <div class="col-md-6 d-flex align-items-center">
-              <div class="col-md-6 pr-0">
-                <label for="freePlayer" class="col-form-label">{{negativeFlagName}} :</label>
+              <div class="col-md-5 pr-0">
+                <label for="freePlayer" class="col-form-label">{{negativeFlagName}}:</label>
               </div>
-              <div class="col-md-2 pl-0 mt-1">
+              <div class="col-md-2 pl-0 mt-2">
                 <input type="checkbox" id="freePlayer" (change)="handleFreePlayerChange($event)"
                   formControlName="isFreeplayer" style="height: 16px; margin: 0; padding: 0" />
               </div>
-              <div class="col-md-4"></div>
+              <div class="col-md-5"></div>
             </div>
           </div>
           <div class="row member-modal-row text-center" style="padding-top: 8px; padding-bottom: 8px">
