@@ -10,9 +10,10 @@
             <div class="col-md-6 text-right mt-3 pr-4" *ngIf="iseditmode">
                 <button class="btn btn-danger cancel mt-2" (click)="Cancle()">
                     Cancel</button>
-                <button class="btn btn-green viewRevorde mt-2 ml-2" target="_blank"
+                <a class="btn btn-green viewRevorde mt-2 ml-2" target="_blank" href="http://revords.com/fortunesgroup.html"
                     style="background: #6c4da9;color:white;">
-                    <i class="bi bi-eye"></i> View Revords Page</button>
+                    <i class="bi bi-eye"></i> View Revords Page
+                </a>
             </div>
         </div>
         <div class="col-md-12 ml-2" *ngIf="!iseditmode">
@@ -22,11 +23,11 @@
             <table class="table table-hover mt-3">
                 <thead>
                     <tr>
-                        <th scope="col">Business Name</th>
-                        <th scope="col">ShortName</th>
+                        <th scope="col">Legal Name</th>
+                        <th scope="col">Display Name</th>
                         <th scope="col">Industry</th>
                         <th scope="col">City</th>
-                        <th scope="col">PinCode</th>
+                        <th scope="col">Zip Code</th>
                         <th scope="col">Edit</th>
                     </tr>
                 </thead>
@@ -68,7 +69,7 @@
                         <div *ngIf="submitted && ProfileFormGroup.controls['businessName'].errors"
                             class="invalid-feedback">
                             <div *ngIf="ProfileFormGroup.controls['businessName'].errors['required']">
-                                Business Name is required
+                                Legal Name is required
                             </div>
                         </div>
                     </div>
@@ -82,7 +83,7 @@
                         <div *ngIf="submitted && ProfileFormGroup.controls['shortName'].errors"
                             class="invalid-feedback">
                             <div *ngIf="ProfileFormGroup.controls['shortName'].errors['required']">
-                                Business Short Name is required
+                                Display Name is required
                             </div>
                         </div>
                     </div>
@@ -92,7 +93,7 @@
                             Phone No
                         </label>
                         <input id="phoneNo" class="form-control" formControlName="phoneNo" autocomplete="off"
-                            (keypress)="numberOnly($event)" maxlength="10"
+                            (keypress)="numberOnly($event)" maxlength="14" (input)="formatNum($event)"
                             [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['phoneNo'].errors }">
                         <div *ngIf="submitted && ProfileFormGroup.controls['phoneNo'].errors" class="invalid-feedback">
                             <div *ngIf="ProfileFormGroup.controls['phoneNo'].errors['required']">
@@ -135,9 +136,10 @@
                             State
                         </label>
                         <ng-multiselect-dropdown [placeholder]="'Select State'" id="stateCodeId"
-                            [settings]="dropdownSettingsSingleState" [data]="statesData" formControlName="stateCodeId">
+                            [settings]="dropdownSettingsSingleState" [data]="statesData" formControlName="stateCodeId"
+                            [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['stateCodeId'].errors }">
                         </ng-multiselect-dropdown>
-                        <div style="width:100%;" *ngIf="submitted && ProfileFormGroup.controls['stateCodeId'].errors"
+                        <div *ngIf="submitted && ProfileFormGroup.controls['stateCodeId'].errors"
                             class="invalid-feedback">
                             <div *ngIf="ProfileFormGroup.controls['stateCodeId'].errors['required']">
                                 State is required
@@ -150,7 +152,7 @@
                             Zip Code
                         </label>
                         <input id="pinCode" class="form-control" formControlName="pinCode" autocomplete="off"
-                            maxlength="6" (keypress)="numberOnly($event)"
+                            maxlength="5" minlength="5" (keypress)="numberOnly($event)"
                             [ngClass]="{ 'is-invalid': submitted && ProfileFormGroup.controls['pinCode'].errors }">
                         <div *ngIf="submitted && ProfileFormGroup.controls['pinCode'].errors" class="invalid-feedback">
                             <div *ngIf="ProfileFormGroup.controls['pinCode'].errors['required']">
@@ -270,11 +272,12 @@
                                         {{uploadProgressBusinessLogo}}
                                     </div>
                                 </div>
-                                <div class="col mt-2" *ngIf="filePathBusinessLogo != null" style="position: relative;">
+                                <div class="col mt-2" *ngIf="filePathBusinessLogo != null"
+                                    style="position: relative;text-align: center;">
                                     <img src="{{filePathBusinessLogo}}" height="70px" />
                                     <mat-icon class="cancel-upload" (click)="cancelUploadBusinessLogo()"
                                         *ngIf="uploadProgressBusinessLogo != undefined || (filePathBusinessLogo != null && filePathBusinessLogo !=undefined && filePathBusinessLogo != '')"
-                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -6%;">
                                         cancel
                                     </mat-icon>
                                 </div>
@@ -282,7 +285,7 @@
 
                             <div class="col" style="padding-right: 6px;">
                                 <div class="col-md-12" style="margin-left:0; padding-left: 0;">
-                                    <label>Display Image</label>
+                                    <label>App Display Image</label>
                                 </div>
                                 <div class="col-md-12">
                                     <input type="file" class="custom-file" id="businessDisplayImage"
@@ -300,11 +303,11 @@
                                     </div>
                                 </div>
                                 <div class="col mt-2" *ngIf="filePathBusinessDisplayImage != null"
-                                    style="position: relative;">
+                                    style="position: relative;text-align: center;">
                                     <img src="{{filePathBusinessDisplayImage}}" height="70px" />
                                     <mat-icon class="cancel-upload" (click)="cancelUploadBusinessDisplayImage()"
                                         *ngIf="uploadProgressBusinessDisplayImage != undefined || (filePathBusinessDisplayImage != null && filePathBusinessDisplayImage !=undefined && filePathBusinessDisplayImage != '')"
-                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -6%;">
                                         cancel
                                     </mat-icon>
                                 </div>
@@ -318,7 +321,7 @@
                                 <div class="row">
                                     <div class="col-md-7">
                                         <label for="hours">
-                                            Business Working Hours
+                                            Business Hours
                                         </label>
                                     </div>
 
@@ -343,16 +346,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="monFromTime">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="monFromTime"
-                                                    formControlName="monFromTime">
+                                                <ng-select [searchable]="true" id="monFromTime" placeholder="hh:mm"
+                                                    formControlName="monFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['monFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('monFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('monFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="monTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="monTo"
-                                                    formControlName="monToTime">
+                                                <ng-select [searchable]="true" id="monTo" placeholder="hh:mm"
+                                                    formControlName="monToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['monToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('monToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('monToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -366,16 +395,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="tueFrom">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="tueFrom"
-                                                    formControlName="tueFromTime">
+                                                <ng-select [searchable]="true" id="tueFrom" placeholder="hh:mm"
+                                                    formControlName="tueFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['tueFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('tueFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('tueFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="tueTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="tueTo"
-                                                    formControlName="tueToTime">
+                                                <ng-select [searchable]="true" id="tueTo" placeholder="hh:mm"
+                                                    formControlName="tueToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['tueToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('tueToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('tueToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -389,16 +444,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="wedFrom">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="wedFrom"
-                                                    formControlName="wedFromTime">
+                                                <ng-select [searchable]="true" id="wedFrom" placeholder="hh:mm"
+                                                    formControlName="wedFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['wedFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('wedFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('wedFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="wedTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="wedTo"
-                                                    formControlName="wedToTime">
+                                                <ng-select [searchable]="true" id="wedTo" placeholder="hh:mm"
+                                                    formControlName="wedToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['wedToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('wedToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('wedToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -413,16 +494,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="thuFrom">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="thuFrom"
-                                                    formControlName="thuFromTime">
+                                                <ng-select [searchable]="true" id="thuFrom" placeholder="hh:mm"
+                                                    formControlName="thuFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['thuFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('thuFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('thuFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="thuTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="thuTo"
-                                                    formControlName="thuToTime">
+                                                <ng-select [searchable]="true" id="thuTo" placeholder="hh:mm"
+                                                    formControlName="thuToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['thuToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('thuToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('thuToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -437,16 +544,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="friFrom">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="friFrom"
-                                                    formControlName="friFromTime">
+                                                <ng-select [searchable]="true" id="friFrom" placeholder="hh:mm"
+                                                    formControlName="friFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['friFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('friFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('friFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="friTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="friTo"
-                                                    formControlName="friToTime">
+                                                <ng-select [searchable]="true" id="friTo" placeholder="hh:mm"
+                                                    formControlName="friToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['friToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('friToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('friToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -461,16 +594,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="satFrom">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="satFrom"
-                                                    formControlName="satFromTime">
+                                                <ng-select [searchable]="true" id="satFrom" placeholder="hh:mm"
+                                                    formControlName="satFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['satFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('satFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('satFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="satTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="satTo"
-                                                    formControlName="satToTime">
+                                                <ng-select [searchable]="true" id="satTo" placeholder="hh:mm"
+                                                    formControlName="satToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['satToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('satToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('satToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -485,16 +644,42 @@
                                         <div class="col-md-6 pr-0 text-center d-flex">
                                             <div class="col-md-3"><label for="sunFrom">From: </label></div>
                                             <div class="col-md-9 pr-0">
-                                                <input type="time" class="form-control" id="sunFrom"
-                                                    formControlName="sunFromTime">
+                                                <ng-select [searchable]="true" id="sunFrom" placeholder="hh:mm"
+                                                    formControlName="sunFromTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['sunFromTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('sunFromTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('sunFromTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 p-0 text-center d-flex">
                                             <div class="col-md-3 p-0"><label for="sunTo">To: </label></div>
                                             <div class="col-md-9 p-0">
-                                                <input type="time" class="form-control" id="sunTo"
-                                                    formControlName="sunToTime">
+                                                <ng-select [searchable]="true" id="sunTo" placeholder="hh:mm"
+                                                    formControlName="sunToTime" [addTag]="true">
+                                                    <ng-option *ngFor="let option of workingHours"
+                                                        [value]="option.name">
+                                                        {{ option.name }}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="submitted && ProfileFormGroup.controls['sunToTime'].errors"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="ProfileFormGroup.get('sunToTime').hasError('invalidPattern') 
+                                                        && ProfileFormGroup.get('sunToTime').touched">
+                                                        Please enter a valid time (hh:mm AM/PM)
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -504,7 +689,10 @@
                     </div>
                 </div>
 
-                <div class="row" style="margin-bottom: 1%;">
+                <div class="row" style="margin-bottom: 1%;padding: 2% 0% 2% 0%;border-radius: 23px;">
+                    <div class="col-md-12">
+                        <b style="font-size: 20px;">App Image Gallery</b>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-row">
                             <div class="col-md-3">
@@ -526,11 +714,12 @@
                                         {{uploadProgressBusinessImage1}}
                                     </div>
                                 </div>
-                                <div class="col" *ngIf="filePathBusinessImage1 != null" style="position: relative;">
+                                <div class="col mt-2" *ngIf="filePathBusinessImage1 != null"
+                                    style="position: relative;text-align: center;">
                                     <img src="{{filePathBusinessImage1}}" height="70px" />
                                     <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage1()"
                                         *ngIf="uploadProgressBusinessImage1 != undefined || (filePathBusinessImage1 != null && filePathBusinessImage1 !=undefined && filePathBusinessImage1 != '')"
-                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -6%;">
                                         cancel
                                     </mat-icon>
                                 </div>
@@ -555,11 +744,12 @@
                                         {{uploadProgressBusinessImage2}}
                                     </div>
                                 </div>
-                                <div class="col" *ngIf="filePathBusinessImage2 != null" style="position: relative;">
+                                <div class="col mt-2" *ngIf="filePathBusinessImage2 != null"
+                                    style="position: relative;text-align: center;">
                                     <img src="{{filePathBusinessImage2}}" height="70px" />
                                     <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage2()"
                                         *ngIf="uploadProgressBusinessImage2 != undefined || (filePathBusinessImage2 != null && filePathBusinessImage2 !=undefined && filePathBusinessImage2 != '')"
-                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -6%;">
                                         cancel
                                     </mat-icon>
                                 </div>
@@ -584,11 +774,12 @@
                                         {{uploadProgressBusinessImage3}}
                                     </div>
                                 </div>
-                                <div class="col" *ngIf="filePathBusinessImage3 != null" style="position: relative;">
+                                <div class="col mt-2" *ngIf="filePathBusinessImage3 != null"
+                                    style="position: relative;text-align: center;">
                                     <img src="{{filePathBusinessImage3}}" height="70px" />
                                     <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage3()"
                                         *ngIf="uploadProgressBusinessImage3 != undefined || (filePathBusinessImage3 != null && filePathBusinessImage3 !=undefined && filePathBusinessImage3 != '')"
-                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -6%;">
                                         cancel
                                     </mat-icon>
                                 </div>
@@ -613,11 +804,12 @@
                                         {{uploadProgressBusinessImage4}}
                                     </div>
                                 </div>
-                                <div class="col" *ngIf="filePathBusinessImage4 != null" style="position: relative;">
+                                <div class="col mt-2" *ngIf="filePathBusinessImage4 != null"
+                                    style="position: relative;text-align: center;">
                                     <img src="{{filePathBusinessImage4}}" height="70px" />
                                     <mat-icon class="cancel-upload" (click)="cancelUploadBusinessImage4()"
                                         *ngIf="uploadProgressBusinessImage4 != undefined || (filePathBusinessImage4 != null && filePathBusinessImage4 !=undefined && filePathBusinessImage4 != '')"
-                                        style="color: black; overflow: inherit;position: absolute;margin-left: -4%;">
+                                        style="color: black; overflow: inherit;position: absolute;margin-left: -6%;">
                                         cancel
                                     </mat-icon>
                                 </div>

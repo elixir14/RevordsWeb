@@ -106,8 +106,7 @@ export class DashboardComponent implements OnInit {
   oldGoalValue: number;
   chartOptions1Value: any = [];
   chartOptions1label: any = [];
-  chartOptions1ValueVisit: any = [];
-  chartOptions1labelVisit: any = [];
+  chartOptions1Color: any = [];
   chartOptionsVisitCountData: any = [];
   chartOptionsNewSignupData: any = [];
   chartOptionsVisitCountXaxis: any = [];
@@ -188,8 +187,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private _dashBoardservice: DashboardService, private _commonService: CommonService,
     public toastService: ToastService, private router: Router, private modalService: NgbModal,
-    private appService: AdminComponent, private _memberservice: MemberService,
-    private _profileService: ProfileSettingService) {
+    private appService: AdminComponent, private _profileService: ProfileSettingService) {
     this.selected = {
       startDate: dayjs().subtract(6, 'days'),
       endDate: dayjs()
@@ -204,23 +202,6 @@ export class DashboardComponent implements OnInit {
     this.charttypbool = true;
     this.ClearNumbers();
     this.selectedbusinessGroup = JSON.parse(localStorage.getItem('BusinessGroup'));
-    this.appService.refresh.subscribe(counter => {
-      this.selectedbusinessGroup = JSON.parse(localStorage.getItem('BusinessGroup'));
-      this.activeTabId = 1;
-      this.selected = {
-        startDate: dayjs().subtract(6, 'days'),
-        endDate: dayjs()
-      };
-      this.label = "Last 7 Days";
-      this.selectedRange = "Last 7 Days";
-
-      this.startDate = formatDate((moment().subtract(6, 'days'))['_d'], 'yyyy-MM-dd', 'en-US');
-      this.endDate = formatDate((moment())['_d'], 'yyyy-MM-dd', 'en-US');
-
-      this.charttype = 2;
-      this.charttypbool = true;
-      this.GetAllData();
-    });
   }
   @ViewChild(DaterangepickerDirective, { static: true }) picker: DaterangepickerDirective;
 
@@ -511,7 +492,7 @@ export class DashboardComponent implements OnInit {
         toolbar: {
           show: false
         },
-        height: 418
+        height: 413
       },
       noData: {
         text: this.isLoadingInsightChart ? "Loading..." : "No Data present in the graph!",
@@ -659,6 +640,7 @@ export class DashboardComponent implements OnInit {
           this.activeMemberData.forEach(element => {
             this.chartOptions1Value.push(element.count);
             this.chartOptions1label.push(element.businessLocationName);
+            this.chartOptions1Color.push(element.colorCode);
           });
           this.isLoadingDonutChart = false;
         },
@@ -674,11 +656,7 @@ export class DashboardComponent implements OnInit {
     await this._dashBoardservice.GetTodaysVisitByBusinessGroupId(this.selectedbusinessGroup.id).pipe()
       .subscribe({
         next: (data) => {
-          this.visitMemberData = data.filter(t => t.count > 0);;
-          data.forEach(element => {
-            this.chartOptions1ValueVisit.push(element.count);
-            this.chartOptions1labelVisit.push(element.businessLocationName);
-          });
+          this.visitMemberData = data.filter(t => t.count > 0);
           this.isLoadingDonutChart = false;
         },
         error: (error) => {
@@ -691,6 +669,7 @@ export class DashboardComponent implements OnInit {
   onNavChange1(item) {
     this.chartOptions1Value = [];
     this.chartOptions1label = [];
+    this.chartOptions1Color = [];
     this.activeTabId = item;
     if (this.selectedItems != null && this.selectedItems != undefined && this.selectedItems.length != 0) {
       for (let index = 0; index < this.selectedItems.length; index++) {
@@ -700,6 +679,7 @@ export class DashboardComponent implements OnInit {
               if (element.businessLocationId == this.selectedItems[index].id) {
                 this.chartOptions1Value.push(element.count);
                 this.chartOptions1label.push(element.businessLocationName);
+                this.chartOptions1Color.push(element.colorCode);
               }
             });
             this.chartOptions1.series = this.chartOptions1Value;
@@ -709,6 +689,7 @@ export class DashboardComponent implements OnInit {
               if (element.businessLocationId == this.selectedItems[index].id) {
                 this.chartOptions1Value.push(element.count);
                 this.chartOptions1label.push(element.businessLocationName);
+                this.chartOptions1Color.push(element.colorCode);
               }
             });
             this.chartOptions1.series = this.chartOptions1Value;
@@ -721,6 +702,7 @@ export class DashboardComponent implements OnInit {
               if (element.businessLocationId == this.selectedItems[index].id) {
                 this.chartOptions1Value.push(element.count);
                 this.chartOptions1label.push(element.businessLocationName);
+                this.chartOptions1Color.push(element.colorCode);
               }
             });
             this.chartOptions1.series = this.chartOptions1Value;
@@ -730,6 +712,7 @@ export class DashboardComponent implements OnInit {
               if (element.businessLocationId == this.selectedItems[index].id) {
                 this.chartOptions1Value.push(element.count);
                 this.chartOptions1label.push(element.businessLocationName);
+                this.chartOptions1Color.push(element.colorCode);
               }
               this.chartOptions1.series = this.chartOptions1Value;
               this.chartOptions1.labels = this.chartOptions1label;
@@ -796,6 +779,7 @@ export class DashboardComponent implements OnInit {
     this.ClearNumbers();
     this.chartOptions1Value = [];
     this.chartOptions1label = [];
+    this.chartOptions1Color = [];
     if (this.selectedItems != null && this.selectedItems != undefined && this.selectedItems.length != 0) {
       let barFilter = [];
       this.insights = [];
@@ -925,7 +909,7 @@ export class DashboardComponent implements OnInit {
           this.activeTabToggle(index);
 
           let arr = this.barchartDataDayWise.filter(x => x.businesslocationid == this.selectedItems[index].id);
-          
+
           if (this.charttype == 2) {
             arr.forEach(element => {
               this.insightsDayWise.filter(x => x.fromHour == element.dayname)[0].visitorCount += element.visitortodaytotal;
@@ -978,7 +962,7 @@ export class DashboardComponent implements OnInit {
           toHour: element.tohour,
           visitorCount: element.visitorcount,
           year: element.year
-        })
+        });
       });
 
       this.chartOptionsVisitCountData = [];
@@ -1021,22 +1005,23 @@ export class DashboardComponent implements OnInit {
         if (element.businessLocationId == this.selectedItems[index].id) {
           this.chartOptions1Value.push(element.count);
           this.chartOptions1label.push(element.businessLocationName);
+          this.chartOptions1Color.push(element.colorCode);
         }
       });
-
-      this.chartOptions1.series = this.chartOptions1Value;
-      this.chartOptions1.labels = this.chartOptions1label;
-
     } else if (this.activeTabId == 2) {
       this.visitMemberData.forEach(element => {
         if (element.businessLocationId == this.selectedItems[index].id) {
           this.chartOptions1Value.push(element.count);
           this.chartOptions1label.push(element.businessLocationName);
+          this.chartOptions1Color.push(element.colorCode);
         }
       });
-
-      this.chartOptions1.series = this.chartOptions1Value;
-      this.chartOptions1.labels = this.chartOptions1label;
+    }
+    this.chartOptions1.series = this.chartOptions1Value;
+    this.chartOptions1.labels = this.chartOptions1label;
+    this.chartOptions1.fill = {
+      opacity: 1,
+      colors: this.chartOptions1Color
     }
   }
 
@@ -1072,17 +1057,21 @@ export class DashboardComponent implements OnInit {
       this.activeMemberData.forEach(element => {
         this.chartOptions1Value.push(element.count);
         this.chartOptions1label.push(element.businessLocationName);
+        this.chartOptions1Color.push(element.colorCode);
       });
-      this.chartOptions1.series = this.chartOptions1Value;
-      this.chartOptions1.labels = this.chartOptions1label;
-
     } else if (this.activeTabId == 2) {
       this.visitMemberData.forEach(element => {
         this.chartOptions1Value.push(element.count);
         this.chartOptions1label.push(element.businessLocationName);
+        this.chartOptions1Color.push(element.colorCode);
       });
-      this.chartOptions1.series = this.chartOptions1Value;
-      this.chartOptions1.labels = this.chartOptions1label;
+    }
+
+    this.chartOptions1.series = this.chartOptions1Value;
+    this.chartOptions1.labels = this.chartOptions1label;
+    this.chartOptions1.fill = {
+      opacity: 1,
+      colors: this.chartOptions1Color
     }
   }
 
@@ -1215,8 +1204,7 @@ export class DashboardComponent implements OnInit {
       this.chartOptionsVisitCountXaxis = [];
       this.chartOptions1Value = [];
       this.chartOptions1label = [];
-      this.chartOptions1ValueVisit = [];
-      this.chartOptions1labelVisit = [];
+      this.chartOptions1Color = [];
       this.chartOptionsVisitCountData = [];
       this.chartOptionsNewSignupData = [];
       this.chartOptionsVisitCountXaxis = [];
@@ -1246,6 +1234,7 @@ export class DashboardComponent implements OnInit {
       this.GenerateChart(this.selectedbusinessGroup.id, 2, s, e);
       this.GenerateDayWiseChart(this.selectedbusinessGroup.id, this.charttype);
       this.getActiveDetailData();
+
       this.isLoadingMemberVisitCounts = false;
       this.chartOptions = {
         series: [
@@ -1339,7 +1328,7 @@ export class DashboardComponent implements OnInit {
           toolbar: {
             show: false
           },
-          height: 418
+          height: 413
         },
         plotOptions: {
           bar: {
@@ -1385,7 +1374,7 @@ export class DashboardComponent implements OnInit {
         series: this.chartOptions1Value,
         labels: this.chartOptions1label,
         chart: {
-          width: '130%',
+          width: '340',
           type: "donut",
           height: 340,
           events: {
@@ -1398,7 +1387,7 @@ export class DashboardComponent implements OnInit {
         },
         fill: {
           opacity: 1,
-          colors: ['#7da3ba', '#a17c43', '#233138', '#f7464a', '#46bfbd']
+          colors: this.chartOptions1Color
         },
         noData: {
           text: this.isLoadingDonutChart ? "Loading..." : "No Data present in the graph!",

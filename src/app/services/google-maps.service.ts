@@ -40,4 +40,10 @@ export class GoogleMapsService {
     const params = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');
     return `//maps.googleapis.com/maps/api/js?${params}&language=en`;
   }
+
+  public initializeAutoComplete(inputElement: HTMLInputElement): Promise<google.maps.places.Autocomplete> {
+    return this.api.then((maps) => {
+      return new maps.places.Autocomplete(inputElement, { types: ['address'] });
+    });
+  }
 }

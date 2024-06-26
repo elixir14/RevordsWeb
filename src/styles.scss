@@ -14,6 +14,7 @@ File: style.css
 @import 'node_modules/bootstrap/scss/functions';
 @import 'node_modules/bootstrap/scss/variables';
 @import '~font-awesome/css/font-awesome.css';
+@import "@ng-select/ng-select/themes/default.theme.css";
 $pc-body-bg: map-get($preset-colors, 'preset-1', 'body');
 $pc-blue: map-get($preset-colors, 'preset-1', 'primary');
 $pc-secondary: map-get($preset-colors, 'preset-1', 'secondary');
@@ -53,24 +54,32 @@ $secondary: $yellow-300;
 body {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
+
 .mdc-data-table__cell {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
+
 .mat-expansion-panel-header {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
+
 .mat-expansion-panel-content {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
-.mat-stepper-vertical, .mat-stepper-horizontal {
+
+.mat-stepper-vertical,
+.mat-stepper-horizontal {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
+
 .mdc-form-field {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
+
 .mdc-tab {
   font-family: 'Satoshi-Regular', sans-serif !important;
 }
+
 .cdk-overlay-0 .cdk-overlay-pane {
   width: 476px !important;
   top: 205px !important;
@@ -95,10 +104,12 @@ body {
   backdrop-filter: blur(0) !important;
   animation: animatezoom 0.8s
 }
+
 .spinner-border {
   --bs-spinner-width: 1rem;
   --bs-spinner-height: 1rem;
 }
+
 @keyframes animatezoom {
   from {
     transform: scale(0)
@@ -107,6 +118,11 @@ body {
   to {
     transform: scale(1)
   }
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0px !important;
 }
 
 .toast-success {
@@ -206,6 +222,7 @@ input:checked+.slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 .multiselect-dropdown {
   width: 100% !important;
 }

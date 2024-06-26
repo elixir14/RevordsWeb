@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8 d-flex">
-                                    <div class="col-md-4">
+                                    <!-- <div class="col-md-4">
                                         <div class="row d-flex p-3">
                                             <div class="col-md-6 col-auto p-0">
                                                 <div class="p-0 details">
@@ -69,8 +69,23 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div> -->
+
+                                    <div class="col-md-4 text-center">
+                                        <div class="row ">
+                                            <div class="col-md-12">
+                                                <span class="overview-amount ng-binding inner ">
+                                                    Delivered
+                                                </span>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="details">
+                                                    {{p.deliveredCount}}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <!-- <div class="col-md-4">
                                         <div class="row d-flex p-3">
                                             <div class="col-md-6 col-auto p-0">
                                                 <div class="p-0 details">
@@ -85,8 +100,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div> -->
+                                    <div class="col-md-4 text-center">
+                                        <div class="row ">
+                                            <div class="col-md-12">
+                                                <span class="overview-amount ng-binding inner ">
+                                                    Unique opens
+                                                </span>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="details">
+                                                    {{p.openCount}}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <!-- <div class="col-md-4">
                                         <div class="row d-flex p-3">
                                             <div class="col-md-6 col-auto p-0">
                                                 <div class="p-0 details">
@@ -98,6 +127,20 @@
                                                     <span class="overview-amount ng-binding inner ">
                                                         Open Rate%
                                                     </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-md-4 text-center">
+                                        <div class="row ">
+                                            <div class="col-md-12">
+                                                <span class="overview-amount ng-binding inner ">
+                                                    Open Rate%
+                                                </span>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="details">
+                                                    {{p.openPercentages}}
                                                 </div>
                                             </div>
                                         </div>
@@ -238,11 +281,12 @@
                                                         <div class="col-lg-12 p-0">
                                                             <span><b>Note: </b></span>
                                                             <span style="font-size: 12px;">
-                                                                It is your legal responsibility to upload SHAFT compliant
+                                                                It is your legal responsibility to upload SHAFT
+                                                                compliant
                                                                 image.
                                                             </span>
                                                         </div>
-                                                        
+
                                                         <!-- <div class="progress">
                                                             <div class="progress-bar bluecolor" role="progressbar"
                                                                 [style.width]="uploadProgress"
@@ -746,10 +790,10 @@
                             <mat-step [stepControl]="secondFormGroup"
                                 errorMessage="Business and Customers are required.">
                                 <ng-template matStepLabel>Step 2</ng-template>
-                                <div class="row d-flex">
-                                    <div class="row d-flex">
-                                        <div class="col-md-4 tagsDiv">
-                                            <div class="ml-2">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex">
+                                        <div class="col-md-5 tagsDiv">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
                                                 <img src="../../../../assets/promotion/Member of.svg">
                                                 <span class="ml-2">
                                                     <b>Members Of</b>
@@ -774,7 +818,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3 tagsDiv">
-                                            <div class="ml-2">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
                                                 <img src="../../../../assets/promotion/Total Badges.svg">
                                                 <span class="ml-2">
                                                     <b>Total badges</b>
@@ -801,13 +845,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 tagsDiv">
-                                            <div class="ml-2">
+                                        <div class="col-md-4 tagsDiv">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
                                                 <img src="../../../../assets/promotion/Total Tags.svg">
                                                 <span class="ml-2">
                                                     <b>Total Tags</b>
-                                                    <i class="icon-fs-info ng-scope" [ngbTooltip]="negativeFlagTooltip">
-                                                    </i>
                                                 </span>
                                             </div>
                                             <div>
@@ -818,39 +860,66 @@
                                                         [checked]="b.checked" (click)="onTagSelected(b.id)">
                                                         {{b.tagName}} <span class="itemSpan">(Up to {{b.counts}}
                                                             Customers)</span>
+                                                        <i class="icon-fs-info ng-scope"
+                                                            [ngbTooltip]="negativeFlagTooltip"
+                                                            *ngIf="b.isNegativeFlag == true">
+                                                        </i>
                                                     </mat-checkbox>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row" style="margin-top:5px;">
                                 </div>
 
-                                <div class="row d-flex">
-                                    <div class="col-md-5 tagsDiv">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                Total <b> {{totalDelivered}}</b> customers will get app
-                                                notification , email or text sms
+                                <div class="row">
+                                    <div class="col-md-12 d-flex">
+                                        <div class="col-md-5 tagsDiv">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
+                                                <span>
+                                                    Total <b> {{totalDelivered}}</b> customers will get app
+                                                    notification or email.
+                                                </span>
                                             </div>
-                                        </div>
-                                        <div class="row" style="margin-top:5px;">
-                                            <div class="col-md-12">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Mobile App</th>
-                                                            <th scope="col">Email</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>{{notificationCount}}</td>
-                                                            <td>{{emailCount}}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="row" style="margin-top:5px;">
+                                                <div class="col-md-12">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                    Mobile App
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                    Email
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                    {{notificationCount}}
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                    {{emailCount}}
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -892,7 +961,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th style="width:30%;">
-                                                                        <label>Subject : </label>
+                                                                        <label>Subject: </label>
                                                                     </th>
                                                                     <td style="width: 70%;" colspan="3">
                                                                         {{this.jobForm.controls['subject'].value}}
@@ -900,7 +969,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th style="width:30%;">
-                                                                        <label>Description : </label>
+                                                                        <label>Description: </label>
                                                                     </th>
                                                                     <td style="width: 70%;" colspan="3"
                                                                         [innerHTML]="this.jobForm.controls['description'].value">
@@ -908,7 +977,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th style="width:30%;">
-                                                                        <label>Valid Uptill : </label>
+                                                                        <label>Valid Uptill: </label>
                                                                     </th>
                                                                     <td style="width: 70%;" colspan="3">
                                                                         {{this.jobForm.controls['validDate'].value |
@@ -917,7 +986,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th style="width:30%;">
-                                                                        <label>Business Name : </label>
+                                                                        <label>Members Of: </label>
                                                                     </th>
                                                                     <td style="width: 70%;" colspan="3">
                                                                         {{selectedBusinessName}}
@@ -925,7 +994,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <th style="width:30%;">
-                                                                        <label>Send to : </label>
+                                                                        <label>Send to: </label>
                                                                     </th>
                                                                     <td style="width: 70%;" colspan="3">
                                                                         {{sendToCustomers}}

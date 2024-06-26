@@ -84,6 +84,8 @@ import { AdminPanelComponent } from './demo/pages/admin-panel/admin-panel.compon
 import { BusinessProfileComponent } from './demo/pages/BusinessProfile/BusinessProfile.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouterModule } from '@angular/router';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { LicenseApplicantService } from './services/LicenseApplicantService';
 
 @NgModule({
   declarations: [
@@ -152,6 +154,7 @@ import { RouterModule } from '@angular/router';
     MatListModule,
     MatTabsModule,
     UtcToLocalTimePipeModule,
+    NgSelectModule,
     NgxDaterangepickerMd.forRoot(),
     NgCircleProgressModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
@@ -214,6 +217,7 @@ import { RouterModule } from '@angular/router';
     BusinessGroupService,
     SourceService,
     UserService,
+    LicenseApplicantService,
     { provide: LOCALE_ID, useValue: 'en-US' }
   ],
   bootstrap: [AppComponent]

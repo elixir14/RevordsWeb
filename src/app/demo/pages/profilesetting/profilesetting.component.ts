@@ -43,6 +43,23 @@ export class ProfilesettingComponent {
   dropdownSettingsSingleState: IDropdownSettings = {};
   statesData: any = [];
   customerID: any = '';
+  workingHours = [{ id: 1, name: "12:00 AM" }, { id: 2, name: "12:30 AM" },
+  { id: 3, name: "01:00 AM" }, { id: 4, name: "01:30 AM" }, { id: 5, name: "02:00 AM" },
+  { id: 6, name: "02:30 AM" }, { id: 7, name: "03:00 AM" }, { id: 8, name: "03:30 AM" },
+  { id: 9, name: "04:00 AM" }, { id: 10, name: "04:30 AM" }, { id: 11, name: "05:00 AM" },
+  { id: 12, name: "05:30 AM" }, { id: 13, name: "06:00 AM" }, { id: 14, name: "06:30 AM" },
+  { id: 15, name: "07:00 AM" }, { id: 16, name: "07:30 AM" }, { id: 17, name: "08:00 AM" },
+  { id: 18, name: "08:30 AM" }, { id: 19, name: "09:00 AM" }, { id: 20, name: "09:30 AM" },
+  { id: 21, name: "10:00 AM" }, { id: 22, name: "10:30 AM" }, { id: 23, name: "11:00 AM" },
+  { id: 24, name: "11:30 AM" }, { id: 25, name: "12:00 PM" }, { id: 26, name: "12:30 PM" },
+  { id: 27, name: "01:00 PM" }, { id: 28, name: "01:30 PM" }, { id: 29, name: "02:00 PM" },
+  { id: 30, name: "02:30 PM" }, { id: 31, name: "03:00 PM" }, { id: 32, name: "03:30 PM" },
+  { id: 33, name: "04:00 PM" }, { id: 34, name: "04:30 PM" }, { id: 35, name: "05:00 PM" },
+  { id: 36, name: "05:30 PM" }, { id: 37, name: "06:00 PM" }, { id: 38, name: "06:30 PM" },
+  { id: 39, name: "07:00 PM" }, { id: 40, name: "07:30 PM" }, { id: 41, name: "08:00 PM" },
+  { id: 42, name: "08:30 PM" }, { id: 43, name: "09:00 PM" }, { id: 44, name: "09:30 PM" },
+  { id: 45, name: "10:00 PM" }, { id: 46, name: "10:30 PM" }, { id: 47, name: "11:00 PM" },
+  { id: 48, name: "11:30 PM" }];
 
   @ViewChild('search') searchElementRef: ElementRef;
 
@@ -124,7 +141,7 @@ export class ProfilesettingComponent {
       stateCodeId: new FormControl('', Validators.required),
       phoneNo: new FormControl('', Validators.required),
       pinCode: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
+      description: new FormControl(''),
       label: new FormControl(''),
       website: new FormControl(''),
       facebookUrl: new FormControl(''),
@@ -132,20 +149,20 @@ export class ProfilesettingComponent {
       googleUrl: new FormControl(''),
       instagramUrl: new FormControl(''),
       yelpUrl: new FormControl(''),
-      monFromTime: new FormControl(''),
-      monToTime: new FormControl(''),
-      tueFromTime: new FormControl(''),
-      tueToTime: new FormControl(''),
-      wedFromTime: new FormControl(''),
-      wedToTime: new FormControl(''),
-      thuFromTime: new FormControl(''),
-      thuToTime: new FormControl(''),
-      friFromTime: new FormControl(''),
-      friToTime: new FormControl(''),
-      satFromTime: new FormControl(''),
-      satToTime: new FormControl(''),
-      sunFromTime: new FormControl(''),
-      sunToTime: new FormControl(''),
+      monFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      monToTime: new FormControl([], [Validators.required, this.validatePattern]),
+      tueFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      tueToTime: new FormControl([], [Validators.required, this.validatePattern]),
+      wedFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      wedToTime: new FormControl([], [Validators.required, this.validatePattern]),
+      thuFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      thuToTime: new FormControl([], [Validators.required, this.validatePattern]),
+      friFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      friToTime: new FormControl([], [Validators.required, this.validatePattern]),
+      satFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      satToTime: new FormControl([], [Validators.required, this.validatePattern]),
+      sunFromTime: new FormControl([], [Validators.required, this.validatePattern]),
+      sunToTime: new FormControl([], [Validators.required, this.validatePattern]),
     })
 
     this.ProfileFormGroup.controls['businessName'].disable();
@@ -467,7 +484,21 @@ export class ProfilesettingComponent {
 
         this.ProfileFormGroup.controls['businessName'].setValue(data.legalName);
         this.ProfileFormGroup.controls['shortName'].setValue(data.businessName);
-        this.ProfileFormGroup.controls['phoneNo'].setValue(data.phoneNo);
+
+        let phone: any = '';
+        const value = data.phoneNo.replace(/[^0-9]/g, '');
+        let format = '(***) ***-****';
+
+        for (let i = 0; i < value.length; i++) {
+          format = format.replace('*', value.charAt(i));
+        }
+
+        if (format.indexOf('*') >= 0) {
+          format = format.substring(0, format.indexOf('*'));
+        }
+        phone = format.trim();
+
+        this.ProfileFormGroup.controls['phoneNo'].setValue(phone);
         this.ProfileFormGroup.controls['address'].setValue(data.adress);
         this.ProfileFormGroup.controls['city'].setValue(data.city);
         let selectedState: { id: any, name: any }[] = [];
@@ -486,88 +517,60 @@ export class ProfilesettingComponent {
         this.ProfileFormGroup.controls['instagramUrl'].setValue(data.instagramUrl);
         this.ProfileFormGroup.controls['yelpUrl'].setValue(data.yelpUrl);
 
-        let monFrom = ((new Date(data.businesswiseWorkingDays[0].monFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].monFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].monFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].monFromTime).getMinutes()));
+        let monFrom = new Date(data.businesswiseWorkingDays[0].monFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['monFromTime'].setValue(monFrom);
 
-        let monTo = ((new Date(data.businesswiseWorkingDays[0].monToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].monToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].monToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].monToTime).getMinutes()));
+        let monTo = new Date(data.businesswiseWorkingDays[0].monToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['monToTime'].setValue(monTo);
 
-        let tueFrom = ((new Date(data.businesswiseWorkingDays[0].tueFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].tueFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].tueFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].tueFromTime).getMinutes()));
+        let tueFrom = new Date(data.businesswiseWorkingDays[0].tueFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['tueFromTime'].setValue(tueFrom);
 
-        let tueTo = ((new Date(data.businesswiseWorkingDays[0].tueToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].tueToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].tueToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].tueToTime).getMinutes()));
+        let tueTo = new Date(data.businesswiseWorkingDays[0].tueToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['tueToTime'].setValue(tueTo);
 
-        let wedFrom = ((new Date(data.businesswiseWorkingDays[0].wedFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].wedFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].wedFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].wedFromTime).getMinutes()));
+        let wedFrom = new Date(data.businesswiseWorkingDays[0].wedFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['wedFromTime'].setValue(wedFrom);
 
-        let wedTo = ((new Date(data.businesswiseWorkingDays[0].wedToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].wedToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].wedToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].wedToTime).getMinutes()));
+        let wedTo = new Date(data.businesswiseWorkingDays[0].wedToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['wedToTime'].setValue(wedTo);
 
-        let thuFrom = ((new Date(data.businesswiseWorkingDays[0].thuFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].thuFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].thuFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].thuFromTime).getMinutes()));
+        let thuFrom = new Date(data.businesswiseWorkingDays[0].thuFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['thuFromTime'].setValue(thuFrom);
 
-        let thuTo = ((new Date(data.businesswiseWorkingDays[0].thuToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].thuToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].thuToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].thuToTime).getMinutes()));
+        let thuTo = new Date(data.businesswiseWorkingDays[0].thuToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['thuToTime'].setValue(thuTo);
 
-        let friFrom = ((new Date(data.businesswiseWorkingDays[0].friFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].friFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].friFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].friFromTime).getMinutes()));
+        let friFrom = new Date(data.businesswiseWorkingDays[0].friFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['friFromTime'].setValue(friFrom);
 
-        let friTo = ((new Date(data.businesswiseWorkingDays[0].friToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].friToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].friToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].friToTime).getMinutes()));
+        let friTo = new Date(data.businesswiseWorkingDays[0].friToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['friToTime'].setValue(friTo);
 
-        let satFrom = ((new Date(data.businesswiseWorkingDays[0].satFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].satFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].satFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].satFromTime).getMinutes()));
+        let satFrom = new Date(data.businesswiseWorkingDays[0].satFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['satFromTime'].setValue(satFrom);
 
-        let satTo = ((new Date(data.businesswiseWorkingDays[0].satToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].satToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].satToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].satToTime).getMinutes()));
+        let satTo = new Date(data.businesswiseWorkingDays[0].satToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['satToTime'].setValue(satTo);
 
-        let sunFrom = ((new Date(data.businesswiseWorkingDays[0].sunFromTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].sunFromTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].sunFromTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].sunFromTime).getMinutes()));
+        let sunFrom = new Date(data.businesswiseWorkingDays[0].sunFromTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['sunFromTime'].setValue(sunFrom);
 
-        let sunTo = ((new Date(data.businesswiseWorkingDays[0].sunToTime).getHours() < 10 ? '0' : '') +
-          (new Date(data.businesswiseWorkingDays[0].sunToTime).getHours())) + ':' +
-          ((new Date(data.businesswiseWorkingDays[0].sunToTime).getMinutes() < 10 ? '0' : '') +
-            (new Date(data.businesswiseWorkingDays[0].sunToTime).getMinutes()));
+        let sunTo = new Date(data.businesswiseWorkingDays[0].sunToTime).toLocaleString('en-US',
+          { hour: '2-digit', minute: '2-digit', hour12: true });
         this.ProfileFormGroup.controls['sunToTime'].setValue(sunTo);
 
         this.iseditmode = true;
@@ -759,20 +762,34 @@ export class ProfilesettingComponent {
       "uniqueId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "id": 0,
       "businessId": this.businessLocationID,
-      "monFromTime": this.ProfileFormGroup.controls['monFromTime'].value,
-      "monToTime": this.ProfileFormGroup.controls['monToTime'].value,
-      "tueFromTime": this.ProfileFormGroup.controls['tueFromTime'].value,
-      "tueToTime": this.ProfileFormGroup.controls['tueToTime'].value,
-      "wedFromTime": this.ProfileFormGroup.controls['wedFromTime'].value,
-      "wedToTime": this.ProfileFormGroup.controls['wedToTime'].value,
-      "thuFromTime": this.ProfileFormGroup.controls['thuFromTime'].value,
-      "thuToTime": this.ProfileFormGroup.controls['thuToTime'].value,
-      "friFromTime": this.ProfileFormGroup.controls['friFromTime'].value,
-      "friToTime": this.ProfileFormGroup.controls['friToTime'].value,
-      "satFromTime": this.ProfileFormGroup.controls['satFromTime'].value,
-      "satToTime": this.ProfileFormGroup.controls['satToTime'].value,
-      "sunFromTime": this.ProfileFormGroup.controls['sunFromTime'].value,
-      "sunToTime": this.ProfileFormGroup.controls['sunToTime'].value,
+      "monFromTime": this.ProfileFormGroup.controls['monFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['monFromTime'].value.label : this.ProfileFormGroup.controls['monFromTime'].value,
+      "monToTime": this.ProfileFormGroup.controls['monToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['monToTime'].value.label : this.ProfileFormGroup.controls['monToTime'].value,
+      "tueFromTime": this.ProfileFormGroup.controls['tueFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['tueFromTime'].value.label : this.ProfileFormGroup.controls['tueFromTime'].value,
+      "tueToTime": this.ProfileFormGroup.controls['tueToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['tueToTime'].value.label : this.ProfileFormGroup.controls['tueToTime'].value,
+      "wedFromTime": this.ProfileFormGroup.controls['wedFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['wedFromTime'].value.label : this.ProfileFormGroup.controls['wedFromTime'].value,
+      "wedToTime": this.ProfileFormGroup.controls['wedToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['wedToTime'].value.label : this.ProfileFormGroup.controls['wedToTime'].value,
+      "thuFromTime": this.ProfileFormGroup.controls['thuFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['thuFromTime'].value.label : this.ProfileFormGroup.controls['thuFromTime'].value,
+      "thuToTime": this.ProfileFormGroup.controls['thuToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['thuToTime'].value.label : this.ProfileFormGroup.controls['thuToTime'].value,
+      "friFromTime": this.ProfileFormGroup.controls['friFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['friFromTime'].value.label : this.ProfileFormGroup.controls['friFromTime'].value,
+      "friToTime": this.ProfileFormGroup.controls['friToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['friToTime'].value.label : this.ProfileFormGroup.controls['friToTime'].value,
+      "satFromTime": this.ProfileFormGroup.controls['satFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['satFromTime'].value.label : this.ProfileFormGroup.controls['satFromTime'].value,
+      "satToTime": this.ProfileFormGroup.controls['satToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['satToTime'].value.label : this.ProfileFormGroup.controls['satToTime'].value,
+      "sunFromTime": this.ProfileFormGroup.controls['sunFromTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['sunFromTime'].value.label : this.ProfileFormGroup.controls['sunFromTime'].value,
+      "sunToTime": this.ProfileFormGroup.controls['sunToTime'].value.label != undefined ?
+        this.ProfileFormGroup.controls['sunToTime'].value.label : this.ProfileFormGroup.controls['sunToTime'].value,
       "isActive": true,
       "createdBy": AppSettings.GetCreatedBy(),
       "createdDate": AppSettings.GetDate(),
@@ -787,13 +804,10 @@ export class ProfilesettingComponent {
   Submit() {
     this.submitted = true;
     if (this.ProfileFormGroup.invalid) {
+      console.log('in')
       return;
     }
 
-    if (this.selectedBusiness.length == 0) {
-      this.labelsReq = true;
-      return;
-    }
     this.isLoading = true;
 
     let details = {
@@ -802,7 +816,7 @@ export class ProfilesettingComponent {
       "legalName": this.ProfileFormGroup.controls['businessName'].value,
       "businessName": this.ProfileFormGroup.controls['shortName'].value,
       "adress": this.ProfileFormGroup.controls['address'].value,
-      "phoneNo": this.ProfileFormGroup.controls['phoneNo'].value,
+      "phoneNo": this.ProfileFormGroup.controls['phoneNo'].value.replaceAll(/[^a-zA-Z0-9]/g, ''),
       "pinCode": this.ProfileFormGroup.controls['pinCode'].value,
       "industry": this.industry,
       "descriptions": this.ProfileFormGroup.controls['description'].value,
@@ -904,7 +918,6 @@ export class ProfilesettingComponent {
     this.ProfileFormGroup.controls['sunToTime'].setValue(getValueTo);
   }
 
-  // search Google Maps....
   initAutocomplete() {
     this.googleMapsService.api.then((maps) => {
       let autocomplete = new maps.places.Autocomplete(
@@ -915,14 +928,122 @@ export class ProfilesettingComponent {
           this.latitude = autocomplete.getPlace().geometry.location.lat();
           this.longitude = autocomplete.getPlace().geometry.location.lng();
           this.ProfileFormGroup.controls['address'].setValue(this.searchElementRef.nativeElement.value);
+
+          let city = '';
+          let postal_code = '';
+          let state: any = [];
+          let country = '';
+          autocomplete.getPlace().address_components?.forEach((element: any) => {
+
+            const types = element.types;
+            if (types.includes('locality')) {
+              city = element.long_name;
+            }
+
+            if (types.includes('postal_code')) {
+              postal_code = element.long_name;
+            }
+
+            if (types.includes('administrative_area_level_1')) {
+              state = element.short_name;
+            }
+
+            if (types.includes('country')) {
+              country = element.short_name === 'US' ? 'USA' : element.long_name;
+            }
+          });
+          let formattedAddress = autocomplete.getPlace().formatted_address || '';
+          const removeComponent = (address: string, component: string) => {
+            if (component) {
+              const index = address.indexOf(component);
+              if (index !== -1) {
+                address = address.substring(0, (index)) + address.substring(index + component.length);
+              }
+            }
+
+            return address;
+          }
+
+          formattedAddress = removeComponent(formattedAddress, city);
+          formattedAddress = removeComponent(formattedAddress, postal_code);
+          formattedAddress = removeComponent(formattedAddress, state);
+          formattedAddress = removeComponent(formattedAddress, country);
+          formattedAddress = formattedAddress
+            .replaceAll(',', '').trim();
+
+          autocomplete.getPlace().address_components?.forEach((element: any) => {
+            const types = element.types;
+            if (types.includes('locality')) {
+              city = element.long_name;
+            }
+
+          });
+
+          this.ProfileFormGroup.controls['city'].setValue(city);
+          this.ProfileFormGroup.controls['pinCode'].setValue(postal_code);
+          this.ProfileFormGroup.controls['address'].setValue(formattedAddress);
+
+          let selectedState: { id: any, name: any }[] = [];
+          selectedState.push({
+            id: this.statesData.filter(x => x.name == state)[0].id,
+            name: this.statesData.filter(x => x.name == state)[0].name
+          });
+          this.ProfileFormGroup.controls['stateCodeId'].setValue(selectedState);
         });
       });
 
-      this.searchElementRef.nativeElement.addEventListener('keydown', (event) => {
+      this.searchElementRef.nativeElement.addEventListener('keydown', (event: any) => {
         if (event.key === 'Enter') {
           event.preventDefault();
         }
-      })
+      });
     });
+  }
+
+  removeBusiness(id: any) {
+    this.selectedBusiness.splice((this.selectedBusiness.indexOf(this.selectedBusiness.filter(x => x.id == id)[0])), 1);
+  }
+
+  numberOnly(event: any): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  formatNum(event: any) {
+    if (event.inputType != 'deleteContentBackward') {
+      const inputElement = event.target as HTMLInputElement;
+      let inputValue = inputElement.value;
+      const value = inputValue.replace(/[^0-9]/g, '');
+      let format = '(***) ***-****';
+
+      for (let i = 0; i < value.length; i++) {
+        format = format.replace('*', value.charAt(i));
+      }
+
+      if (format.indexOf('*') >= 0) {
+        format = format.substring(0, format.indexOf('*'));
+      }
+
+      inputElement.value = format.trim();
+    }
+  }
+
+  validatePattern(control: FormControl) {
+    const items = control.value;
+    const pattern = /^([1-9]|0[1-9]|1[0-2]):[0-5][0-9] ([AP][M])$/;
+
+    if (items && items.label != undefined) {
+      const invalidItems = !pattern.test(items.label);
+      return invalidItems == true ? { invalidPattern: true } : null;
+    }
+    else if (items && items.label == undefined) {
+      const invalidItems = !pattern.test(items);
+      return invalidItems == true ? { invalidPattern: true } : null;
+    }
+
+    return null;
   }
 }
