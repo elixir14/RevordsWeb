@@ -14,14 +14,14 @@
     margin-right: -15px;
 }
 
-.editClass{
+.editClass {
     background: #7DA3BA;
     border: none;
     border-radius: 3px;
     color: white;
 }
 
-.cancel{
+.cancel {
     background: #A17C43;
 }
 
@@ -29,12 +29,13 @@
 table {
     border-collapse: collapse;
     width: 100%;
-    background:#F4F8FB;
-  }
+    background: #F4F8FB;
+}
 
-.viewRevorde{
+.viewRevorde {
     background: #7DA3BA;
 }
+
 // .title-header {
 //     line-height: 45px;
 //     margin-top: 20px;
@@ -201,11 +202,13 @@ td {
     height: 130px;
     // width: 170px;
 }
+
 #business-gall {
     height: 140px;
     margin: 10px;
     // width: 170px;
 }
+
 .business-images-header {
     display: flex;
     justify-content: center;
@@ -214,6 +217,7 @@ td {
 .center {
     text-align: center;
 }
+
 .fa {
     font-style: normal;
     display: inline-block;
@@ -329,4 +333,8 @@ ul {
     top: 0px !important;
     left: 0px !important;
     will-change: none !important;
+}
+
+.invalid-feedback {
+    display: block !important;
 }

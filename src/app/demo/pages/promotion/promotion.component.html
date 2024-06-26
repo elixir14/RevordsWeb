@@ -42,7 +42,8 @@
                 <div class="col-md-12" style="margin-top:5px;" *ngFor='let p of displayData'>
                     <mat-accordion class="example-headers-align" multi>
                         <mat-expansion-panel>
-                            <mat-expansion-panel-header style="height:100% !important; padding: 10px 20px 10px 20px;">
+                            <mat-expansion-panel-header
+                                style="height:100% !important; padding: 10px 20px 10px 20px; border-bottom: 1px solid #d7d3d3;">
                                 <mat-panel-title style="display: block !important;">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -68,51 +69,101 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-8 d-flex">
-                                            <div class="col-md-4">
-                                                <div class=" row d-flex p-3">
-                                                    <div class="col-md-6 col-auto p-0">
+                                        <div class="col-md-8 d-flex" style="padding: 10px 20px 10px 20px;">
+                                            <!-- <div class="col-md-4">
+                                                <div class=" row d-flex p-3" style="align-items: center;">
+                                                    <div class="col-md-6 col-auto p-0" style="text-align: end;">
                                                         <div class="p-0 details">
                                                             {{p.totalDelivered}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 p-0">
-                                                        <div class="mt-2 mr-2">
+                                                    <div class="col-md-6 p-0" style="text-align: center;">
+                                                        <div>
                                                             <span class="overview-amount ng-binding inner ">
                                                                 Delivered
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div> -->
+
+                                            <div class="col-md-4" style="text-align: -webkit-center;">
+                                                <div class="row">
+                                                    <div class="col-md-12 d-flex">
+                                                        <div class="col-md-2"></div>
+                                                        <div class="col-md-8">
+                                                            <div class="col-md-12 overview-amount ng-binding inner ">
+                                                                Delivered
+                                                            </div>
+                                                            <div class="col-md-12 details">
+                                                                {{p.totalDelivered}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2"></div>
+                                                    </div>
+
+                                                </div>
                                             </div>
-                                            <div class="col-md-4 ">
-                                                <div class="row d-flex p-3">
-                                                    <div class="col-md-6 col-auto p-0">
-                                                        <div class="p-0 details ">
+
+                                            <!-- <div class="col-md-4 ">
+                                                <div class="row d-flex p-3" style="align-items: center;">
+                                                    <div class="col-md-6 col-auto p-0" style="text-align: end;">
+                                                        <div class="p-0 details">
                                                             {{p.totalEngagements}}
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 p-0 ">
-                                                        <div class="mt-2 mr-2">
+                                                    <div class="col-md-6 p-0" style="text-align: center;">
+                                                        <div>
                                                             <span class="overview-amount ng-binding inner ">
                                                                 Visits
                                                             </span>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div> -->
+
+                                            <div class="col-md-4" style="text-align: -webkit-center;">
+                                                <div class="row d-block">
+                                                    <div class="col-md-6">
+                                                        <span class="overview-amount ng-binding inner ">
+                                                            Visits
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="details">
+                                                            {{p.totalEngagements}}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="row d-flex p-3">
-                                                    <div class="col-md-8 col-auto p-0">
+
+                                            <!-- <div class="col-md-4">
+                                                <div class="row d-flex p-3" style="align-items: center;">
+                                                    <div class="col-md-6 col-auto p-0" style="text-align: end;">
                                                         <div class="p-0 details ">
                                                             {{p.totalVisitsRate}}%
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-4 p-0 ">
-                                                        <div class="mt-2 mr-2">
+                                                    <div class="col-md-6 p-0" style="text-align: center;">
+                                                        <div>
                                                             <span class="overview-amount ng-binding inner ">
                                                                 Visit Rate
                                                             </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+
+                                            <div class="col-md-4" style="text-align: -webkit-center;">
+                                                <div class="row d-block">
+                                                    <div class="col-md-6">
+                                                        <span class="overview-amount ng-binding inner ">
+                                                            Visit Rate
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="details">
+                                                            {{p.totalVisitsRate}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,15 +176,13 @@
                                 <div class="col-md-4">
                                     <!-- <p class="detailsummary">{{p.occasion}}</p> -->
                                 </div>
-                                <div class="col-md-8 d-flex" style="padding-left: 0px !important;">
+
+                                <div class="col-md-8 d-flex" style="padding: 10px 38px 10px 20px;">
                                     <div class="col-md-4" style="border-right: 1px solid #d7d3d3;">
-                                        <div class="row d-flex p-0">
-                                            <div class="col-md-4 col-auto p-0">
-                                                <div class="p-0 details ">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8 p-0 ">
-                                                <div class="mt-2 mr-2">
+                                        <div class="row">
+                                            <div class="col-md-12 d-flex">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8">
                                                     <p style="margin-bottom: 0px !important; ">
                                                         App
                                                         <span class="float-right"> {{p.notificationCount}}
@@ -148,10 +197,70 @@
                                                         <span class="float-right"> {{p.smsMmsCount}}</span>
                                                     </p>
                                                 </div>
+                                                <div class="col-md-2"></div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-md-4" style="border-right: 1px solid #d7d3d3;">
+                                        <div class="row">
+                                            <div class="col-md-12 d-flex">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8">
+                                                    <div>
+                                                        <p style="margin-bottom: 0px !important; ">Claim
+                                                            <span class="float-right"> {{p.claims}} </span>
+                                                        </p>
+                                                        <p style="margin-bottom: 0px !important; ">Redemptions
+                                                            <span class="float-right"> {{p.redemptions}} </span>
+                                                        </p>
+                                                        <p style="margin-bottom: 0px !important; ">Opt-Outs
+                                                            <span class="float-right"> {{p.optOuts}} </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="row ">
+                                            <div class="col-md-12 d-flex">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8">
+                                                    <div>
+                                                        <p style="margin-bottom: 0px !important; ">Claim
+                                                            <span class="float-right"> {{p.totalClaimRate}}%</span>
+                                                        </p>
+                                                        <p style="margin-bottom: 0px !important; ">Redemptions
+                                                            <span class="float-right"> {{p.totalredeemRate}}%</span>
+                                                        </p>
+                                                        <p style="margin-bottom: 0px !important; ">Opt-Outs
+                                                            <span class="float-right"> {{p.totaloptoutRate}}% </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- <div class="col-md-8 d-flex" style="padding-left: 0px !important;">
+                                    <div class="col-md-4 mt-2" style="border-right: 1px solid #d7d3d3;">
+                                        <div class="row d-flex p-0">
+                                            <div class="col-md-4 col-auto p-0">
+                                                <div class="p-0 details ">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 p-0 ">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-2" style="border-right: 1px solid #d7d3d3;">
                                         <div class="row d-flex p-0">
                                             <div class="col-md-4 col-auto p-0">
                                                 <div class="p-0 details ">
@@ -172,7 +281,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" style="border-right: 1px solid #d7d3d3;">
+                                    <div class="col-md-4 mt-2">
                                         <div class="row d-flex p-0">
                                             <div class="col-md-4 col-auto p-0">
                                                 <div class="p-0 details ">
@@ -193,7 +302,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </mat-expansion-panel>
                     </mat-accordion>
@@ -279,8 +388,8 @@
                                                     <div class="col-md-3">
                                                         <p class="betweenLbl"><img
                                                                 src="../../../../assets/img/icons/Is redeemable.svg"
-                                                                class="margin55">Is
-                                                            Redeemable?
+                                                                class="margin55">
+                                                            Redeemable
                                                         </p>
                                                     </div>
                                                     <div class="col-md-1">
@@ -294,8 +403,9 @@
 
                                                         <p class="betweenLbl"> <img
                                                                 src="../../../../assets/img/icons/Allow spin wheel.svg"
-                                                                class="margin55">Allow
-                                                            Spinwheel?</p>
+                                                                class="margin55">
+                                                            Spinwheel
+                                                        </p>
                                                     </div>
                                                     <div class="col-md-1" *ngIf="isSpinRequired">
                                                         <label class="switch">
@@ -308,7 +418,7 @@
                                                     <div class="col-md-3">
                                                         <p class="betweenLbl"><img
                                                                 src="../../../../assets/img/icons/Turn on word of mouth.svg"
-                                                                class="margin55">Word of Mouth?</p>
+                                                                class="margin55">Word of Mouth</p>
                                                         <p class="betweenLbl"
                                                             style="color: gray;margin-right: -12px;font-size: 11px;">
                                                             Can
@@ -362,7 +472,7 @@
                                                     <div class="col-md-3">
                                                         <p class="betweenLbl"> <img
                                                                 src="../../../../assets/img/icons/Is redeemable.svg"
-                                                                class="margin55">Is Redeemable?</p>
+                                                                class="margin55">Redeemable</p>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label class="switch">
@@ -374,7 +484,7 @@
                                                     <div class="col-md-3" *ngIf="isSpinRequired">
                                                         <p class="betweenLbl"> <img
                                                                 src="../../../../assets/img/icons/Allow spin wheel.svg"
-                                                                class="margin55">Allow Spinwheel?</p>
+                                                                class="margin55">Spinwheel</p>
                                                     </div>
                                                     <div class="col-md-1" *ngIf="isSpinRequired">
                                                         <label class="switch">
@@ -387,7 +497,7 @@
                                                     <div class="col-md-3">
                                                         <p class="betweenLbl"><img
                                                                 src="../../../../assets/img/icons/Turn on word of mouth.svg"
-                                                                class="margin55">Word of Mouth?</p>
+                                                                class="margin55">Word of Mouth</p>
                                                         <p class="betweenLbl"
                                                             style="color: gray;margin-right: -14px;font-size: 11px;">
                                                             Can
@@ -1389,13 +1499,12 @@
                             <mat-step [stepControl]="secondFormGroup"
                                 errorMessage="Business and Customers are required.">
                                 <ng-template matStepLabel>Step 2</ng-template>
-                                <div class="row d-flex">
-
+                                <div class="row">
                                     <div class="col-md-12">
                                         <form [formGroup]="secondFormGroup">
                                             <div class="row flexcenter">
                                                 <div class="col-md-2">
-                                                    <b>Redeemable At : </b>
+                                                    <b>Redeemable At: </b>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <ng-multiselect-dropdown placeholder="Choose Redeemable At"
@@ -1426,9 +1535,9 @@
                                         </form>
                                     </div>
 
-                                    <div class="row d-flex">
+                                    <div class="col-md-12 d-flex">
                                         <div class="col-md-5 tagsDiv">
-                                            <div class="ml-2">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
                                                 <img src="../../../../assets/promotion/Member of.svg">
                                                 <span class="ml-2">
                                                     <b>Members Of</b>
@@ -1443,7 +1552,8 @@
                                                 </div>
                                             </div>
                                             <mat-checkbox class="example-margin mt-2" [checked]="isAllChecked"
-                                                (click)="selectAllBusiness()" color="#7DA3BA">Select All</mat-checkbox>
+                                                (click)="selectAllBusiness()" color="#7DA3BA">Select
+                                                All</mat-checkbox>
                                             <div *ngFor="let b of bussinessDataForStep3">
                                                 <mat-checkbox *ngIf="b.id != -1" color="#7DA3BA" class="example-margin"
                                                     [value]="b.id" [checked]="b.checked"
@@ -1457,7 +1567,7 @@
                                         </div>
 
                                         <div class="col-md-3 tagsDiv">
-                                            <div class="ml-2">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
                                                 <img src="../../../../assets/promotion/Total Badges.svg">
                                                 <span class="ml-2">
                                                     <b>Total badges</b>
@@ -1484,8 +1594,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3 tagsDiv">
-                                            <div class="ml-2">
+                                        <div class="col-md-4 tagsDiv">
+                                            <div class="ml-2" style="align-items: center;display: flex;">
                                                 <img src="../../../../assets/promotion/Total Tags.svg">
                                                 <span class="ml-2">
                                                     <b>Total Tags</b>
@@ -1508,13 +1618,14 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="row" style="margin-top:5px;">
                                 </div>
 
-                                <div class="row d-flex" *ngIf="lastSmsSentNotes != ''">
-                                    <div class="row d-flex">
+                                <div class="row" *ngIf="lastSmsSentNotes != ''">
+                                    <div class="col-md-12 d-flex">
                                         <div class="col-md-5 tagsDiv" style="background: #f4f8fb;">
                                             <p>
                                                 {{lastSmsSentNotes}}
@@ -1523,31 +1634,53 @@
                                     </div>
                                 </div>
 
-                                <div class="row" style="margin-top:5px;" *ngIf="lastSmsSentDate != null">
+                                <div class="row" style="margin-top:5px;" *ngIf="lastSmsSentNotes != ''">
                                 </div>
 
-                                <div class="row d-flex">
-                                    <div class="row d-flex">
+                                <div class="row">
+                                    <div class="col-md-12 d-flex">
                                         <div class="col-md-5 tagsDiv">
-                                            <p>
-                                                Total <b> {{totalDelivered}}</b> customers will get app
-                                                notification, email or text sms.
-                                            </p>
+                                            <div class="ml-2" style="align-items: center;display: flex;">
+                                                <span>
+                                                    Total <b> {{totalDelivered}}</b> customers will get app
+                                                    notification, email or text sms.
+                                                </span>
+                                            </div>
                                             <div class="row" style="margin-top:5px;">
                                                 <div class="col-md-12">
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">Mobile App</th>
-                                                                <th scope="col">Email</th>
-                                                                <th scope="col">SMS</th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                    Mobile App
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                    Email
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                </th>
+                                                                <th scope="col" style="width: 20%;text-align: center;">
+                                                                    SMS
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr>
-                                                                <td>{{notificationCount}}</td>
-                                                                <td>{{emailCount}}</td>
-                                                                <td>{{smsCount}}</td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                    {{notificationCount}}
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                    {{emailCount}}
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                </td>
+                                                                <td style="width: 20%;text-align: center;">
+                                                                    {{smsCount}}
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -1596,47 +1729,47 @@
                                                         <table class="table table-borderless margin7">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th style="width:30%;color: #7DA3BA;">
+                                                                    <th style="width:20%;color: #7DA3BA;">
                                                                         <label
                                                                             *ngIf="firstFormGroup.controls['MuliplePromo'].value == false">
-                                                                            Promotion :
+                                                                            Promotion:
                                                                         </label>
                                                                         <label
                                                                             *ngIf="firstFormGroup.controls['MuliplePromo'].value == true">
-                                                                            Promotion 1 :
+                                                                            Promotion 1:
                                                                         </label>
                                                                     </th>
-                                                                    <td style="width: 70%;" colspan="3">
+                                                                    <td style="width: 80%;" colspan="3">
                                                                         {{this.firstFormGroup.controls['promotionalMessage1'].value}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th style="width:20%;">
+                                                                    <th style="width:15%;">
                                                                         <img src="../../../../assets/img/icons/Is redeemable.svg"
                                                                             class="margin55">
-                                                                        <label>Is Redeemable? : </label>
+                                                                        <label>Redeemable: </label>
                                                                     </th>
-                                                                    <td style="width: 10%;">
+                                                                    <td style="width: 15%;">
                                                                         {{this.firstFormGroup.controls['isRedeemable1'].value
                                                                         == true ? 'Yes' : 'No'}}
                                                                     </td>
-                                                                    <td style="width:20%;" *ngIf="isSpinRequired">
+                                                                    <td style="width:16%;" *ngIf="isSpinRequired">
                                                                         <img src="../../../../assets/img/icons/Allow spin wheel.svg"
                                                                             class="margin55">
                                                                         <label>
-                                                                            <b> Spinwheel? : </b>
+                                                                            <b> Spinwheel: </b>
                                                                         </label>
                                                                     </td>
-                                                                    <td style="width: 10%;" *ngIf="isSpinRequired">
+                                                                    <td style="width: 15%;" *ngIf="isSpinRequired">
                                                                         {{this.firstFormGroup.controls['isSpinWheelAllowed1'].value
                                                                         ? 'Yes' : 'No'}}
                                                                     </td>
-                                                                    <th style="width:30%;">
+                                                                    <th style="width:20%;">
                                                                         <img src="../../../../assets/img/icons/Turn on word of mouth.svg"
                                                                             class="margin55">
-                                                                        <label>Word of Mouth? : </label>
+                                                                        <label>Word of Mouth: </label>
                                                                     </th>
-                                                                    <td style="width: 10%;">
+                                                                    <td style="width: 19%;">
                                                                         {{this.firstFormGroup.controls['isWordOfMouth1'].value
                                                                         ? 'Yes' : 'No'}}
                                                                     </td>
@@ -1660,40 +1793,40 @@
                                                         <table class="table table-borderless margin7">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th style="width:30%;color: #7DA3BA;">
-                                                                        <label>Promotion 2 : </label>
+                                                                    <th style="width:20%;color: #7DA3BA;">
+                                                                        <label>Promotion 2: </label>
                                                                     </th>
-                                                                    <td style="width: 70%;" colspan="3">
+                                                                    <td style="width: 80%;" colspan="3">
                                                                         {{this.firstFormGroup.controls['promotionalMessage2'].value}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th style="width:20%;">
+                                                                    <th style="width:15%;">
                                                                         <img src="../../../../assets/img/icons/Is redeemable.svg"
                                                                             class="margin55">
-                                                                        <label>Is Redeemable? : </label>
+                                                                        <label>Redeemable: </label>
                                                                     </th>
-                                                                    <td style="width: 10%;">
+                                                                    <td style="width: 15%;">
                                                                         {{this.firstFormGroup.controls['isRedeemable2'].value
                                                                         ? 'Yes' : 'No'}}
                                                                     </td>
-                                                                    <td style="width:20%;">
+                                                                    <td style="width:16%;">
                                                                         <img src="../../../../assets/img/icons/Allow spin wheel.svg"
                                                                             class="margin55">
                                                                         <label>
-                                                                            <b> Spinwheel? : </b>
+                                                                            <b> Spinwheel: </b>
                                                                         </label>
                                                                     </td>
-                                                                    <td style="width: 10%;">
+                                                                    <td style="width: 15%;">
                                                                         {{this.firstFormGroup.controls['isSpinWheelAllowed2'].value
                                                                         ? 'Yes' : 'No'}}
                                                                     </td>
-                                                                    <th style="width:30%;">
+                                                                    <th style="width:20%;">
                                                                         <img src="../../../../assets/img/icons/Turn on word of mouth.svg"
                                                                             class="margin55">
-                                                                        <label>Word of Mouth? : </label>
+                                                                        <label>Word of Mouth: </label>
                                                                     </th>
-                                                                    <td style="width: 10%;">
+                                                                    <td style="width: 19%;">
                                                                         {{this.firstFormGroup.controls['isWordOfMouth2'].value
                                                                         ? 'Yes' : 'No'}}
                                                                     </td>
@@ -1716,46 +1849,49 @@
                                                         <table class="table table-borderless margin7">
                                                             <tbody>
                                                                 <tr>
-                                                                    <th style="width:30%;">
-                                                                        <label>Ocassion : </label>
+                                                                    <th style="width:20%;">
+                                                                        <label>Ocassion: </label>
                                                                     </th>
-                                                                    <td style="width: 70%;" colspan="3"
+                                                                    <td style="width: 80%;" colspan="3"
                                                                         [innerHTML]="this.firstFormGroup.controls['occasionHTML'].value">
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th style="width:30%;">
-                                                                        <label>Offer Start Date : </label>
+                                                                    <th style="width:20%;">
+                                                                        <label>Offer Start Date: </label>
                                                                     </th>
-                                                                    <td style="width: 20%;">
-                                                                        {{this.firstFormGroup.controls['offerStartDate'].value}}
+                                                                    <td style="width: 30%;">
+                                                                        {{this.firstFormGroup.controls['offerStartDate'].value
+                                                                        | date:"M/d/y"}}
                                                                     </td>
-                                                                    <td style="width:30%;">
+                                                                    <td style="width:20%;">
                                                                         <label>
-                                                                            <b> Offer End Date : </b>
+                                                                            <b> Offer End Date: </b>
                                                                         </label>
                                                                     </td>
-                                                                    <td style="width: 20%;">
-                                                                        {{this.firstFormGroup.controls['offerEndDate'].value}}
+                                                                    <td style="width: 30%;">
+                                                                        {{this.firstFormGroup.controls['offerEndDate'].value
+                                                                        | date:"M/d/y"}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th style="width:30%;">
-                                                                        <label>Send Now/Later? : </label>
+                                                                    <th style="width:20%;">
+                                                                        <label>Send Now/Later: </label>
                                                                     </th>
-                                                                    <td style="width: 20%;">
+                                                                    <td style="width: 30%;">
                                                                         {{this.firstFormGroup.controls['isSendSoon'].value
                                                                         == 1 ? 'Now' :
                                                                         (this.firstFormGroup.controls['isSendSoon'].value
                                                                         == 2
                                                                         ? 'Later (on ' +
-                                                                        this.firstFormGroup.controls['date'].value
+                                                                        (this.firstFormGroup.controls['date'].value |
+                                                                        date:"M/d/y")
                                                                         + ') between ' + scheduleLaterTime : '') }}
                                                                     </td>
-                                                                    <th style="width:30%;">
-                                                                        <label>Redeemable At : </label>
+                                                                    <th style="width:20%;">
+                                                                        <label>Redeemable At: </label>
                                                                     </th>
-                                                                    <td style="width: 20;">
+                                                                    <td style="width: 30%;">
                                                                         {{selectedRedemtionOption}}
                                                                     </td>
                                                                 </tr>
@@ -1763,18 +1899,18 @@
 
                                                                 </tr>
                                                                 <tr>
-                                                                    <th style="width:30%;">
-                                                                        <label>Members Of : </label>
+                                                                    <th style="width:20%;">
+                                                                        <label>Members Of: </label>
                                                                     </th>
-                                                                    <td style="width: 70;" colspan="3">
+                                                                    <td style="width: 80%;" colspan="3">
                                                                         {{selectedBusinessName}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th style="width:30%;">
-                                                                        <label>Send to : </label>
+                                                                    <th style="width:20%;">
+                                                                        <label>Send to: </label>
                                                                     </th>
-                                                                    <td style="width: 70;" colspan="3">
+                                                                    <td style="width: 80%;" colspan="3">
                                                                         {{sendToCustomers}}
                                                                     </td>
                                                                 </tr>

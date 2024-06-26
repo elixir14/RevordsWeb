@@ -476,7 +476,7 @@ export class PromotionComponent {
     }
 
     this.isAllChecked = (this.bussinessDataForStep3.filter(x => x.id != -1).length) ==
-      (this.bussinessDataForStep3.filter(x => x.checked == true).length) ? true : false;
+      (this.bussinessDataForStep3.filter(x => x.id != -1 && x.checked == true).length) ? true : false;
 
     this.onMembersOfSelected();
     this.BusinessNameForSummary();
@@ -522,8 +522,6 @@ export class PromotionComponent {
       "sendDate": this.firstFormGroup.controls['isSendSoon'].value == '1' ? formatDate(new Date(), 'yyyy-MM-dd', 'en-US') : sentDate
     }
 
-    console.log(details)
-
     this._memberservice.GetMembersDataForPromotion(details).pipe()
       .subscribe({
         next: async (data) => {
@@ -551,7 +549,6 @@ export class PromotionComponent {
             this.bussinessDataForRedemption.filter(x => x.id == element.id)[0].memberCount =
               this.membersData != null && this.membersData != undefined && this.membersData.length > 0 ?
                 (this.membersData.filter(x => x.id == element.id).length > 0 ? this.membersData.filter(x => x.id == element.id)[0].count : 0) : 0
-
           });
           this.bussinessDataForStep3 = this.bussinessDataForRedemption;
         },
@@ -612,7 +609,7 @@ export class PromotionComponent {
   BadgeTagForSummary() {
     this.sendToCustomers = '';
     if (this.isAllBadgeChecked) {
-      this.sendToCustomers = 'All Badges,';
+      this.sendToCustomers = 'All Badges, ';
     }
     else {
       this.badgeDataForStep3.forEach(element => {
@@ -641,7 +638,7 @@ export class PromotionComponent {
       this.selectedBusinessName = 'All';
     }
     else {
-      this.bussinessDataForStep3.forEach(element => {
+      this.bussinessDataForStep3.filter(x => x.id != -1).forEach(element => {
         if (element.checked) {
           this.selectedBusinessName += element.businessName + ', '
         }
