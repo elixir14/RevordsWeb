@@ -50,11 +50,22 @@ jobs:
           npm run build
           
       # 6. Copy to S3 bucket.
-      - name: Copy to S3 Bucket
-        uses: kersvers/s3-sync-with-cloudfront-invalidation@v1.0.0
+      - name: Deploy
+        uses: reggionick/s3-deploy@v3
         with:
-              args: --acl public-read --follow-symlinks --delete
-        env: 
-            AWS_S3_BUCKET: dashboard.revords.com
-            DISTRIBUTION_ID: E23EZL5A1TYJLZ
-            SOURCE_DIR: dist
+          folder: dist
+          bucket: dashboard.revords.com
+          bucket-region: eu-west-1
+          dist-id: E23EZL5A1TYJLZ
+          invalidation: /
+          no-cache: true
+          private: true
+          filesToInclude: ".*/*,*/*,**"
+      # - name: Copy to S3 Bucket
+      #   uses: kersvers/s3-sync-with-cloudfront-invalidation@v1.0.0
+      #   with:
+      #         args: --acl public-read --follow-symlinks --delete
+      #   env: 
+      #       AWS_S3_BUCKET: dashboard.revords.com
+      #       DISTRIBUTION_ID: E23EZL5A1TYJLZ
+      #       SOURCE_DIR: dist
