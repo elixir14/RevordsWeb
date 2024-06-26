@@ -56,11 +56,5 @@ jobs:
               args: --acl public-read --follow-symlinks --delete
         env: 
             AWS_S3_BUCKET: dashboard.revords.com
-        # run: |
-        #   aws s3 sync ./dist/* s3://dashboard.revords.com --delete
-          
-      # 7. (Optional) Invalidate CloudFront
-      - name: Invalidate CloudFront
-      
-        run: |
-          aws cloudfront create-invalidation --distribution-id E23EZL5A1TYJLZ --paths "/*"
+            DISTRIBUTION_ID: E23EZL5A1TYJLZ
+            SOURCE_DIR: dist
