@@ -31,14 +31,14 @@ jobs:
         with:
           node-version: '18'
           
-      # # 4. Setup Cache
-      # - name: Setup Cache
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.npm
-      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-node-
+      # 4. Setup Cache
+      - name: Setup Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       # 5. Build Angular
       - name: Build Angular Application
@@ -48,12 +48,12 @@ jobs:
           npm install --legacy-peer-deps
           npm run build
           
-      # # 6. Copy to S3 bucket.
-      # - name: Copy to S3 Bucket
-      #   run: |
-      #     aws s3 cp ./dist/* s3://daveops.co.in
+      # 6. Copy to S3 bucket.
+      - name: Copy to S3 Bucket
+        run: |
+          aws s3 cp ./dist/* s3://dashboard.revords.com
           
-      # # 7. (Optional) Invalidate CloudFront
-      # - name: Invalidate CloudFront
-      #   run: |
-      #     aws cloudfront create-invalidation --distribution-id <CLOUDFRONT DISTRIBUTION ID> --paths "/*"
+      # 7. (Optional) Invalidate CloudFront
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation --distribution-id E23EZL5A1TYJLZ --paths "/*"
